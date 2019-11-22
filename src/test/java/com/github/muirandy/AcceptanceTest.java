@@ -2,7 +2,9 @@ package com.github.muirandy;
 
 import com.github.muirandy.diagram.domain.App;
 import com.github.muirandy.diagram.domain.Artifact;
+import com.github.muirandy.diagram.domain.ArtifactGenerator;
 import com.github.muirandy.diagram.domain.Chain;
+import com.github.muirandy.gateway.plantuml.PlantUmlArtifactGenerator;
 import org.junit.jupiter.api.Test;
 import org.xmlunit.assertj.XmlAssert;
 import org.xmlunit.builder.Input;
@@ -15,6 +17,7 @@ class AcceptanceTest {
 
     private Chain chain;
     private Artifact artifact;
+    private ArtifactGenerator plantUmlArtifactGenerator = new PlantUmlArtifactGenerator();
 
     @Test
     void emptyChainGeneratesEmptyPlantUmlDiagram() {
@@ -28,7 +31,7 @@ class AcceptanceTest {
     }
 
     private void whenWeRunTheApp() {
-        App app = new App();
+        App app = new App(plantUmlArtifactGenerator);
         artifact = app.run(chain);
     }
 
