@@ -4,14 +4,20 @@ import com.github.muirandy.diagram.domain.App;
 import com.github.muirandy.diagram.domain.Artifact;
 import com.github.muirandy.diagram.domain.Chain;
 import org.junit.jupiter.api.Test;
+import org.xmlunit.assertj.XmlAssert;
+import org.xmlunit.builder.Input;
 
-public class AcceptanceTest {
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import java.io.File;
+
+class AcceptanceTest {
 
     private Chain chain;
     private Artifact artifact;
 
     @Test
-    void t() {
+    void emptyChainGeneratesEmptyPlantUmlDiagram() {
         givenAnEmptyChain();
         whenWeRunTheApp();
         thenWeGetPlantUmlDiagramBack();
@@ -27,7 +33,12 @@ public class AcceptanceTest {
     }
 
     private void thenWeGetPlantUmlDiagramBack() {
-
+        File emptyImage = new File(AcceptanceTest.class.getClassLoader().getResource("empty.svg").getFile());
+        Source expected = Input.fromFile(emptyImage).build();
+        XmlAssert.assertThat(artifact.toString()).and(expected)
+                 .ignoreWhitespace()
+                 .ignoreComments()
+                 .areIdentical();
     }
 
 }
