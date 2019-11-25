@@ -1,4 +1,4 @@
-package com.github.muirandy;
+package com.github.muirandy.living.artifact;
 
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
@@ -12,9 +12,9 @@ public class ArchitectureTest {
     @ArchTest
     static final ArchRule layer_dependencies_are_respected = layeredArchitecture()
 
-            .layer("PlantUmlGateway").definedBy("com.github.muirandy.gateway.plantuml")
-            .layer("Domain").definedBy("com.github.muirandy.diagram.domain")
-            .layer("Main").definedBy("com.github.muirandy")
+            .layer("PlantUmlGateway").definedBy("com.github.muirandy.living.artifact.gateway.plantuml")
+            .layer("Domain").definedBy("com.github.muirandy.living.artifact.diagram.domain")
+            .layer("Main").definedBy("com.github.muirandy.living.artifact")
 
             .whereLayer("PlantUmlGateway").mayOnlyBeAccessedByLayers("Main")
             .whereLayer("Domain").mayOnlyBeAccessedByLayers("PlantUmlGateway", "Main");

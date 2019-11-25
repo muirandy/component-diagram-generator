@@ -1,6 +1,6 @@
-package com.github.muirandy.gateway.plantuml;
+package com.github.muirandy.living.artifact.gateway.plantuml;
 
-import com.github.muirandy.diagram.domain.Chain;
+import com.github.muirandy.living.artifact.diagram.domain.Chain;
 
 public class PlantUmlSourceBuilder {
     private static final String START_TAG = "@startuml\n";

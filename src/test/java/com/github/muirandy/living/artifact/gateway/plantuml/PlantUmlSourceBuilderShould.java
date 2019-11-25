@@ -1,6 +1,6 @@
-package com.github.muirandy.gateway.plantuml;
+package com.github.muirandy.living.artifact.gateway.plantuml;
 
-import com.github.muirandy.diagram.domain.Chain;
+import com.github.muirandy.living.artifact.diagram.domain.Chain;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

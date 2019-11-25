@@ -1,8 +1,8 @@
-package com.github.muirandy.gateway.plantuml;
+package com.github.muirandy.living.artifact.gateway.plantuml;
 
-import com.github.muirandy.diagram.domain.Artifact;
-import com.github.muirandy.diagram.domain.ArtifactGenerator;
-import com.github.muirandy.diagram.domain.Chain;
+import com.github.muirandy.living.artifact.diagram.domain.Artifact;
+import com.github.muirandy.living.artifact.diagram.domain.ArtifactGenerator;
+import com.github.muirandy.living.artifact.diagram.domain.Chain;
 
 import java.io.ByteArrayOutputStream;
 

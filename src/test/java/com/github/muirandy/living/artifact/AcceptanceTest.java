@@ -1,18 +1,17 @@
-package com.github.muirandy;
+package com.github.muirandy.living.artifact;
 
-import com.github.muirandy.diagram.domain.App;
-import com.github.muirandy.diagram.domain.Artifact;
-import com.github.muirandy.diagram.domain.ArtifactGenerator;
-import com.github.muirandy.diagram.domain.Chain;
-import com.github.muirandy.gateway.plantuml.ComponentDiagramGenerator;
-import com.github.muirandy.gateway.plantuml.PlantUmlArtifactGenerator;
-import com.github.muirandy.gateway.plantuml.PlantUmlSourceBuilder;
+import com.github.muirandy.living.artifact.diagram.domain.App;
+import com.github.muirandy.living.artifact.diagram.domain.Artifact;
+import com.github.muirandy.living.artifact.diagram.domain.ArtifactGenerator;
+import com.github.muirandy.living.artifact.diagram.domain.Chain;
+import com.github.muirandy.living.artifact.gateway.plantuml.ComponentDiagramGenerator;
+import com.github.muirandy.living.artifact.gateway.plantuml.PlantUmlArtifactGenerator;
+import com.github.muirandy.living.artifact.gateway.plantuml.PlantUmlSourceBuilder;
 import org.junit.jupiter.api.Test;
 import org.xmlunit.assertj.XmlAssert;
 import org.xmlunit.builder.Input;
 
 import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
 import java.io.File;
 import java.nio.charset.Charset;
 

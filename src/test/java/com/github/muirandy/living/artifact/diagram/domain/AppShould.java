@@ -1,4 +1,4 @@
-package com.github.muirandy.diagram.domain;
+package com.github.muirandy.living.artifact.diagram.domain;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,4 +1,4 @@
-package com.github.muirandy.gateway.plantuml;
+package com.github.muirandy.living.artifact.gateway.plantuml;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;

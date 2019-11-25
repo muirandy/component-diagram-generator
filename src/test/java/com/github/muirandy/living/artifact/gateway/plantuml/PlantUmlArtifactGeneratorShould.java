@@ -1,7 +1,7 @@
-package com.github.muirandy.gateway.plantuml;
+package com.github.muirandy.living.artifact.gateway.plantuml;
 
-import com.github.muirandy.diagram.domain.Artifact;
-import com.github.muirandy.diagram.domain.Chain;
+import com.github.muirandy.living.artifact.diagram.domain.Artifact;
+import com.github.muirandy.living.artifact.diagram.domain.Chain;
 import net.sourceforge.plantuml.SourceStringReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
