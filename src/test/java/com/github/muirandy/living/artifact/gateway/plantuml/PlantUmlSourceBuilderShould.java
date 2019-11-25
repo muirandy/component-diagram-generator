@@ -3,6 +3,7 @@ package com.github.muirandy.living.artifact.gateway.plantuml;
 import com.github.muirandy.living.artifact.diagram.domain.Chain;
 import com.github.muirandy.living.artifact.diagram.domain.Connection;
 import com.github.muirandy.living.artifact.diagram.domain.Link;
+import com.github.muirandy.living.artifact.diagram.domain.QueueLink;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,6 +21,8 @@ class PlantUmlSourceBuilderShould {
 
     private static final String LINK_NAME = FIRST_ELEMENT_NAME;
     private static final String CONNECTION_FROM_RECTANGLE_TO_SECOND_RECTANGLE_TAG = FIRST_ELEMENT_NAME + "->" + SECOND_ELEMENT_NAME + "\n";
+
+    private static final String QUEUE_TAG = "queue " + FIRST_ELEMENT_NAME + "\n";
 
     private Chain chain;
     private final PlantUmlSourceBuilder sourceBuilder = new PlantUmlSourceBuilder();
@@ -62,8 +65,7 @@ class PlantUmlSourceBuilderShould {
     void connectLinksUsingConnectors() {
         Link firstLink = new Link(LINK_NAME);
         Link secondLink = new Link(SECOND_ELEMENT_NAME);
-        Connection connectorToSecondLink = new Connection(secondLink);
-        firstLink.connect(connectorToSecondLink);
+        firstLink.connect(new Connection(secondLink));
         createChain(firstLink, secondLink);
 
         String plantUmlSourceCode = sourceBuilder.build(chain);
@@ -73,6 +75,18 @@ class PlantUmlSourceBuilderShould {
                 RECTANGLE_TAG,
                 SECOND_RECTANGLE_TAG,
                 CONNECTION_FROM_RECTANGLE_TO_SECOND_RECTANGLE_TAG,
+                END_TAG);
+    }
+
+    @Test
+    void buildQueue() {
+        createChain(new QueueLink(LINK_NAME));
+
+        String plantUmlSourceCode = sourceBuilder.build(chain);
+
+        assertThat(plantUmlSourceCode).containsSequence(
+                START_TAG,
+                QUEUE_TAG,
                 END_TAG);
     }
 

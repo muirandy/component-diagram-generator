@@ -24,6 +24,10 @@ class AcceptanceTest {
     private HashMap<String, String> prefix2Uri;
     private String svg;
 
+    private int elementIndex = 1;
+    private int pathElementIndex = 1;
+    private int textElementIndex = 1;
+
     @BeforeEach
     void buildSvgNamespaceContext() {
         prefix2Uri = new HashMap<>();
@@ -80,18 +84,24 @@ class AcceptanceTest {
         svg = getResultingSvg();
         XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).hasXPath("//svg:svg");
 
-        int index = 1;
-        for (Link link : links) {
-            drawsRectangle(index, link);
-            if (link.hasConnections())
-                drawsConnections(index, link);
-            index++;
-        }
+        for (Link link : links)
+            assertLinkIsRendered(link);
     }
 
-    private void drawsRectangle(int index, Link link) {
-        XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:rect[" + index + "]").isEmpty();
-        XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:text[" + index + "]").isEqualTo(link.name);
+    private void assertLinkIsRendered(Link link) {
+        drawsElement(link);
+        if (link.hasConnections())
+            drawsConnections(elementIndex, link);
+    }
+
+    private void drawsElement(Link link) {
+        if (link instanceof QueueLink) {
+            XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:path[" + pathElementIndex++ + "]").exist();
+            XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:path[" + pathElementIndex++ + "]").exist();
+        } else
+            XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:rect[" + elementIndex++ + "]").isEmpty();
+
+        XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:text[" + textElementIndex++ + "]").isEqualTo(link.name);
     }
 
     private void drawsConnections(int index, Link link) {
@@ -125,6 +135,14 @@ class AcceptanceTest {
 
     private Connection createConnection(Link otherLink) {
         return new Connection(otherLink);
+    }
+
+    @Test
+    void drawsQueues() {
+        Link link = new QueueLink("MyQueue");
+        givenAnChainWith(link);
+        whenWeRunTheApp();
+        thenDiagramContains(link);
     }
 
 }
