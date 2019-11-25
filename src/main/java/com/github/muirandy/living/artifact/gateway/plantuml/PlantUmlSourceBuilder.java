@@ -3,6 +3,8 @@ package com.github.muirandy.living.artifact.gateway.plantuml;
 import com.github.muirandy.living.artifact.diagram.domain.Chain;
 import com.github.muirandy.living.artifact.diagram.domain.Link;
 
+import java.util.stream.Collectors;
+
 public class PlantUmlSourceBuilder {
     private static final String START_TAG = "@startuml\n";
     private static final String EMPTY_DOC_TAG = "skinparam monochrome false\n";
@@ -15,9 +17,10 @@ public class PlantUmlSourceBuilder {
     }
 
     private String buildDiagram(Chain chain) {
-        Link link = chain.getLinks().get(0);
-        String linkTag = createLinkTag(link);
-        return START_TAG + linkTag + END_TAG;
+        String tags = chain.getLinks().stream()
+                              .map(l -> createLinkTag(l))
+                              .collect(Collectors.joining());
+        return START_TAG + tags + END_TAG;
     }
 
     private String createLinkTag(Link link) {

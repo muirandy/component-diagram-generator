@@ -15,10 +15,10 @@ class PlantUmlSourceBuilderShould {
     private static final String LINK_NAME = "SingleItem";
 
     private Chain chain;
+    private final PlantUmlSourceBuilder sourceBuilder = new PlantUmlSourceBuilder();
 
     @Test
     void buildDocumentForEmptyChain() {
-        PlantUmlSourceBuilder sourceBuilder = new PlantUmlSourceBuilder();
         chain = new Chain();
 
         String plantUmlSourceCode = sourceBuilder.build(chain);
@@ -28,10 +28,7 @@ class PlantUmlSourceBuilderShould {
 
     @Test
     void buildForSingleLink() {
-        PlantUmlSourceBuilder sourceBuilder = new PlantUmlSourceBuilder();
-        chain = new Chain();
-        Link singleLink = new Link(LINK_NAME);
-        chain.add(singleLink);
+        createChain(new Link(LINK_NAME));
 
         String plantUmlSourceCode = sourceBuilder.build(chain);
 
@@ -39,5 +36,24 @@ class PlantUmlSourceBuilderShould {
                 START_TAG,
                 RECTANGLE_TAG,
                 END_TAG);
+    }
+
+    @Test
+    void buildMultipleLinks() {
+        createChain(new Link(LINK_NAME), new Link("SecondLink"));
+
+        String plantUmlSourceCode = sourceBuilder.build(chain);
+
+        assertThat(plantUmlSourceCode).containsSequence(
+                START_TAG,
+                RECTANGLE_TAG,
+                "rectangle SecondLink\n",
+                END_TAG);
+    }
+
+    private void createChain(Link... links) {
+        chain = new Chain();
+        for (Link link : links)
+            chain.add(link);
     }
 }

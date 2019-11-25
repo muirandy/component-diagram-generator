@@ -38,7 +38,6 @@ class AcceptanceTest {
         artifact = app.run(chain);
     }
 
-
     private void thenWeGetEmptyPlantUmlDiagramBack() {
         File emptyImage = new File(AcceptanceTest.class.getClassLoader().getResource("empty.svg").getFile());
         Source expected = Input.fromFile(emptyImage).build();
@@ -63,9 +62,10 @@ class AcceptanceTest {
         thenDiagramContains(link);
     }
 
-    private void givenAnChainWith(Link link) {
+    private void givenAnChainWith(Link... links) {
         chain = new Chain();
-        chain.add(link);
+        for (Link link : links)
+            chain.add(link);
     }
 
     private void thenDiagramContains(Link... links) {
@@ -75,7 +75,21 @@ class AcceptanceTest {
         String svg = getResultingSvg();
         XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).hasXPath("//svg:svg");
 
-        XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:rect[1]").isEmpty();
-        XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:text[1]").isEqualTo("SingleItem");
+        int index = 1;
+        for (Link link : links) {
+            XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:rect[" + index + "]").isEmpty();
+            XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:text[" + index + "]").isEqualTo(link.name);
+            index++;
+        }
+    }
+
+    @Test
+    void twoElementsShownInDiagram() {
+        Link link = new Link("First");
+        Link link2 = new Link("Second");
+
+        givenAnChainWith(link, link2);
+        whenWeRunTheApp();
+        thenDiagramContains(link, link2);
     }
 }
