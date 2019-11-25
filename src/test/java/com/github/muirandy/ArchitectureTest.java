@@ -14,7 +14,8 @@ public class ArchitectureTest {
 
             .layer("PlantUmlGateway").definedBy("com.github.muirandy.gateway.plantuml")
             .layer("Domain").definedBy("com.github.muirandy.diagram.domain")
+            .layer("Main").definedBy("com.github.muirandy")
 
-            .whereLayer("PlantUmlGateway").mayNotBeAccessedByAnyLayer()
-            .whereLayer("Domain").mayOnlyBeAccessedByLayers("PlantUmlGateway");
+            .whereLayer("PlantUmlGateway").mayOnlyBeAccessedByLayers("Main")
+            .whereLayer("Domain").mayOnlyBeAccessedByLayers("PlantUmlGateway", "Main");
 }
