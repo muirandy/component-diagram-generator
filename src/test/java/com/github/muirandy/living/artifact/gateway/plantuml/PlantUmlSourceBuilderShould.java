@@ -1,9 +1,6 @@
 package com.github.muirandy.living.artifact.gateway.plantuml;
 
-import com.github.muirandy.living.artifact.diagram.domain.Chain;
-import com.github.muirandy.living.artifact.diagram.domain.Connection;
-import com.github.muirandy.living.artifact.diagram.domain.Link;
-import com.github.muirandy.living.artifact.diagram.domain.QueueLink;
+import com.github.muirandy.living.artifact.diagram.domain.*;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,6 +20,9 @@ class PlantUmlSourceBuilderShould {
     private static final String CONNECTION_FROM_RECTANGLE_TO_SECOND_RECTANGLE_TAG = FIRST_ELEMENT_NAME + "->" + SECOND_ELEMENT_NAME + "\n";
 
     private static final String QUEUE_TAG = "queue " + FIRST_ELEMENT_NAME + "\n";
+
+    private static final String ACTIVE_MQ_SPRITE_IMPORT = "!include <cloudinsight/activemq>\n";
+    private static final String ACTIVE_MQ_QUEUE_TAG = "queue \"<$activemq>\" as " + FIRST_ELEMENT_NAME + " #Crimson\n";
 
     private Chain chain;
     private final PlantUmlSourceBuilder sourceBuilder = new PlantUmlSourceBuilder();
@@ -87,6 +87,19 @@ class PlantUmlSourceBuilderShould {
         assertThat(plantUmlSourceCode).containsSequence(
                 START_TAG,
                 QUEUE_TAG,
+                END_TAG);
+    }
+
+    @Test
+    void buildActiveMqQueue() {
+        createChain(new ActiveMqQueueLink(LINK_NAME));
+
+        String plantUmlSourceCode = sourceBuilder.build(chain);
+
+        assertThat(plantUmlSourceCode).containsSequence(
+                START_TAG,
+                ACTIVE_MQ_SPRITE_IMPORT,
+                ACTIVE_MQ_QUEUE_TAG,
                 END_TAG);
     }
 

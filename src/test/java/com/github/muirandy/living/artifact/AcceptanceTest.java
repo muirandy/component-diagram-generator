@@ -27,6 +27,7 @@ class AcceptanceTest {
     private int elementIndex = 1;
     private int pathElementIndex = 1;
     private int textElementIndex = 1;
+    private int imageElementIndex = 1;
 
     @BeforeEach
     void buildSvgNamespaceContext() {
@@ -98,10 +99,14 @@ class AcceptanceTest {
         if (link instanceof QueueLink) {
             XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:path[" + pathElementIndex++ + "]").exist();
             XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:path[" + pathElementIndex++ + "]").exist();
-        } else
+            if (link instanceof ActiveMqQueueLink)
+                XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:image[" + imageElementIndex++ + "]").exist();
+            else
+                XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:text[" + textElementIndex++ + "]").isEqualTo(link.name);
+        } else {
             XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:rect[" + elementIndex++ + "]").isEmpty();
-
-        XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:text[" + textElementIndex++ + "]").isEqualTo(link.name);
+            XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:text[" + textElementIndex++ + "]").isEqualTo(link.name);
+        }
     }
 
     private void drawsConnections(int index, Link link) {
@@ -140,6 +145,14 @@ class AcceptanceTest {
     @Test
     void drawsQueues() {
         Link link = new QueueLink("MyQueue");
+        givenAnChainWith(link);
+        whenWeRunTheApp();
+        thenDiagramContains(link);
+    }
+
+    @Test
+    void drawsActiveMqQueues() {
+        Link link = new ActiveMqQueueLink("MyAmqQueue");
         givenAnChainWith(link);
         whenWeRunTheApp();
         thenDiagramContains(link);
