@@ -17,10 +17,24 @@ public class PlantUmlSourceBuilder {
         return buildDiagram(chain);
     }
 
+    private String buildEmptyDiagram() {
+        return START_TAG + EMPTY_DOC_TAG + END_TAG;
+    }
+
     private String buildDiagram(Chain chain) {
         String elementTags = createElementTags(chain);
         String connectionTags = createConnectionTags(chain);
         return START_TAG + elementTags + connectionTags + END_TAG;
+    }
+
+    private String createElementTags(Chain chain) {
+        return chain.getLinks().stream()
+                              .map(l -> createLinkTag(l))
+                              .collect(Collectors.joining());
+    }
+
+    private String createLinkTag(Link link) {
+        return "rectangle " + link.name + "\n";
     }
 
     private String createConnectionTags(Chain chain) {
@@ -42,17 +56,4 @@ public class PlantUmlSourceBuilder {
         return link.name + "->" + c.target.name + "\n";
     }
 
-    private String createElementTags(Chain chain) {
-        return chain.getLinks().stream()
-                              .map(l -> createLinkTag(l))
-                              .collect(Collectors.joining());
-    }
-
-    private String createLinkTag(Link link) {
-        return "rectangle " + link.name + "\n";
-    }
-
-    private String buildEmptyDiagram() {
-        return START_TAG + EMPTY_DOC_TAG + END_TAG;
-    }
 }
