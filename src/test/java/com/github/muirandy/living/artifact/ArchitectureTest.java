@@ -13,9 +13,14 @@ public class ArchitectureTest {
     static final ArchRule layer_dependencies_are_respected = layeredArchitecture()
 
             .layer("PlantUmlGateway").definedBy("com.github.muirandy.living.artifact.gateway.plantuml")
+            .layer("PlantUml").definedBy("net.sourceforge.plantuml")
+            .layer("JaegerTracingGateway").definedBy("com.github.muirandy.living.artifact.gateway.jaeger")
             .layer("Domain").definedBy("com.github.muirandy.living.artifact.diagram.domain")
             .layer("Main").definedBy("com.github.muirandy.living.artifact")
 
+            .whereLayer("JaegerTracingGateway").mayOnlyBeAccessedByLayers("Main")
+            .whereLayer("JaegerTracingApi").mayOnlyBeAccessedByLayers("JaegerTracingGateway", "Main")
             .whereLayer("PlantUmlGateway").mayOnlyBeAccessedByLayers("Main")
-            .whereLayer("Domain").mayOnlyBeAccessedByLayers("PlantUmlGateway", "Main");
+            .whereLayer("PlantUml").mayOnlyBeAccessedByLayers("PlantUmlGateway")
+            .whereLayer("Domain").mayOnlyBeAccessedByLayers("PlantUmlGateway", "JaegerTracingGateway", "Main");
 }
