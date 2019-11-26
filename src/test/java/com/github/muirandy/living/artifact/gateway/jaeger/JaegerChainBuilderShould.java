@@ -51,10 +51,7 @@ class JaegerChainBuilderShould {
 
         Chain chain = jaegerChainBuilder.build(JAEGER_TRACE_ID);
 
-        assertThat(chain.getSize()).isEqualTo(1);
-        Link link = chain.getLinks().get(0);
-        assertThat(link.name).isEqualTo(SPAN_NAME);
-        assertThat(link instanceof RectangleLink);
+        assertThat(chain.getLinks()).containsExactly(new RectangleLink(SPAN_NAME));
     }
 
     @Test
