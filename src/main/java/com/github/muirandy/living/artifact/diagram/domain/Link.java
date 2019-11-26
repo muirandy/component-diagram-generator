@@ -3,7 +3,7 @@ package com.github.muirandy.living.artifact.diagram.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Link {
+public abstract class Link {
     public final String name;
     public final List<Connection> connections = new ArrayList<>();
 
@@ -18,4 +18,6 @@ public class Link {
     public boolean hasConnections() {
         return !connections.isEmpty();
     }
+
+    public abstract String toSourceString(SourceStringVisitor sourceStringVisitor);
 }

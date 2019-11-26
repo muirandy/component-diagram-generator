@@ -38,7 +38,7 @@ class PlantUmlSourceBuilderShould {
 
     @Test
     void buildForSingleLink() {
-        createChain(new Link(LINK_NAME));
+        createChain(new RectangleLink(LINK_NAME));
 
         String plantUmlSourceCode = sourceBuilder.build(chain);
 
@@ -50,7 +50,7 @@ class PlantUmlSourceBuilderShould {
 
     @Test
     void buildMultipleLinks() {
-        createChain(new Link(LINK_NAME), new Link(SECOND_ELEMENT_NAME));
+        createChain(new RectangleLink(LINK_NAME), new RectangleLink(SECOND_ELEMENT_NAME));
 
         String plantUmlSourceCode = sourceBuilder.build(chain);
 
@@ -63,8 +63,8 @@ class PlantUmlSourceBuilderShould {
 
     @Test
     void connectLinksUsingConnectors() {
-        Link firstLink = new Link(LINK_NAME);
-        Link secondLink = new Link(SECOND_ELEMENT_NAME);
+        Link firstLink = new RectangleLink(LINK_NAME);
+        Link secondLink = new RectangleLink(SECOND_ELEMENT_NAME);
         firstLink.connect(new Connection(secondLink));
         createChain(firstLink, secondLink);
 

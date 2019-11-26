@@ -40,14 +40,6 @@ public class PlantUmlSourceBuilder {
             return "!include <cloudinsight/activemq>\n";
 
         return NO_IMPORTS_TAG;
-
-        //             .filter(l -> l instanceof ActiveMqQueueLink)
-//             .map(l -> "!include <cloudinsight/activemq>\n")
-//             .distinct()
-//                    .findAny()
-//                    .ifPresent()
-//                ;
-
     }
 
     private String createElementTags(Chain chain) {
@@ -63,11 +55,7 @@ public class PlantUmlSourceBuilder {
     }
 
     private String createLinkTag(Link link) {
-        if (link instanceof ActiveMqQueueLink)
-            return "queue \"<$activemq>\" as " + link.name + " #Crimson\n";
-        if (link instanceof QueueLink)
-            return "queue " + link.name + "\n";
-        return "rectangle " + link.name + "\n";
+        return link.toSourceString(new PlantUmlSourceStringVisitor());
     }
 
     private String createConnectionTags(Link link) {

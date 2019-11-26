@@ -69,7 +69,7 @@ class AcceptanceTest {
 
     @Test
     void singleElementShownInDiagram() {
-        Link link = new Link("SingleItem");
+        Link link = new RectangleLink("SingleItem");
         givenAnChainWith(link);
         whenWeRunTheApp();
         thenDiagramContains(link);
@@ -119,8 +119,8 @@ class AcceptanceTest {
 
     @Test
     void twoElementsShownInDiagram() {
-        Link link = new Link("First");
-        Link link2 = new Link("Second");
+        Link link = new RectangleLink("First");
+        Link link2 = new RectangleLink("Second");
 
         givenAnChainWith(link, link2);
         whenWeRunTheApp();
@@ -129,8 +129,8 @@ class AcceptanceTest {
 
     @Test
     void firstElementDependsOnSecondElement() {
-        Link link = new Link("First");
-        Link link2 = new Link("Second");
+        Link link = new RectangleLink("First");
+        Link link2 = new RectangleLink("Second");
         link.connect(createConnection(link2));
 
         givenAnChainWith(link, link2);
