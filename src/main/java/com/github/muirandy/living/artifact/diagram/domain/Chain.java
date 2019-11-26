@@ -17,4 +17,8 @@ public class Chain {
     public List<Link> getLinks() {
         return links;
     }
+
+    public int getSize() {
+        return links.size();
+    }
 }

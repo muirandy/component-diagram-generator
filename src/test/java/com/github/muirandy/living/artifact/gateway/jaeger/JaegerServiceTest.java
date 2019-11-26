@@ -55,7 +55,8 @@ class JaegerServiceTest {
     }
 
     private void whenWeRunTheService() {
-        jaegerChainBuilder = new JaegerChainBuilder(jaegerPort);
+        JaegerClient jaegerClient = new JaegerClient(jaegerPort);
+        jaegerChainBuilder = new JaegerChainBuilder(jaegerClient);
         chain = jaegerChainBuilder.build(JAEGER_TRACE_ID);
     }
 
