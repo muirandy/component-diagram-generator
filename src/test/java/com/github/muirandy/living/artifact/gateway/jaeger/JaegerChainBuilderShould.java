@@ -57,6 +57,15 @@ class JaegerChainBuilderShould {
         assertThat(link instanceof RectangleLink);
     }
 
+    @Test
+    void buildLinksForMultipleSpans() {
+        addSpansToTrace(new Span("Span 1"), new Span("Span 2"));
+
+        Chain chain = jaegerChainBuilder.build(JAEGER_TRACE_ID);
+
+        assertThat(chain.getLinks()).containsExactly(new RectangleLink("Span 1"), new RectangleLink("Span 2"));
+    }
+
     private void addSpansToTrace(Span... spans) {
         for (Span span : spans)
             trace.addSpan(span);

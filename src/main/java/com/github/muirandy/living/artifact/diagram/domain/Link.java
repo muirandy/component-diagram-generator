@@ -1,5 +1,8 @@
 package com.github.muirandy.living.artifact.diagram.domain;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,4 +23,14 @@ public abstract class Link {
     }
 
     public abstract String toSourceString(SourceStringVisitor sourceStringVisitor);
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
+    }
 }

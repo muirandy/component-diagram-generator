@@ -1,10 +1,8 @@
 package com.github.muirandy.living.artifact.gateway.jaeger;
 
 import com.github.muirandy.living.artifact.api.chain.ChainBuilder;
-import com.github.muirandy.living.artifact.api.chain.Span;
 import com.github.muirandy.living.artifact.api.chain.Trace;
 import com.github.muirandy.living.artifact.diagram.domain.Chain;
-import com.github.muirandy.living.artifact.diagram.domain.Link;
 import com.github.muirandy.living.artifact.diagram.domain.RectangleLink;
 
 public class JaegerChainBuilder implements ChainBuilder {
@@ -16,13 +14,18 @@ public class JaegerChainBuilder implements ChainBuilder {
 
     @Override
     public Chain build(String jaegerTraceId) {
-        Chain chain = new Chain();
         Trace trace = jaegerClient.obtainTrace(jaegerTraceId);
-        if (!trace.isEmpty()) {
-            Span span = trace.spans.get(0);
-            Link link = new RectangleLink(span.name);
-            chain.add(link);
-        }
+
+        if (!trace.isEmpty())
+            return buildChain(trace);
+        return new Chain();
+    }
+
+    private Chain buildChain(Trace trace) {
+        Chain chain = new Chain();
+        trace.spans.stream()
+                .map(s -> new RectangleLink(s.name))
+                .forEach(l -> chain.add(l));
         return chain;
     }
 }
