@@ -1,9 +1,6 @@
-package com.github.muirandy.living.artifact;
+package com.github.muirandy.living.artifact.gateway.plantuml;
 
 import com.github.muirandy.living.artifact.diagram.domain.*;
-import com.github.muirandy.living.artifact.gateway.plantuml.ComponentDiagramGenerator;
-import com.github.muirandy.living.artifact.gateway.plantuml.PlantUmlArtifactGenerator;
-import com.github.muirandy.living.artifact.gateway.plantuml.PlantUmlSourceBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xmlunit.assertj.XmlAssert;
@@ -14,7 +11,7 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
-class AcceptanceTest {
+class PlantUmlServiceTest {
 
     PlantUmlSourceBuilder plantUmlSourceBuilder = new PlantUmlSourceBuilder();
     private Chain chain;
@@ -47,12 +44,11 @@ class AcceptanceTest {
     }
 
     private void whenWeRunTheApp() {
-        App app = new App(plantUmlArtifactGenerator);
-        artifact = app.run(chain);
+        artifact = plantUmlArtifactGenerator.generate(chain);
     }
 
     private void thenWeGetEmptyPlantUmlDiagramBack() {
-        File emptyImage = new File(AcceptanceTest.class.getClassLoader().getResource("empty.svg").getFile());
+        File emptyImage = new File(PlantUmlServiceTest.class.getClassLoader().getResource("empty.svg").getFile());
         Source expected = Input.fromFile(emptyImage).build();
 
         String svg = getResultingSvg();
