@@ -17,11 +17,6 @@
               "value": "connector-producer-activeMqSourceConnector-0"
             },
             {
-              "key": "kafka.topic",
-              "type": "string",
-              "value": "incoming.activemq"
-            },
-            {
               "key": "ma",
               "type": "bool",
               "value": false

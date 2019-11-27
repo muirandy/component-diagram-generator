@@ -1,10 +1,14 @@
 package com.github.muirandy.living.artifact.gateway.jaeger;
 
 import com.github.muirandy.living.artifact.api.chain.Span;
+import com.github.muirandy.living.artifact.api.chain.SpanOperation;
+import com.github.muirandy.living.artifact.api.chain.Storage;
 import com.github.muirandy.living.artifact.api.chain.Trace;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
+
+import java.util.Optional;
 
 public class JaegerClient {
     private final String jaegerServer;
@@ -34,12 +38,26 @@ public class JaegerClient {
             JSONObject jaegerSpan = spans.getJSONObject(i);
             JSONArray jaegerTags = jaegerSpan.getJSONArray("tags");
             String spanName = readSpanName(jaegerTags);
+
             Span span = new Span(spanName);
+
+            Optional<Storage> storage = readStorage(jaegerTags);
+            if (storage.isPresent())
+                span.addStorage(SpanOperation.PRODUCE, storage.get());
+
             trace.addSpan(span);
-            //TODO: Storage
         }
 
         return trace;
+    }
+
+    private Optional<Storage> readStorage(JSONArray jaegerTags) {
+        for (int i = 0; i < jaegerTags.length(); i++) {
+            JSONObject tag = jaegerTags.getJSONObject(i);
+            if ("kafka.topic".equals(tag.getString("key")))
+                return Optional.of(new Storage(tag.getString("value")));
+        }
+        return Optional.empty();
     }
 
     private boolean hasErrors(JSONObject root) {

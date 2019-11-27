@@ -2,8 +2,11 @@ package com.github.muirandy.living.artifact.gateway.jaeger;
 
 import com.github.muirandy.living.artifact.api.chain.ChainBuilder;
 import com.github.muirandy.living.artifact.api.chain.Span;
+import com.github.muirandy.living.artifact.api.chain.SpanOperation;
+import com.github.muirandy.living.artifact.api.chain.Storage;
 import com.github.muirandy.living.artifact.diagram.domain.Chain;
 import com.github.muirandy.living.artifact.diagram.domain.Link;
+import com.github.muirandy.living.artifact.diagram.domain.QueueLink;
 import com.github.muirandy.living.artifact.diagram.domain.RectangleLink;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.AfterAll;
@@ -38,7 +41,7 @@ class JaegerServiceTest {
     }
 
     private static void waitForWiremock() {
-        while (! wireMockServer.isRunning()) ;
+        while (!wireMockServer.isRunning()) ;
     }
 
     @BeforeEach
@@ -60,9 +63,19 @@ class JaegerServiceTest {
 
     @Test
     void singleSpanWithNoStorage() {
-        givenTraceAvailableWithSpans();
+        givenTraceAvailable("singleSpanTraceNoStorage.json");
         whenWeRunTheService();
         thenWeGetAChainWithLinksBack(singleSpan());
+    }
+
+    @Test
+    void t() {
+        givenTraceAvailable("singleSpanTrace.json");
+        whenWeRunTheService();
+        Span singleSpan = singleSpan();
+        Storage storage = new Storage("incoming.activemq");
+        singleSpan.addStorage(SpanOperation.PRODUCE, storage);
+        thenWeGetAChainWithLinksBack(singleSpan);
     }
 
     private Span singleSpan() {
@@ -78,11 +91,11 @@ class JaegerServiceTest {
         );
     }
 
-    private void givenTraceAvailableWithSpans() {
+    private void givenTraceAvailable(String filename) {
         wireMockServer.stubFor(get(urlEqualTo("/api/traces/" + JAEGER_TRACE_ID))
                 .willReturn(aResponse().withHeader("Content-Type", "application/json")
                         .withStatus(200)
-                        .withBodyFile("singleSpanTrace.json"))
+                        .withBodyFile(filename))
         );
     }
 
@@ -101,8 +114,12 @@ class JaegerServiceTest {
         assertThat(chain.getLinks()).containsExactly(spanToLink(singleSpan));
     }
 
-    private Link spanToLink(Span singleSpan) {
+    private Link[] spanToLink(Span singleSpan) {
         Link link = new RectangleLink("HardCodedSpanName");
-        return link;
+        if (singleSpan.hasStorage()) {
+            Link storageLink = new QueueLink(singleSpan.storage.name);
+            return new Link[]{link, storageLink};
+        }
+        return new Link[]{link};
     }
 }

@@ -13,4 +13,8 @@ public class Span {
         this.spanOperation = spanOperation;
         this.storage = storage;
     }
+
+    public boolean hasStorage() {
+        return storage != null;
+    }
 }
