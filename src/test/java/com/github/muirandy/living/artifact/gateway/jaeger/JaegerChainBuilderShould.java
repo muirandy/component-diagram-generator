@@ -1,10 +1,7 @@
 package com.github.muirandy.living.artifact.gateway.jaeger;
 
-import com.github.muirandy.living.artifact.api.chain.Span;
-import com.github.muirandy.living.artifact.api.chain.Trace;
-import com.github.muirandy.living.artifact.diagram.domain.Chain;
-import com.github.muirandy.living.artifact.diagram.domain.Link;
-import com.github.muirandy.living.artifact.diagram.domain.RectangleLink;
+import com.github.muirandy.living.artifact.api.chain.*;
+import com.github.muirandy.living.artifact.diagram.domain.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -61,6 +58,22 @@ class JaegerChainBuilderShould {
         Chain chain = jaegerChainBuilder.build(JAEGER_TRACE_ID);
 
         assertThat(chain.getLinks()).containsExactly(new RectangleLink("Span 1"), new RectangleLink("Span 2"));
+    }
+
+    @Test
+    void buildLinkForDataSinkWithinSpan() {
+        String topicName = "myQueue";
+        Storage topic = new Topic(topicName);
+        Span span = new Span(SPAN_NAME);
+        span.addStorage(SpanOperation.PRODUCE, topic);
+        addSpansToTrace(span);
+
+        Chain chain = jaegerChainBuilder.build(JAEGER_TRACE_ID);
+
+        RectangleLink rectangleLink = new RectangleLink(SPAN_NAME);
+        QueueLink queueLink = new QueueLink(topicName);
+        rectangleLink.connect(new Connection(queueLink));
+        assertThat(chain.getLinks()).containsExactly(rectangleLink, queueLink);
     }
 
     private void addSpansToTrace(Span... spans) {
