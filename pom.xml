@@ -23,12 +23,22 @@
     </build>
 
     <dependencies>
+        <!-- Jaeger -->
+        <dependency>
+            <groupId>com.konghq</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>3.1.02</version>
+            <classifier>standalone</classifier>
+        </dependency>
+
+        <!-- PlantUml -->
         <dependency>
             <groupId>net.sourceforge.plantuml</groupId>
             <artifactId>plantuml</artifactId>
             <version>1.2019.9</version>
         </dependency>
 
+        <!-- Testing -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>

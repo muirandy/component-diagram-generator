@@ -15,6 +15,7 @@ public class ArchitectureTest {
             .layer("PlantUmlGateway").definedBy("com.github.muirandy.living.artifact.gateway.plantuml")
             .layer("PlantUml").definedBy("net.sourceforge.plantuml")
             .layer("JaegerTracingGateway").definedBy("com.github.muirandy.living.artifact.gateway.jaeger")
+            .layer("JaegerTracingApi").definedBy("com.github.muirandy.living.artifact.api.chain")
             .layer("Domain").definedBy("com.github.muirandy.living.artifact.diagram.domain")
             .layer("Main").definedBy("com.github.muirandy.living.artifact")
 
