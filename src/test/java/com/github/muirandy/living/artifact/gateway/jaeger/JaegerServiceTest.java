@@ -18,14 +18,14 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JaegerServiceTest {
-    private String JAEGER_TRACE_ID = "0123456789abcdef" + Math.abs(new Random().nextInt());
+    private String JAEGER_TRACE_ID = "0123456789abcdef" + getRandomNumber();
 
     private Chain chain;
+
     private ChainBuilder jaegerChainBuilder;
-
     private static String jaegerServer;
-    private static int jaegerPort;
 
+    private static int jaegerPort;
     private static WireMockServer wireMockServer;
 
     @BeforeAll
@@ -35,6 +35,10 @@ class JaegerServiceTest {
         jaegerServer = wireMockServer.baseUrl();
         jaegerPort = wireMockServer.port();
         waitForWiremock();
+    }
+
+    private int getRandomNumber() {
+        return Math.abs(new Random().nextInt());
     }
 
     private static void waitForWiremock() {
@@ -76,8 +80,7 @@ class JaegerServiceTest {
     }
 
     private Span singleSpan() {
-        Span span = new Span("HardCodedSpanName");
-        return span;
+        return new Span("connector-producer-activeMqSourceConnector-0");
     }
 
     private void givenThereIsNoTracingAvailable() {
@@ -112,7 +115,7 @@ class JaegerServiceTest {
     }
 
     private Link[] spanToLink(Span singleSpan) {
-        Link link = new RectangleLink("HardCodedSpanName");
+        Link link = new RectangleLink(singleSpan.name);
         if (singleSpan.hasStorage()) {
             Link storageLink = new QueueLink(singleSpan.storage.name);
             link.connect(new Connection(storageLink));

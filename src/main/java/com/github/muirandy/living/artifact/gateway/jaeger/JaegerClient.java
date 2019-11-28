@@ -52,21 +52,34 @@ public class JaegerClient {
     }
 
     private Optional<Storage> readStorage(JSONArray jaegerTags) {
+        Optional<String> topic = readTag(jaegerTags, "kafka.topic");
+        if (topic.isPresent())
+            return Optional.of(new Storage(topic.get()));
+        return Optional.empty();
+    }
+
+    private Optional<String> readTag(JSONArray jaegerTags, String tagName) {
         for (int i = 0; i < jaegerTags.length(); i++) {
             JSONObject tag = jaegerTags.getJSONObject(i);
-            if ("kafka.topic".equals(tag.getString("key")))
-                return Optional.of(new Storage(tag.getString("value")));
+            if (tagName.equals(tag.getString("key")))
+                return Optional.of(tag.getString("value"));
         }
         return Optional.empty();
     }
 
     private boolean hasErrors(JSONObject root) {
         return root.get("errors") != null;
-//        JSONArray errors = root.getJSONArray("errors");
-//        return !errors.isEmpty();
     }
 
     private String readSpanName(JSONArray jaegerTags) {
-        return "HardCodedSpanName";
+        Optional<String> groupId = readTag(jaegerTags, "kafka.group.id");
+        if (groupId.isPresent())
+            return groupId.get();
+
+        Optional<String> clientId = readTag(jaegerTags, "kafka.client.id");
+        if (clientId.isPresent())
+            return clientId.get();
+
+        return "Unknown!!";
     }
 }
