@@ -4,10 +4,7 @@ import com.github.muirandy.living.artifact.api.chain.ChainBuilder;
 import com.github.muirandy.living.artifact.api.chain.Span;
 import com.github.muirandy.living.artifact.api.chain.SpanOperation;
 import com.github.muirandy.living.artifact.api.chain.Storage;
-import com.github.muirandy.living.artifact.diagram.domain.Chain;
-import com.github.muirandy.living.artifact.diagram.domain.Link;
-import com.github.muirandy.living.artifact.diagram.domain.QueueLink;
-import com.github.muirandy.living.artifact.diagram.domain.RectangleLink;
+import com.github.muirandy.living.artifact.diagram.domain.*;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -69,7 +66,7 @@ class JaegerServiceTest {
     }
 
     @Test
-    void t() {
+    void singleSpanWithStorage() {
         givenTraceAvailable("singleSpanTrace.json");
         whenWeRunTheService();
         Span singleSpan = singleSpan();
@@ -118,6 +115,7 @@ class JaegerServiceTest {
         Link link = new RectangleLink("HardCodedSpanName");
         if (singleSpan.hasStorage()) {
             Link storageLink = new QueueLink(singleSpan.storage.name);
+            link.connect(new Connection(storageLink));
             return new Link[]{link, storageLink};
         }
         return new Link[]{link};
