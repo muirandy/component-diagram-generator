@@ -27,6 +27,7 @@ public class JaegerChainBuilder implements ChainBuilder {
         Chain chain = new Chain();
         trace.spans.stream()
                 .flatMap(s -> createLinks(s))
+                .distinct()
                 .forEach(l -> chain.add(l));
         return chain;
     }

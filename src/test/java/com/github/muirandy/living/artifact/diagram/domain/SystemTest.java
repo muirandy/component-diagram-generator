@@ -45,7 +45,7 @@ class SystemTest {
     @Test
     void systemBuildsDiagramFromTrace() {
         givenTraceAvailable("systemTrace.json");
-        App app = new App(createJaegerChainBuilder(), createArtifaceGenerator());
+        App app = new App(createJaegerChainBuilder(), createArtifactGenerator());
 
         artifact = app.run(JAEGER_TRACE_ID);
 
@@ -57,7 +57,7 @@ class SystemTest {
         return new JaegerChainBuilder(jaegerClient);
     }
 
-    private ArtifactGenerator createArtifaceGenerator() {
+    private ArtifactGenerator createArtifactGenerator() {
         ComponentDiagramGenerator componentDiagramGenerator = new ComponentDiagramGenerator();
         PlantUmlSourceBuilder plantUmlSourceBuilder = new PlantUmlSourceBuilder();
         return new PlantUmlArtifactGenerator(plantUmlSourceBuilder, componentDiagramGenerator);

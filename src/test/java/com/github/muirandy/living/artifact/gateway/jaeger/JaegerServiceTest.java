@@ -90,6 +90,18 @@ class JaegerServiceTest {
         thenWeGetAChainWithLinksBack(singleSpan("Element-1"), singleSpan("Element-2"));
     }
 
+    @Test
+    void twoSpansWithSharedStorage() {
+        givenTraceAvailable("twoSpansTraceSharedStorage.json");
+        whenWeRunTheService();
+        Link link1 = new RectangleLink("Element-1");
+        Link link2 = new QueueLink("incoming.activemq");
+        Link link3 = new RectangleLink("Element-2");
+        link1.connect(new Connection(link2));
+        link3.connect(new Connection(link2));
+        thenWeGetAChainWithLinksBack(link1, link2, link3);
+    }
+
     private Span singleSpan(String spanName) {
         return new Span(spanName);
     }
@@ -123,6 +135,11 @@ class JaegerServiceTest {
     private void thenWeGetAChainWithLinksBack(Span... spans) {
         assertThat(chain.isEmpty()).isFalse();
         assertThat(chain.getLinks()).containsExactly(spansToLinks(spans));
+    }
+
+    private void thenWeGetAChainWithLinksBack(Link... links) {
+        assertThat(chain.isEmpty()).isFalse();
+        assertThat(chain.getLinks()).containsExactly(links);
     }
 
     private Link[] spanToLink(Span singleSpan) {

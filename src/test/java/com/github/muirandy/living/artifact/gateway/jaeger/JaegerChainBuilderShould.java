@@ -17,12 +17,14 @@ import static org.mockito.Mockito.when;
 class JaegerChainBuilderShould {
     private static final String JAEGER_TRACE_ID = "" + randomInt();
     private static final String SPAN_NAME = "Span Name";
+    private static final String SPAN2_NAME = "Span2 Name";
 
     @Mock
     private JaegerClient jaegerClient;
 
     private Trace trace;
     private JaegerChainBuilder jaegerChainBuilder;
+    private static final String TOPIC_NAME = "myQueue";
 
     private static int randomInt() {
         return Math.abs(new Random().nextInt());
@@ -62,8 +64,7 @@ class JaegerChainBuilderShould {
 
     @Test
     void buildLinkForDataSinkWithinSpan() {
-        String topicName = "myQueue";
-        Storage topic = new Topic(topicName);
+        Storage topic = new Topic(TOPIC_NAME);
         Span span = new Span(SPAN_NAME);
         span.addStorage(SpanOperation.PRODUCE, topic);
         addSpansToTrace(span);
@@ -71,9 +72,31 @@ class JaegerChainBuilderShould {
         Chain chain = jaegerChainBuilder.build(JAEGER_TRACE_ID);
 
         RectangleLink rectangleLink = new RectangleLink(SPAN_NAME);
-        QueueLink queueLink = new QueueLink(topicName);
+        QueueLink queueLink = new QueueLink(TOPIC_NAME);
         rectangleLink.connect(new Connection(queueLink));
         assertThat(chain.getLinks()).containsExactly(rectangleLink, queueLink);
+    }
+
+    @Test
+    void buildSharedLinkForDataSinkAcrossTwoSpans() {
+        Storage topic = new Topic(TOPIC_NAME);
+
+        Span span = new Span(SPAN_NAME);
+        span.addStorage(SpanOperation.PRODUCE, topic);
+
+        Span span2 = new Span(SPAN2_NAME);
+        span2.addStorage(SpanOperation.CONSUME, topic);
+
+        addSpansToTrace(span, span2);
+
+        Chain chain = jaegerChainBuilder.build(JAEGER_TRACE_ID);
+
+        RectangleLink producerLink = new RectangleLink(SPAN_NAME);
+        QueueLink queueLink = new QueueLink(TOPIC_NAME);
+        RectangleLink consumerLink = new RectangleLink(SPAN2_NAME);
+        producerLink.connect(new Connection(queueLink));
+        consumerLink.connect(new Connection(queueLink));
+        assertThat(chain.getLinks()).containsExactly(producerLink, queueLink, consumerLink);
     }
 
     private void addSpansToTrace(Span... spans) {
