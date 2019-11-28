@@ -19,10 +19,23 @@ public class PlantUmlSourceStringVisitor implements SourceStringVisitor {
     }
 
     private String getLinkName(Link link) {
-        return replaceHypenWithNonBreakingHyphen(link);
+        String trimmed = removeProducerPostfix(removeConsumerPostfix(link.name));
+        return replaceHypenWithNonBreakingHyphen(trimmed);
     }
 
-    private String replaceHypenWithNonBreakingHyphen(Link link) {
-        return link.name.replaceAll("-", "_");
+    private String replaceHypenWithNonBreakingHyphen(String name) {
+        return name.replaceAll("-", "_");
+    }
+
+    private String removeProducerPostfix(String name) {
+        if (name.endsWith("-producer"))
+            return name.substring(0, name.length() - "-producer".length());
+        return name;
+    }
+
+    private String removeConsumerPostfix(String name) {
+        if (name.endsWith("-consumer"))
+            return name.substring(0, name.length() - "-consumer".length());
+        return name;
     }
 }

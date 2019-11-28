@@ -109,6 +109,17 @@ class PlantUmlSourceBuilderShould {
                 END_TAG);
     }
 
+    @Test
+    void mergeProducerAndConsumerLinks() {
+        createChain(new RectangleLink("link-producer"), new RectangleLink("link-consumer"));
+
+        String plantUmlSourceCode = sourceBuilder.build(chain);
+
+        assertThat(plantUmlSourceCode).containsSequence(
+                START_TAG,
+                "rectangle " + "link" + "\n",
+                END_TAG);
+    }
 
     @Test
     void buildQueue() {

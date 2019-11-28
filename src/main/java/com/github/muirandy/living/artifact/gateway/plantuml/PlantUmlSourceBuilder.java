@@ -33,8 +33,8 @@ public class PlantUmlSourceBuilder {
 
     private String imports(Chain chain) {
         Set<String> elementTypeNames = chain.getLinks().stream()
-                                   .map(l -> l.getClass().getSimpleName())
-                                   .collect(Collectors.toSet());
+                .map(l -> l.getClass().getSimpleName())
+                .collect(Collectors.toSet());
 
         if (elementTypeNames.contains("ActiveMqQueueLink"))
             return "!include <cloudinsight/activemq>\n";
@@ -44,14 +44,15 @@ public class PlantUmlSourceBuilder {
 
     private String createElementTags(Chain chain) {
         return chain.getLinks().stream()
-                    .map(l -> createLinkTag(l))
-                    .collect(Collectors.joining());
+                .map(l -> createLinkTag(l))
+                .distinct()
+                .collect(Collectors.joining());
     }
 
     private String createConnectionTags(Chain chain) {
         return chain.getLinks().stream()
-                    .map(l -> createConnectionTags(l))
-                    .collect(Collectors.joining());
+                .map(l -> createConnectionTags(l))
+                .collect(Collectors.joining());
     }
 
     private String createLinkTag(Link link) {
@@ -61,8 +62,8 @@ public class PlantUmlSourceBuilder {
     private String createConnectionTags(Link link) {
         if (link.hasConnections())
             return link.connections.stream()
-                                   .map(c -> createConnectionTag(link, c))
-                                   .collect(Collectors.joining());
+                    .map(c -> createConnectionTag(link, c))
+                    .collect(Collectors.joining());
         return NO_CONNECTIONS_TAG;
     }
 
@@ -71,10 +72,23 @@ public class PlantUmlSourceBuilder {
     }
 
     private String getLinkName(Link link) {
-        return replaceHypenWithNonBreakingHyphen(link);
+        String trimmed = removeProducerPostfix(removeConsumerPostfix(link.name));
+        return replaceHypenWithNonBreakingHyphen(trimmed);
     }
 
-    private String replaceHypenWithNonBreakingHyphen(Link link) {
-        return link.name.replaceAll("-", "_");
+    private String replaceHypenWithNonBreakingHyphen(String name) {
+        return name.replaceAll("-", "_");
+    }
+
+    private String removeProducerPostfix(String name) {
+        if (name.endsWith("-producer"))
+            return name.substring(0, name.length() - "-producer".length());
+        return name;
+    }
+
+    private String removeConsumerPostfix(String name) {
+        if (name.endsWith("-consumer"))
+            return name.substring(0, name.length() - "-consumer".length());
+        return name;
     }
 }
