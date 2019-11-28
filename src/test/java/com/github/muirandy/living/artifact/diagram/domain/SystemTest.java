@@ -43,7 +43,7 @@ class SystemTest {
     }
 
     @Test
-    void t() {
+    void systemBuildsDiagramFromTrace() {
         givenTraceAvailable("systemTrace.json");
         App app = new App(createJaegerChainBuilder(), createArtifaceGenerator());
 
@@ -64,7 +64,7 @@ class SystemTest {
     }
 
     private void thenWeGetSystemPlantUmlDiagramBack() {
-        File emptyImage = new File(SystemTest.class.getClassLoader().getResource("empty.svg").getFile());
+        File emptyImage = new File(SystemTest.class.getClassLoader().getResource("system.svg").getFile());
         Source expected = Input.fromFile(emptyImage).build();
 
         String svg = getResultingSvg();

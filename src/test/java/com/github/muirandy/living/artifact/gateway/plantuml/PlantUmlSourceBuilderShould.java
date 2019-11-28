@@ -12,9 +12,11 @@ class PlantUmlSourceBuilderShould {
 
     private static final String FIRST_ELEMENT_NAME = "SingleItem";
     private static final String RECTANGLE_TAG = "rectangle " + FIRST_ELEMENT_NAME + "\n";
+    private static final String RECTANGLE_SPECIAL_CHAR_TAG = "rectangle " + "Single" + "_" + "Item" + "\n";
 
     private static final String SECOND_ELEMENT_NAME = "SecondLink";
     private static final String SECOND_RECTANGLE_TAG = "rectangle " + SECOND_ELEMENT_NAME + "\n";
+    private static final String SECOND_RECTANGLE_SPECIAL_CHAR_TAG = "rectangle " + "Second" + "_" + "Item" + "\n";
 
     private static final String LINK_NAME = FIRST_ELEMENT_NAME;
     private static final String CONNECTION_FROM_RECTANGLE_TO_SECOND_RECTANGLE_TAG = FIRST_ELEMENT_NAME + "->" + SECOND_ELEMENT_NAME + "\n";
@@ -49,6 +51,18 @@ class PlantUmlSourceBuilderShould {
     }
 
     @Test
+    void buildForSingleLinkWithSpecialCharacterAsHyphenIsNotAllowableInPlantUmlSource() {
+        createChain(new RectangleLink("Single-Item"));
+
+        String plantUmlSourceCode = sourceBuilder.build(chain);
+
+        assertThat(plantUmlSourceCode).containsSequence(
+                START_TAG,
+                RECTANGLE_SPECIAL_CHAR_TAG,
+                END_TAG);
+    }
+
+    @Test
     void buildMultipleLinks() {
         createChain(new RectangleLink(LINK_NAME), new RectangleLink(SECOND_ELEMENT_NAME));
 
@@ -77,6 +91,24 @@ class PlantUmlSourceBuilderShould {
                 CONNECTION_FROM_RECTANGLE_TO_SECOND_RECTANGLE_TAG,
                 END_TAG);
     }
+
+    @Test
+    void connectLinksWithSpecialCharactersUsingConnectors() {
+        Link firstLink = new RectangleLink("Single-Item");
+        Link secondLink = new RectangleLink("Second-Item");
+        firstLink.connect(new Connection(secondLink));
+        createChain(firstLink, secondLink);
+
+        String plantUmlSourceCode = sourceBuilder.build(chain);
+
+        assertThat(plantUmlSourceCode).containsSequence(
+                START_TAG,
+                RECTANGLE_SPECIAL_CHAR_TAG,
+                SECOND_RECTANGLE_SPECIAL_CHAR_TAG,
+                "Single_Item->Second_Item\n",
+                END_TAG);
+    }
+
 
     @Test
     void buildQueue() {

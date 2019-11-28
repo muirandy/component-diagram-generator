@@ -67,7 +67,14 @@ public class PlantUmlSourceBuilder {
     }
 
     private String createConnectionTag(Link link, Connection c) {
-        return link.name + "->" + c.target.name + "\n";
+        return getLinkName(link) + "->" + getLinkName(c.target) + "\n";
     }
 
+    private String getLinkName(Link link) {
+        return replaceHypenWithNonBreakingHyphen(link);
+    }
+
+    private String replaceHypenWithNonBreakingHyphen(Link link) {
+        return link.name.replaceAll("-", "_");
+    }
 }
