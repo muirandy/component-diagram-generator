@@ -11,6 +11,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -18,6 +21,7 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JaegerServiceTest {
+    private static final String SPAN_NAME = "connector-producer-activeMqSourceConnector-0";
     private String JAEGER_TRACE_ID = "0123456789abcdef" + getRandomNumber();
 
     private Chain chain;
@@ -63,24 +67,31 @@ class JaegerServiceTest {
     }
 
     @Test
-    void singleSpanWithNoStorage() {
+    void singleSpanWithoutStorage() {
         givenTraceAvailable("singleSpanTraceNoStorage.json");
         whenWeRunTheService();
-        thenWeGetAChainWithLinksBack(singleSpan());
+        thenWeGetAChainWithLinksBack(singleSpan(SPAN_NAME));
     }
 
     @Test
     void singleSpanWithStorage() {
         givenTraceAvailable("singleSpanTrace.json");
         whenWeRunTheService();
-        Span singleSpan = singleSpan();
+        Span singleSpan = singleSpan(SPAN_NAME);
         Storage storage = new Storage("incoming.activemq");
         singleSpan.addStorage(SpanOperation.PRODUCE, storage);
         thenWeGetAChainWithLinksBack(singleSpan);
     }
 
-    private Span singleSpan() {
-        return new Span("connector-producer-activeMqSourceConnector-0");
+    @Test
+    void twoSpansWithoutStorage() {
+        givenTraceAvailable("twoSpansTraceNoStorage.json");
+        whenWeRunTheService();
+        thenWeGetAChainWithLinksBack(singleSpan("Element-1"), singleSpan("Element-2"));
+    }
+
+    private Span singleSpan(String spanName) {
+        return new Span(spanName);
     }
 
     private void givenThereIsNoTracingAvailable() {
@@ -109,9 +120,9 @@ class JaegerServiceTest {
         assertThat(chain.isEmpty()).isTrue();
     }
 
-    private void thenWeGetAChainWithLinksBack(Span singleSpan) {
+    private void thenWeGetAChainWithLinksBack(Span... spans) {
         assertThat(chain.isEmpty()).isFalse();
-        assertThat(chain.getLinks()).containsExactly(spanToLink(singleSpan));
+        assertThat(chain.getLinks()).containsExactly(spansToLinks(spans));
     }
 
     private Link[] spanToLink(Span singleSpan) {
@@ -122,5 +133,12 @@ class JaegerServiceTest {
             return new Link[]{link, storageLink};
         }
         return new Link[]{link};
+    }
+
+    private Link[] spansToLinks(Span... spans) {
+        List<Link> links = new ArrayList<>();
+        for(Span span: spans)
+            links.addAll(Arrays.asList(spanToLink(span)));
+        return links.toArray(new Link[]{});
     }
 }

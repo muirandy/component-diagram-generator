@@ -1,0 +1,94 @@
+{
+  "data": [
+    {
+      "traceID": "5ddd1a8035ba4118231c0d31b1df1b0c",
+      "spans": [
+        {
+          "traceID": "5ddd1a8035ba4118231c0d31b1df1b0c",
+          "spanID": "1",
+          "operationName": "on_send",
+          "references": [],
+          "startTime": 1574771328776415,
+          "duration": 8,
+          "tags": [
+            {
+              "key": "kafka.client.id",
+              "type": "string",
+              "value": "Element-1"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1574771328776415,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "ms"
+                }
+              ]
+            }
+          ],
+          "processID": "p1",
+          "warnings": null
+        },
+        {
+          "traceID": "5ddd1a8035ba4118231c0d31b1df1b0c",
+          "spanID": "2",
+          "operationName": "on_send",
+          "references": [],
+          "startTime": 1574771328776415,
+          "duration": 8,
+          "tags": [
+            {
+              "key": "kafka.client.id",
+              "type": "string",
+              "value": "Element-2"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1574771328776415,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "ms"
+                }
+              ]
+            }
+          ],
+          "processID": "p1",
+          "warnings": null
+        }
+      ],
+      "processes": {
+        "p1": {
+          "serviceName": "connect",
+          "tags": [
+            {
+              "key": "ip",
+              "type": "string",
+              "value": "172.18.0.16"
+            }
+          ]
+        }
+      },
+      "warnings": null
+    }
+  ],
+  "total": 0,
+  "limit": 0,
+  "offset": 0,
+  "errors": null
+}
