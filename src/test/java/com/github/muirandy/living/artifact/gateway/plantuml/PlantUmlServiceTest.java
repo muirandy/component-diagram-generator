@@ -39,6 +39,55 @@ class PlantUmlServiceTest {
         thenWeGetEmptyPlantUmlDiagramBack();
     }
 
+    @Test
+    void singleElementShownInDiagram() {
+        Link link = new RectangleLink("SingleItem");
+        givenAnChainWith(link);
+        whenWeRunTheApp();
+        thenDiagramContains(link);
+    }
+
+    @Test
+    void twoElementsShownInDiagram() {
+        Link link = new RectangleLink("First");
+        Link link2 = new RectangleLink("Second");
+
+        givenAnChainWith(link, link2);
+        whenWeRunTheApp();
+        thenDiagramContains(link, link2);
+    }
+
+    @Test
+    void firstElementDependsOnSecondElement() {
+        Link link = new RectangleLink("First");
+        Link link2 = new RectangleLink("Second");
+        link.connect(createConnection(link2));
+
+        givenAnChainWith(link, link2);
+        whenWeRunTheApp();
+        thenDiagramContains(link, link2);
+    }
+
+    private Connection createConnection(Link otherLink) {
+        return new Connection(otherLink);
+    }
+
+    @Test
+    void drawsQueues() {
+        Link link = new QueueLink("MyQueue");
+        givenAnChainWith(link);
+        whenWeRunTheApp();
+        thenDiagramContains(link);
+    }
+
+    @Test
+    void drawsActiveMqQueues() {
+        Link link = new ActiveMqQueueLink("MyAmqQueue");
+        givenAnChainWith(link);
+        whenWeRunTheApp();
+        thenDiagramContains(link);
+    }
+
     private void givenAnEmptyChain() {
         chain = new Chain();
     }
@@ -61,14 +110,6 @@ class PlantUmlServiceTest {
 
     private String getResultingSvg() {
         return new String(artifact.document.toByteArray(), Charset.forName("UTF-8"));
-    }
-
-    @Test
-    void singleElementShownInDiagram() {
-        Link link = new RectangleLink("SingleItem");
-        givenAnChainWith(link);
-        whenWeRunTheApp();
-        thenDiagramContains(link);
     }
 
     private void givenAnChainWith(Link... links) {
@@ -111,47 +152,6 @@ class PlantUmlServiceTest {
             XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:path/@id").isEqualTo(link.name + "->" + connection.target.name);
         }
 
-    }
-
-    @Test
-    void twoElementsShownInDiagram() {
-        Link link = new RectangleLink("First");
-        Link link2 = new RectangleLink("Second");
-
-        givenAnChainWith(link, link2);
-        whenWeRunTheApp();
-        thenDiagramContains(link, link2);
-    }
-
-    @Test
-    void firstElementDependsOnSecondElement() {
-        Link link = new RectangleLink("First");
-        Link link2 = new RectangleLink("Second");
-        link.connect(createConnection(link2));
-
-        givenAnChainWith(link, link2);
-        whenWeRunTheApp();
-        thenDiagramContains(link, link2);
-    }
-
-    private Connection createConnection(Link otherLink) {
-        return new Connection(otherLink);
-    }
-
-    @Test
-    void drawsQueues() {
-        Link link = new QueueLink("MyQueue");
-        givenAnChainWith(link);
-        whenWeRunTheApp();
-        thenDiagramContains(link);
-    }
-
-    @Test
-    void drawsActiveMqQueues() {
-        Link link = new ActiveMqQueueLink("MyAmqQueue");
-        givenAnChainWith(link);
-        whenWeRunTheApp();
-        thenDiagramContains(link);
     }
 
 }
