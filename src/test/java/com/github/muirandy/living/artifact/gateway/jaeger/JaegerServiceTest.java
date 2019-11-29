@@ -1,9 +1,6 @@
 package com.github.muirandy.living.artifact.gateway.jaeger;
 
-import com.github.muirandy.living.artifact.api.chain.ChainBuilder;
-import com.github.muirandy.living.artifact.api.chain.Span;
-import com.github.muirandy.living.artifact.api.chain.SpanOperation;
-import com.github.muirandy.living.artifact.api.chain.Storage;
+import com.github.muirandy.living.artifact.api.chain.*;
 import com.github.muirandy.living.artifact.diagram.domain.*;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.*;
@@ -23,7 +20,7 @@ class JaegerServiceTest {
 
     private Chain chain;
 
-    private ChainBuilder jaegerChainBuilder;
+    private ChainBuilder chainBuilder;
     private static String jaegerServer;
 
     private static int jaegerPort;
@@ -103,7 +100,6 @@ class JaegerServiceTest {
         thenWeGetAChainWithLinksBack(link1, link2, link3);
     }
 
-    @Disabled
     @Test
     void ksqlSpan() {
         givenTraceAvailable("singleKsqlSpanTrace.json");
@@ -137,9 +133,9 @@ class JaegerServiceTest {
     }
 
     private void whenWeRunTheService() {
-        JaegerClient jaegerClient = new JaegerClient(jaegerServer, jaegerPort);
-        jaegerChainBuilder = new JaegerChainBuilder(jaegerClient);
-        chain = jaegerChainBuilder.build(JAEGER_TRACE_ID);
+        OpenTracingClient jaegerClient = new JaegerClient(jaegerServer, jaegerPort);
+        chainBuilder = new ChainBuilder(jaegerClient);
+        chain = chainBuilder.build(JAEGER_TRACE_ID);
     }
 
     private void thenWeGetAnEmptyChainBack() {

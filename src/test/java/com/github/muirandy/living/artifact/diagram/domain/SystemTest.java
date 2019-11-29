@@ -1,6 +1,7 @@
 package com.github.muirandy.living.artifact.diagram.domain;
 
-import com.github.muirandy.living.artifact.gateway.jaeger.JaegerChainBuilder;
+import com.github.muirandy.living.artifact.api.chain.OpenTracingClient;
+import com.github.muirandy.living.artifact.api.chain.ChainBuilder;
 import com.github.muirandy.living.artifact.gateway.jaeger.JaegerClient;
 import com.github.muirandy.living.artifact.gateway.plantuml.ComponentDiagramGenerator;
 import com.github.muirandy.living.artifact.gateway.plantuml.PlantUmlArtifactGenerator;
@@ -52,9 +53,9 @@ class SystemTest {
         thenWeGetSystemPlantUmlDiagramBack();
     }
 
-    private JaegerChainBuilder createJaegerChainBuilder() {
-        JaegerClient jaegerClient = new JaegerClient(jaegerServer, jaegerPort);
-        return new JaegerChainBuilder(jaegerClient);
+    private ChainBuilder createJaegerChainBuilder() {
+        OpenTracingClient jaegerClient = new JaegerClient(jaegerServer, jaegerPort);
+        return new ChainBuilder(jaegerClient);
     }
 
     private ArtifactGenerator createArtifactGenerator() {

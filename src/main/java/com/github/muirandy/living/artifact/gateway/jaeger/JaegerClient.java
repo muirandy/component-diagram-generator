@@ -1,12 +1,13 @@
 package com.github.muirandy.living.artifact.gateway.jaeger;
 
+import com.github.muirandy.living.artifact.api.chain.OpenTracingClient;
 import com.github.muirandy.living.artifact.api.chain.Span;
 import com.github.muirandy.living.artifact.api.chain.Trace;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 
-public class JaegerClient {
+public class JaegerClient implements OpenTracingClient {
     private final String jaegerServer;
     private final int jaegerPort;
     private SpanFactory spanFactory;
@@ -16,6 +17,7 @@ public class JaegerClient {
         this.jaegerPort = jaegerPort;
     }
 
+    @Override
     public Trace obtainTrace(String jaegerTraceId) {
         String url = buildJaegerUrl(jaegerTraceId);
         JSONObject root = getJaegerTrace(url);

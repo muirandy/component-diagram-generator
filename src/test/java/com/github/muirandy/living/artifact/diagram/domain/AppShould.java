@@ -1,6 +1,6 @@
 package com.github.muirandy.living.artifact.diagram.domain;
 
-import com.github.muirandy.living.artifact.gateway.jaeger.JaegerChainBuilder;
+import com.github.muirandy.living.artifact.api.chain.ChainBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -20,13 +20,13 @@ class AppShould {
     @Mock
     private ArtifactGenerator artifactGenerator;
     @Mock
-    private JaegerChainBuilder jaegerChainBuilder;
+    private ChainBuilder chainBuilder;
 
     @Test
     void callArtifactGenerator() {
-        App app = new App(jaegerChainBuilder, artifactGenerator);
+        App app = new App(chainBuilder, artifactGenerator);
         when(artifactGenerator.generate(chain)).thenReturn(artifact);
-        when(jaegerChainBuilder.build(TRACE_ID)).thenReturn(chain);
+        when(chainBuilder.build(TRACE_ID)).thenReturn(chain);
 
         Artifact result = app.run(TRACE_ID);
 

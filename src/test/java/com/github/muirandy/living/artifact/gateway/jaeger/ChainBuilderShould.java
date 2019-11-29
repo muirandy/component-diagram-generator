@@ -14,16 +14,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class JaegerChainBuilderShould {
+class ChainBuilderShould {
     private static final String JAEGER_TRACE_ID = "" + randomInt();
     private static final String SPAN_NAME = "Span Name";
     private static final String SPAN2_NAME = "Span2 Name";
 
     @Mock
-    private JaegerClient jaegerClient;
+    private OpenTracingClient jaegerClient;
 
     private Trace trace;
-    private JaegerChainBuilder jaegerChainBuilder;
+    private ChainBuilder chainBuilder;
     private static final String TOPIC_NAME = "myQueue";
 
     private static int randomInt() {
@@ -32,14 +32,14 @@ class JaegerChainBuilderShould {
 
     @BeforeEach
     void setUp() {
-        jaegerChainBuilder = new JaegerChainBuilder(jaegerClient);
+        chainBuilder = new ChainBuilder(jaegerClient);
         trace = new Trace();
         when(jaegerClient.obtainTrace(JAEGER_TRACE_ID)).thenReturn(trace);
     }
 
     @Test
     void returnEmptyChainForEmptyTrace() {
-        Chain chain = jaegerChainBuilder.build(JAEGER_TRACE_ID);
+        Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
 
         assertThat(chain.isEmpty()).isTrue();
     }
@@ -48,7 +48,7 @@ class JaegerChainBuilderShould {
     void buildLinkForSingleSpan() {
         addSpansToTrace(new Span(SPAN_NAME));
 
-        Chain chain = jaegerChainBuilder.build(JAEGER_TRACE_ID);
+        Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
 
         assertThat(chain.getLinks()).containsExactly(new RectangleLink(SPAN_NAME));
     }
@@ -57,7 +57,7 @@ class JaegerChainBuilderShould {
     void buildLinksForMultipleSpans() {
         addSpansToTrace(new Span("Span 1"), new Span("Span 2"));
 
-        Chain chain = jaegerChainBuilder.build(JAEGER_TRACE_ID);
+        Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
 
         assertThat(chain.getLinks()).containsExactly(new RectangleLink("Span 1"), new RectangleLink("Span 2"));
     }
@@ -69,7 +69,7 @@ class JaegerChainBuilderShould {
         span.addStorage(SpanOperation.PRODUCE, topic);
         addSpansToTrace(span);
 
-        Chain chain = jaegerChainBuilder.build(JAEGER_TRACE_ID);
+        Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
 
         RectangleLink rectangleLink = new RectangleLink(SPAN_NAME);
         QueueLink queueLink = new QueueLink(TOPIC_NAME);
@@ -89,7 +89,7 @@ class JaegerChainBuilderShould {
 
         addSpansToTrace(span, span2);
 
-        Chain chain = jaegerChainBuilder.build(JAEGER_TRACE_ID);
+        Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
 
         RectangleLink producerLink = new RectangleLink(SPAN_NAME);
         QueueLink queueLink = new QueueLink(TOPIC_NAME);
