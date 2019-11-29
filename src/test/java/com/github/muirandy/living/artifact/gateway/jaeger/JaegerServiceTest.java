@@ -6,10 +6,7 @@ import com.github.muirandy.living.artifact.api.chain.SpanOperation;
 import com.github.muirandy.living.artifact.api.chain.Storage;
 import com.github.muirandy.living.artifact.diagram.domain.*;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,7 +73,9 @@ class JaegerServiceTest {
     @Test
     void singleSpanWithStorage() {
         givenTraceAvailable("singleSpanTrace.json");
+
         whenWeRunTheService();
+
         Span singleSpan = singleSpan(SPAN_NAME);
         Storage storage = new Storage("incoming.activemq");
         singleSpan.addStorage(SpanOperation.PRODUCE, storage);
@@ -93,13 +92,28 @@ class JaegerServiceTest {
     @Test
     void twoSpansWithSharedStorage() {
         givenTraceAvailable("twoSpansTraceSharedStorage.json");
+
         whenWeRunTheService();
+
         Link link1 = new RectangleLink("Element-1");
         Link link2 = new QueueLink("incoming.activemq");
         Link link3 = new RectangleLink("Element-2");
         link1.connect(new Connection(link2));
         link3.connect(new Connection(link2));
         thenWeGetAChainWithLinksBack(link1, link2, link3);
+    }
+
+    @Disabled
+    @Test
+    void ksqlSpan() {
+        givenTraceAvailable("singleKsqlSpanTrace.json");
+
+        whenWeRunTheService();
+
+        KsqlLink ksqlLink = new KsqlLink("CSAS_STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID_5");
+        QueueLink queueLink = new QueueLink("STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID");
+        ksqlLink.connect(new Connection(queueLink));
+        thenWeGetAChainWithLinksBack(ksqlLink, queueLink);
     }
 
     private Span singleSpan(String spanName) {

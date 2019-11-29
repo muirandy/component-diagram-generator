@@ -1,0 +1,65 @@
+{
+  "data": [
+    {
+      "traceID": "5ddd1a8035ba4118231c0d31b1df1b0c",
+      "spans": [
+        {
+          "traceID": "5ddd1a8035ba4118231c0d31b1df1b0c",
+          "spanID": "231c0d31b1df1b0c",
+          "operationName": "on_send",
+          "references": [],
+          "startTime": 1574771328776415,
+          "duration": 8,
+          "tags": [
+            {
+              "key": "kafka.client.id",
+              "type": "string",
+              "value": "_confluent-ksql-default_query_CSAS_STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID_5-73185a9f-1ed6-4033-8507-1795e3368c4c-StreamThread-1-producer"
+            },
+            {
+              "key": "kafka.topic",
+              "type": "string",
+              "value": "STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1574771328776415,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "ms"
+                }
+              ]
+            }
+          ],
+          "processID": "p1",
+          "warnings": null
+        }
+      ],
+      "processes": {
+        "p1": {
+          "serviceName": "ksql-server",
+          "tags": [
+            {
+              "key": "ip",
+              "type": "string",
+              "value": "172.18.0.16"
+            }
+          ]
+        }
+      },
+      "warnings": null
+    }
+  ],
+  "total": 0,
+  "limit": 0,
+  "offset": 0,
+  "errors": null
+}
