@@ -32,12 +32,12 @@ public class JaegerChainBuilder implements ChainBuilder {
         return chain;
     }
 
-    private Stream<Link> createLinks(Span s) {
-        Link base = new RectangleLink(s.name);
-        if (s.storage == null)
+    private Stream<Link> createLinks(Span span) {
+        Link base = new RectangleLink(span.name);
+        if (span.storage == null)
             return Stream.of(base);
 
-        Link storage = new QueueLink(s.storage.name);
+        Link storage = new QueueLink(span.storage.name);
         base.connect(new Connection(storage));
         return Stream.of(base, storage);
     }
