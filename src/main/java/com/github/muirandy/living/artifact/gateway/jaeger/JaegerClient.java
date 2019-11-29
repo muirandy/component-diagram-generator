@@ -20,35 +20,57 @@ public class JaegerClient {
     }
 
     public Trace obtainTrace(String jaegerTraceId) {
-        String url = jaegerServer + "/api/traces/" + jaegerTraceId;
-        JSONObject root = Unirest.get(url)
+        String url = buildJaegerUrl(jaegerTraceId);
+        JSONObject root = getJaegerTrace(url);
+
+        if (hasErrors(root))
+            return errorTrace();
+
+        return buildTrace(root);
+    }
+
+    private Trace buildTrace(JSONObject root) {
+        Trace trace = new Trace();
+        JSONArray spans = getSpans(root);
+        for (int i = 0; i < spans.length(); i++)
+            trace.addSpan(createSpan(spans.getJSONObject(i)));
+
+        return trace;
+    }
+
+    private JSONArray getSpans(JSONObject root) {
+        return getSingleTrace(root).getJSONArray("spans");
+    }
+
+    private JSONObject getSingleTrace(JSONObject root) {
+        return root.getJSONArray("data").getJSONObject(0);
+    }
+
+    private Trace errorTrace() {
+        return new Trace();
+    }
+
+    private JSONObject getJaegerTrace(String url) {
+        return Unirest.get(url)
                 .asJson()
                 .getBody()
                 .getObject();
+    }
 
-        Trace trace = new Trace();
-        if (hasErrors(root))
-            return trace;
+    private String buildJaegerUrl(String jaegerTraceId) {
+        return jaegerServer + "/api/traces/" + jaegerTraceId;
+    }
 
-        JSONObject singleTrace = root.getJSONArray("data").getJSONObject(0);
+    private Span createSpan(JSONObject jaegerSpan) {
+        JSONArray jaegerTags = jaegerSpan.getJSONArray("tags");
 
-        JSONArray spans = singleTrace.getJSONArray("spans");
+        String spanName = readSpanName(jaegerTags);
+        Span span = new Span(spanName);
 
-        for (int i = 0; i < spans.length(); i++) {
-            JSONObject jaegerSpan = spans.getJSONObject(i);
-            JSONArray jaegerTags = jaegerSpan.getJSONArray("tags");
-            String spanName = readSpanName(jaegerTags);
-
-            Span span = new Span(spanName);
-
-            Optional<Storage> storage = readStorage(jaegerTags);
-            if (storage.isPresent())
-                span.addStorage(SpanOperation.PRODUCE, storage.get());
-
-            trace.addSpan(span);
-        }
-
-        return trace;
+        Optional<Storage> storage = readStorage(jaegerTags);
+        if (storage.isPresent())
+            span.addStorage(SpanOperation.PRODUCE, storage.get());
+        return span;
     }
 
     private Optional<Storage> readStorage(JSONArray jaegerTags) {
