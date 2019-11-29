@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SpanFactoryShould {
-    private static final String EXPECTED_NAME = "Expected Name";
+    private static final String EXPECTED_NAME = "CSAS_Expected_Name_7";
     private static final String NOT_WANTED = "Not wanted";
     private static final String TOPIC_NAME = "Kafka Topic Name";
     private static final String KAFKA_TOPIC_TAG_NAME = "kafka.topic";
@@ -16,6 +16,9 @@ class SpanFactoryShould {
     private static final String KAFKA_GROUP_ID_TAG_NAME = "kafka.group.id";
     private static final String ON_SEND = "on_send";
     private static final String ON_CONSUME = "on_consume";
+    private static final String EXPECTED_NAME_WITH_KSQL_GROUP_ID_FLUFF = "_confluent-ksql-default_query_" + EXPECTED_NAME;
+    private static final String EXPECTED_NAME_WITH_KSQL_CLIENT_ID_FLUFF = EXPECTED_NAME_WITH_KSQL_GROUP_ID_FLUFF + "-40382c9c-5dd5-4c18-b748-efe4e5e3e965-StreamThread-1-producer";
+
     private JSONObject singleTrace;
     private String traceJson;
 
@@ -29,7 +32,6 @@ class SpanFactoryShould {
                                 .build())
                         .build())
                 .build();
-
         Span span = createSpanFactory().makeSpan(makeJaegerSpanJson());
 
         assertThat(span.name).isEqualTo(EXPECTED_NAME);
@@ -47,6 +49,44 @@ class SpanFactoryShould {
                         .withTag(JaegerJsonTagBuilder.create()
                                 .withKey(KAFKA_GROUP_ID_TAG_NAME)
                                 .withValue(EXPECTED_NAME)
+                                .build())
+                        .build())
+                .build();
+
+        Span span = createSpanFactory().makeSpan(makeJaegerSpanJson());
+
+        assertThat(span.name).isEqualTo(EXPECTED_NAME);
+        assertThat(span.hasStorage()).isFalse();
+    }
+
+    @Test
+    void nameSpanAfterTrimmedKafkaGroupId() {
+        traceJson = JaegerJsonTraceBuilder.create()
+                .withSpan(JaegerJsonSpanBuilder.create()
+                        .withTag(JaegerJsonTagBuilder.create()
+                                .withKey(KAFKA_CLIENT_ID_TAG_NAME)
+                                .withValue(NOT_WANTED)
+                                .build())
+                        .withTag(JaegerJsonTagBuilder.create()
+                                .withKey(KAFKA_GROUP_ID_TAG_NAME)
+                                .withValue(EXPECTED_NAME_WITH_KSQL_GROUP_ID_FLUFF)
+                                .build())
+                        .build())
+                .build();
+
+        Span span = createSpanFactory().makeSpan(makeJaegerSpanJson());
+
+        assertThat(span.name).isEqualTo(EXPECTED_NAME);
+        assertThat(span.hasStorage()).isFalse();
+    }
+
+    @Test
+    void nameSpanAfterTrimmedKafkaClientId() {
+        traceJson = JaegerJsonTraceBuilder.create()
+                .withSpan(JaegerJsonSpanBuilder.create()
+                        .withTag(JaegerJsonTagBuilder.create()
+                                .withKey(KAFKA_CLIENT_ID_TAG_NAME)
+                                .withValue(EXPECTED_NAME_WITH_KSQL_CLIENT_ID_FLUFF)
                                 .build())
                         .build())
                 .build();

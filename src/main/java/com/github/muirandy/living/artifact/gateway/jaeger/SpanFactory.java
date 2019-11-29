@@ -10,6 +10,7 @@ import java.util.Optional;
 
 class SpanFactory {
     private static final String ON_SEND = "on_send";
+    private static final String KAFKA_KSQL_PREAMBLE = "_confluent-ksql-default_query_";
     private JSONObject singleTrace;
 
     SpanFactory(JSONObject singleTrace) {
@@ -36,15 +37,37 @@ class SpanFactory {
     }
 
     private String readSpanName(JSONArray jaegerTags) {
+        String name = "Unknown!!";
         Optional<String> groupId = readTag(jaegerTags, "kafka.group.id");
         if (groupId.isPresent())
-            return groupId.get();
+            name = groupId.get();
+        else {
+            Optional<String> clientId = readTag(jaegerTags, "kafka.client.id");
+            if (clientId.isPresent())
+                name = trimPostfix(clientId.get());
+        }
 
-        Optional<String> clientId = readTag(jaegerTags, "kafka.client.id");
-        if (clientId.isPresent())
-            return clientId.get();
+        return trimPrefixKafkaName(name);
+    }
 
-        return "Unknown!!";
+    private String trimPrefixKafkaName(String name) {
+        String trimmedName = name;
+        if (name.startsWith(KAFKA_KSQL_PREAMBLE))
+            trimmedName = name.substring(KAFKA_KSQL_PREAMBLE.length());
+        return trimmedName;
+    }
+
+    private String trimPostfix(String name) {
+        String trimmedName = name;
+        int lastUnderscore = trimmedName.lastIndexOf("_");
+        int postfixStartPosition = trimmedName.indexOf("-", lastUnderscore);
+        if (postfixStartPosition != -1) {
+            String postfix = trimmedName.substring(postfixStartPosition);
+            if (postfix.contains("-StreamThread-")) {
+                trimmedName = trimmedName.substring(0, postfixStartPosition);
+            }
+        }
+        return trimmedName;
     }
 
     private Optional<Storage> readStorage(JSONArray jaegerTags) {
