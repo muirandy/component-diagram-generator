@@ -61,11 +61,7 @@ public class JaegerClient {
     }
 
     private Span createSpan(JSONObject jaegerSpan) {
-        JSONArray jaegerTags = jaegerSpan.getJSONArray("tags");
-
-        Span span = spanFactory.invoke(jaegerTags);
-
-        return span;
+        return spanFactory.makeSpan(jaegerSpan);
     }
 
     private boolean hasErrors(JSONObject root) {

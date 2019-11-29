@@ -9,15 +9,30 @@ import kong.unirest.json.JSONObject;
 import java.util.Optional;
 
 class SpanFactory {
-    public SpanFactory(JSONObject singleTrace) {
+    private static final String ON_SEND = "on_send";
+    private JSONObject singleTrace;
+
+    SpanFactory(JSONObject singleTrace) {
+        this.singleTrace = singleTrace;
     }
 
-    public Span invoke(JSONArray jaegerTags) {
-        Span span = new Span(readSpanName(jaegerTags));
+    Span makeSpan(JSONObject jaegerSpan) {
+        JSONArray jaegerTags = jaegerSpan.getJSONArray("tags");
+        Span span = createNewSpan(jaegerTags);
         Optional<Storage> storage = readStorage(jaegerTags);
         if (storage.isPresent())
-            span.addStorage(SpanOperation.PRODUCE, storage.get());
+            span.addStorage(readOperation(jaegerSpan), storage.get());
         return span;
+    }
+
+    private SpanOperation readOperation(JSONObject jaegerSpan) {
+        if (ON_SEND.equals(jaegerSpan.getString("operationName")))
+            return SpanOperation.PRODUCE;
+        return SpanOperation.CONSUME;
+    }
+
+    private Span createNewSpan(JSONArray jaegerTags) {
+        return new Span(readSpanName(jaegerTags));
     }
 
     private String readSpanName(JSONArray jaegerTags) {
