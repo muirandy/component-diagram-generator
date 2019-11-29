@@ -8,12 +8,12 @@ import kong.unirest.json.JSONObject;
 
 import java.util.Optional;
 
-class SpanFactory {
+class JaegerSpanFactory {
     private static final String ON_SEND = "on_send";
     private static final String KAFKA_KSQL_PREAMBLE = "_confluent-ksql-default_query_";
     private JSONObject singleTrace;
 
-    SpanFactory(JSONObject singleTrace) {
+    JaegerSpanFactory(JSONObject singleTrace) {
         this.singleTrace = singleTrace;
     }
 

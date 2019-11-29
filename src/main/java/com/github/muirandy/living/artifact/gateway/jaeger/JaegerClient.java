@@ -10,7 +10,7 @@ import kong.unirest.json.JSONObject;
 public class JaegerClient implements OpenTracingClient {
     private final String jaegerServer;
     private final int jaegerPort;
-    private SpanFactory spanFactory;
+    private JaegerSpanFactory jaegerSpanFactory;
 
     public JaegerClient(String jaegerServer, int jaegerPort) {
         this.jaegerServer = jaegerServer;
@@ -31,7 +31,7 @@ public class JaegerClient implements OpenTracingClient {
     private Trace buildTrace(JSONObject root) {
         Trace trace = new Trace();
         JSONObject singleTrace = getSingleTrace(root);
-        spanFactory = new SpanFactory(singleTrace);
+        jaegerSpanFactory = new JaegerSpanFactory(singleTrace);
         JSONArray spans = getSpans(singleTrace);
         for (int i = 0; i < spans.length(); i++)
             trace.addSpan(createSpan(spans.getJSONObject(i)));
@@ -63,7 +63,7 @@ public class JaegerClient implements OpenTracingClient {
     }
 
     private Span createSpan(JSONObject jaegerSpan) {
-        return spanFactory.makeSpan(jaegerSpan);
+        return jaegerSpanFactory.makeSpan(jaegerSpan);
     }
 
     private boolean hasErrors(JSONObject root) {

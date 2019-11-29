@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SpanFactoryShould {
+class JaegerSpanFactoryShould {
     private static final String EXPECTED_NAME = "CSAS_Expected_Name_7";
     private static final String NOT_WANTED = "Not wanted";
     private static final String TOPIC_NAME = "Kafka Topic Name";
@@ -147,8 +147,8 @@ class SpanFactoryShould {
         return singleTrace.getJSONArray("spans").getJSONObject(0);
     }
 
-    private SpanFactory createSpanFactory() {
+    private JaegerSpanFactory createSpanFactory() {
         singleTrace = new JSONObject(traceJson);
-        return new SpanFactory(singleTrace);
+        return new JaegerSpanFactory(singleTrace);
     }
 }
