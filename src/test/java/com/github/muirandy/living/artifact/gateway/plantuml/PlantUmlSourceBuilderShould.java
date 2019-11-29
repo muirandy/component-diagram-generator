@@ -146,6 +146,18 @@ class PlantUmlSourceBuilderShould {
                 END_TAG);
     }
 
+    @Test
+    void buildKsql() {
+        createChain(new KsqlLink(LINK_NAME));
+
+        String plantUmlSourceCode = sourceBuilder.build(chain);
+
+        assertThat(plantUmlSourceCode).containsSequence(
+                START_TAG,
+                RECTANGLE_TAG,
+                END_TAG);
+    }
+
     private void createChain(Link... links) {
         chain = new Chain();
         for (Link link : links)

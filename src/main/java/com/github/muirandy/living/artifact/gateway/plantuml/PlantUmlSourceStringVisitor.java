@@ -18,6 +18,16 @@ public class PlantUmlSourceStringVisitor implements SourceStringVisitor {
         return "rectangle " + getLinkName(link) + "\n";
     }
 
+    @Override
+    public String visit(KsqlLink link) {
+        return "rectangle " + getKsqlLinkName(link) + "\n";
+    }
+
+    private String getKsqlLinkName(KsqlLink link) {
+        String trimmed = removeProducerPostfix(removeConsumerPostfix(link.name));
+        return replaceHypenWithNonBreakingHyphen(trimmed);
+    }
+
     private String getLinkName(Link link) {
         String trimmed = removeProducerPostfix(removeConsumerPostfix(link.name));
         return replaceHypenWithNonBreakingHyphen(trimmed);
