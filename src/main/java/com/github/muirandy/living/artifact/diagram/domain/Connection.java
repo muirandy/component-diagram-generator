@@ -7,8 +7,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class Connection {
     public final Link target;
+    public LinkRelationship relationship;
 
-    public Connection(Link target) {
+    public Connection(LinkRelationship relationship, Link target) {
+        this.relationship = relationship;
         this.target = target;
     }
 

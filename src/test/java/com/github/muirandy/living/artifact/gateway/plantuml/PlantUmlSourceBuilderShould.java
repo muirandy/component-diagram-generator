@@ -3,6 +3,8 @@ package com.github.muirandy.living.artifact.gateway.plantuml;
 import com.github.muirandy.living.artifact.diagram.domain.*;
 import org.junit.jupiter.api.Test;
 
+import static com.github.muirandy.living.artifact.diagram.domain.LinkRelationship.CONSUMER;
+import static com.github.muirandy.living.artifact.diagram.domain.LinkRelationship.PRODUCER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PlantUmlSourceBuilderShould {
@@ -19,9 +21,11 @@ class PlantUmlSourceBuilderShould {
     private static final String SECOND_RECTANGLE_SPECIAL_CHAR_TAG = "rectangle " + "Second" + "_" + "Item" + "\n";
 
     private static final String LINK_NAME = FIRST_ELEMENT_NAME;
-    private static final String CONNECTION_FROM_RECTANGLE_TO_SECOND_RECTANGLE_TAG = FIRST_ELEMENT_NAME + "->" + SECOND_ELEMENT_NAME + "\n";
+    private static final String QUEUE_ELEMENT_NAME = "Queue";
+    private static final String QUEUE_TAG = "queue " + QUEUE_ELEMENT_NAME + "\n";
 
-    private static final String QUEUE_TAG = "queue " + FIRST_ELEMENT_NAME + "\n";
+    private static final String CONNECTION_FROM_RECTANGLE_TO_QUEUE_TAG = FIRST_ELEMENT_NAME + "->" + QUEUE_ELEMENT_NAME + "\n";
+    private static final String CONNECTION_FROM_SECOND_RECTANGLE_TO_QUEUE_TAG = QUEUE_ELEMENT_NAME + "<-" + SECOND_ELEMENT_NAME + "\n";
 
     private static final String ACTIVE_MQ_SPRITE_IMPORT = "!include <cloudinsight/activemq>\n";
     private static final String ACTIVE_MQ_QUEUE_TAG = "queue \"<$activemq>\" as " + FIRST_ELEMENT_NAME + " #Crimson\n";
@@ -78,17 +82,21 @@ class PlantUmlSourceBuilderShould {
     @Test
     void connectLinksUsingConnectors() {
         Link firstLink = new RectangleLink(LINK_NAME);
+        Link queueLink = new QueueLink(QUEUE_ELEMENT_NAME);
         Link secondLink = new RectangleLink(SECOND_ELEMENT_NAME);
-        firstLink.connect(new Connection(secondLink));
-        createChain(firstLink, secondLink);
+        firstLink.connect(new Connection(PRODUCER, queueLink));
+        secondLink.connect(new Connection(CONSUMER, queueLink));
+        createChain(firstLink, queueLink, secondLink);
 
         String plantUmlSourceCode = sourceBuilder.build(chain);
 
         assertThat(plantUmlSourceCode).containsSequence(
                 START_TAG,
                 RECTANGLE_TAG,
+                QUEUE_TAG,
                 SECOND_RECTANGLE_TAG,
-                CONNECTION_FROM_RECTANGLE_TO_SECOND_RECTANGLE_TAG,
+                CONNECTION_FROM_RECTANGLE_TO_QUEUE_TAG,
+                CONNECTION_FROM_SECOND_RECTANGLE_TO_QUEUE_TAG,
                 END_TAG);
     }
 
@@ -96,7 +104,7 @@ class PlantUmlSourceBuilderShould {
     void connectLinksWithSpecialCharactersUsingConnectors() {
         Link firstLink = new RectangleLink("Single-Item");
         Link secondLink = new RectangleLink("Second-Item");
-        firstLink.connect(new Connection(secondLink));
+        firstLink.connect(new Connection(PRODUCER, secondLink));
         createChain(firstLink, secondLink);
 
         String plantUmlSourceCode = sourceBuilder.build(chain);
@@ -123,7 +131,7 @@ class PlantUmlSourceBuilderShould {
 
     @Test
     void buildQueue() {
-        createChain(new QueueLink(LINK_NAME));
+        createChain(new QueueLink(QUEUE_ELEMENT_NAME));
 
         String plantUmlSourceCode = sourceBuilder.build(chain);
 

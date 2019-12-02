@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import static com.github.muirandy.living.artifact.diagram.domain.LinkRelationship.CONSUMER;
+import static com.github.muirandy.living.artifact.diagram.domain.LinkRelationship.PRODUCER;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -98,8 +100,8 @@ class JaegerServiceTest {
         Link link1 = new RectangleLink("Element-1");
         Link link2 = new QueueLink("incoming.activemq");
         Link link3 = new RectangleLink("Element-2");
-        link1.connect(new Connection(link2));
-        link3.connect(new Connection(link2));
+        link1.connect(new Connection(PRODUCER, link2));
+        link3.connect(new Connection(CONSUMER, link2));
         thenWeGetAChainWithLinksBack(link1, link2, link3);
     }
 
@@ -111,7 +113,7 @@ class JaegerServiceTest {
 
         KsqlLink ksqlLink = new KsqlLink("CSAS_STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID_5");
         QueueLink queueLink = new QueueLink("STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID");
-        ksqlLink.connect(new Connection(queueLink));
+        ksqlLink.connect(new Connection(PRODUCER, queueLink));
         thenWeGetAChainWithLinksBack(ksqlLink, queueLink);
     }
 
@@ -159,7 +161,7 @@ class JaegerServiceTest {
         Link link = new RectangleLink(singleSpan.name);
         if (singleSpan.hasStorage()) {
             Link storageLink = new QueueLink(singleSpan.storage.name);
-            link.connect(new Connection(storageLink));
+            link.connect(new Connection(PRODUCER, storageLink));
             return new Link[]{link, storageLink};
         }
         return new Link[]{link};

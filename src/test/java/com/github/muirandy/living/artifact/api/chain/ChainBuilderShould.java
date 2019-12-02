@@ -9,6 +9,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Random;
 
+import static com.github.muirandy.living.artifact.diagram.domain.LinkRelationship.CONSUMER;
+import static com.github.muirandy.living.artifact.diagram.domain.LinkRelationship.PRODUCER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -81,7 +83,7 @@ class ChainBuilderShould {
 
         RectangleLink rectangleLink = new RectangleLink(SPAN_NAME);
         QueueLink queueLink = new QueueLink(TOPIC_NAME);
-        rectangleLink.connect(new Connection(queueLink));
+        rectangleLink.connect(new Connection(PRODUCER, queueLink));
         assertThat(chain.getLinks()).containsExactly(rectangleLink, queueLink);
     }
 
@@ -102,8 +104,8 @@ class ChainBuilderShould {
         RectangleLink producerLink = new RectangleLink(SPAN_NAME);
         QueueLink queueLink = new QueueLink(TOPIC_NAME);
         RectangleLink consumerLink = new RectangleLink(SPAN2_NAME);
-        producerLink.connect(new Connection(queueLink));
-        consumerLink.connect(new Connection(queueLink));
+        producerLink.connect(new Connection(PRODUCER, queueLink));
+        consumerLink.connect(new Connection(CONSUMER, queueLink));
         assertThat(chain.getLinks()).containsExactly(producerLink, queueLink, consumerLink);
     }
 

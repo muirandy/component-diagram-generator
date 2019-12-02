@@ -11,6 +11,9 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
+import static com.github.muirandy.living.artifact.diagram.domain.LinkRelationship.CONSUMER;
+import static com.github.muirandy.living.artifact.diagram.domain.LinkRelationship.PRODUCER;
+
 class PlantUmlServiceTest {
 
     PlantUmlSourceBuilder plantUmlSourceBuilder = new PlantUmlSourceBuilder();
@@ -61,15 +64,30 @@ class PlantUmlServiceTest {
     void firstElementDependsOnSecondElement() {
         Link link = new RectangleLink("First");
         Link link2 = new RectangleLink("Second");
-        link.connect(createConnection(link2));
+        link.connect(createProducerConnection(link2));
 
         givenAnChainWith(link, link2);
         whenWeRunTheApp();
         thenDiagramContains(link, link2);
     }
 
-    private Connection createConnection(Link otherLink) {
-        return new Connection(otherLink);
+    @Test
+    void secondElementConsumesFromFirstElement() {
+        Link topic = new RectangleLink("Topic");
+        Link consumer = new RectangleLink("Consumer");
+        consumer.connect(createConsumerConnection(topic));
+
+        givenAnChainWith(topic, consumer);
+        whenWeRunTheApp();
+        thenDiagramContains(topic, consumer);
+    }
+
+    private Connection createConsumerConnection(Link otherLink) {
+        return new Connection(CONSUMER, otherLink);
+    }
+
+    private Connection createProducerConnection(Link otherLink) {
+        return new Connection(PRODUCER, otherLink);
     }
 
     @Test
@@ -129,7 +147,7 @@ class PlantUmlServiceTest {
     private void assertLinkIsRendered(Link link) {
         drawsElement(link);
         if (link.hasConnections())
-            drawsConnections(elementIndex, link);
+            drawsConnections(link);
     }
 
     private void drawsElement(Link link) {
@@ -146,12 +164,13 @@ class PlantUmlServiceTest {
         }
     }
 
-    private void drawsConnections(int index, Link link) {
+    private void drawsConnections(Link link) {
         for (Connection connection : link.connections) {
             XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:path/@id").exist();
-            XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:path/@id").isEqualTo(link.name + "->" + connection.target.name);
+            if (PRODUCER.equals(connection.relationship))
+                XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:path/@id").isEqualTo(link.name + "->" + connection.target.name);
+            else
+                XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:path/@id").isEqualTo(connection.target.name + "<-" + link.name);
         }
-
     }
-
 }

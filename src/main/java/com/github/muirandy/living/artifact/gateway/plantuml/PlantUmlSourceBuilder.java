@@ -5,6 +5,8 @@ import com.github.muirandy.living.artifact.diagram.domain.*;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.github.muirandy.living.artifact.diagram.domain.LinkRelationship.PRODUCER;
+
 public class PlantUmlSourceBuilder {
     private static final String START_TAG = "@startuml\n";
     private static final String EMPTY_DOC_TAG = "skinparam monochrome false\n";
@@ -68,7 +70,9 @@ public class PlantUmlSourceBuilder {
     }
 
     private String createConnectionTag(Link link, Connection c) {
-        return getLinkName(link) + "->" + getLinkName(c.target) + "\n";
+        if (PRODUCER.equals(c.relationship))
+            return getLinkName(link) + "->" + getLinkName(c.target) + "\n";
+        return getLinkName(c.target) + "<-" + getLinkName(link) + "\n";
     }
 
     private String getLinkName(Link link) {
