@@ -1,6 +1,6 @@
 package com.github.muirandy.living.artifact.api.chain;
 
-public class Span {
+public abstract class Span {
     public String name;
     public SpanOperation spanOperation;
     public Storage storage;

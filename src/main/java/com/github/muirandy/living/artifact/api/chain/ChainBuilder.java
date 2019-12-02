@@ -29,7 +29,11 @@ public class ChainBuilder {
     }
 
     private Stream<Link> createLinks(Span span) {
-        Link base = new RectangleLink(span.name);
+        Link base;
+        if (span instanceof KsqlSpan)
+            base = new KsqlLink(span.name);
+        else
+            base = new RectangleLink(span.name);
         if (span.storage == null)
             return Stream.of(base);
 

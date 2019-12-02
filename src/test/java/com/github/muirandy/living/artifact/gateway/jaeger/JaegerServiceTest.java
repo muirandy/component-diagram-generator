@@ -3,7 +3,10 @@ package com.github.muirandy.living.artifact.gateway.jaeger;
 import com.github.muirandy.living.artifact.api.chain.*;
 import com.github.muirandy.living.artifact.diagram.domain.*;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -113,7 +116,7 @@ class JaegerServiceTest {
     }
 
     private Span singleSpan(String spanName) {
-        return new Span(spanName);
+        return new BasicSpan(spanName);
     }
 
     private void givenThereIsNoTracingAvailable() {

@@ -1,5 +1,7 @@
 package com.github.muirandy.living.artifact.gateway.jaeger;
 
+import com.github.muirandy.living.artifact.api.chain.BasicSpan;
+import com.github.muirandy.living.artifact.api.chain.KsqlSpan;
 import com.github.muirandy.living.artifact.api.chain.Span;
 import com.github.muirandy.living.artifact.api.chain.SpanOperation;
 import kong.unirest.json.JSONObject;
@@ -16,8 +18,11 @@ class JaegerSpanFactoryShould {
     private static final String KAFKA_GROUP_ID_TAG_NAME = "kafka.group.id";
     private static final String ON_SEND = "on_send";
     private static final String ON_CONSUME = "on_consume";
-    private static final String EXPECTED_NAME_WITH_KSQL_GROUP_ID_FLUFF = "_confluent-ksql-default_query_" + EXPECTED_NAME;
-    private static final String EXPECTED_NAME_WITH_KSQL_CLIENT_ID_FLUFF = EXPECTED_NAME_WITH_KSQL_GROUP_ID_FLUFF + "-40382c9c-5dd5-4c18-b748-efe4e5e3e965-StreamThread-1-producer";
+    private static final String EXPECTED_NAME_WITH_KSQL_GROUP_ID_FLUFF =
+            "_confluent-ksql-default_query_" + EXPECTED_NAME;
+    private static final String EXPECTED_NAME_WITH_KSQL_CLIENT_ID_FLUFF = EXPECTED_NAME_WITH_KSQL_GROUP_ID_FLUFF +
+            "-40382c9c-5dd5-4c18-b748-efe4e5e3e965-StreamThread-1-producer";
+    private static final String GENERIC_PROCESS = "Generic Process";
 
     private JSONObject singleTrace;
     private String traceJson;
@@ -31,8 +36,10 @@ class JaegerSpanFactoryShould {
                                 .withValue(EXPECTED_NAME)
                                 .build())
                         .build())
+                .withProcess("p1", GENERIC_PROCESS)
                 .build();
-        Span span = createSpanFactory().makeSpan(makeJaegerSpanJson());
+
+        BasicSpan span = (BasicSpan) createSpanFactory().makeSpan(makeJaegerSpanJson());
 
         assertThat(span.name).isEqualTo(EXPECTED_NAME);
         assertThat(span.hasStorage()).isFalse();
@@ -51,6 +58,7 @@ class JaegerSpanFactoryShould {
                                 .withValue(EXPECTED_NAME)
                                 .build())
                         .build())
+                .withProcess("p1", GENERIC_PROCESS)
                 .build();
 
         Span span = createSpanFactory().makeSpan(makeJaegerSpanJson());
@@ -72,6 +80,7 @@ class JaegerSpanFactoryShould {
                                 .withValue(EXPECTED_NAME_WITH_KSQL_GROUP_ID_FLUFF)
                                 .build())
                         .build())
+                .withProcess("p1", GENERIC_PROCESS)
                 .build();
 
         Span span = createSpanFactory().makeSpan(makeJaegerSpanJson());
@@ -89,6 +98,7 @@ class JaegerSpanFactoryShould {
                                 .withValue(EXPECTED_NAME_WITH_KSQL_CLIENT_ID_FLUFF)
                                 .build())
                         .build())
+                .withProcess("p1", GENERIC_PROCESS)
                 .build();
 
         Span span = createSpanFactory().makeSpan(makeJaegerSpanJson());
@@ -111,6 +121,7 @@ class JaegerSpanFactoryShould {
                                 .withValue(TOPIC_NAME)
                                 .build())
                         .build())
+                .withProcess("p1", GENERIC_PROCESS)
                 .build();
 
         Span span = createSpanFactory().makeSpan(makeJaegerSpanJson());
@@ -134,6 +145,7 @@ class JaegerSpanFactoryShould {
                                 .withValue(TOPIC_NAME)
                                 .build())
                         .build())
+                .withProcess("p1", GENERIC_PROCESS)
                 .build();
 
         Span span = createSpanFactory().makeSpan(makeJaegerSpanJson());
@@ -141,6 +153,28 @@ class JaegerSpanFactoryShould {
         assertThat(span.hasStorage()).isTrue();
         assertThat(span.storage.name).isEqualTo(TOPIC_NAME);
         assertThat(span.spanOperation).isEqualTo(SpanOperation.CONSUME);
+    }
+
+    @Test
+    void createKsqlSpan() {
+        traceJson = JaegerJsonTraceBuilder.create()
+                .withSpan(JaegerJsonSpanBuilder.create()
+                        .withOperationName(ON_CONSUME)
+                        .withTag(JaegerJsonTagBuilder.create()
+                                .withKey(KAFKA_CLIENT_ID_TAG_NAME)
+                                .withValue(EXPECTED_NAME)
+                                .build())
+                        .withTag(JaegerJsonTagBuilder.create()
+                                .withKey(KAFKA_TOPIC_TAG_NAME)
+                                .withValue(TOPIC_NAME)
+                                .build())
+                        .build())
+                .withProcess("p1", "ksql-server")
+                .build();
+
+        Span span = createSpanFactory().makeSpan(makeJaegerSpanJson());
+
+        assertThat(span instanceof KsqlSpan).isTrue();
     }
 
     private JSONObject makeJaegerSpanJson() {

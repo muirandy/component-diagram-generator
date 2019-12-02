@@ -1,28 +1,48 @@
 package com.github.muirandy.living.artifact.gateway.jaeger;
 
-import com.github.muirandy.living.artifact.api.chain.Span;
-import com.github.muirandy.living.artifact.api.chain.SpanOperation;
-import com.github.muirandy.living.artifact.api.chain.Storage;
+import com.github.muirandy.living.artifact.api.chain.*;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 class JaegerSpanFactory {
     private static final String ON_SEND = "on_send";
     private static final String KAFKA_KSQL_PREAMBLE = "_confluent-ksql-default_query_";
     private JSONObject singleTrace;
+    private Map<String, Class<? extends Span>> processes;
+    private Map<String, Class<? extends Span>> serviceNames;
 
     JaegerSpanFactory(JSONObject singleTrace) {
         this.singleTrace = singleTrace;
+        initialiseServiceNameMap();
+        initialiseProcessMap();
+    }
+
+    private void initialiseServiceNameMap() {
+        serviceNames = new HashMap<>();
+        serviceNames.put("ksql-server", KsqlSpan.class);
+    }
+
+    private void initialiseProcessMap() {
+        processes = new HashMap<>();
+        JSONObject processes = singleTrace.getJSONObject("processes");
+        for (String processId : processes.keySet()) {
+            String processName = processes.getJSONObject(processId).getString("serviceName");
+            this.processes.put(processId, serviceNames.getOrDefault(processName, BasicSpan.class));
+        }
     }
 
     Span makeSpan(JSONObject jaegerSpan) {
         JSONArray jaegerTags = jaegerSpan.getJSONArray("tags");
-        Span span = createNewSpan(jaegerTags);
+        Span span = createNewSpan(jaegerSpan);
         Optional<Storage> storage = readStorage(jaegerTags);
-        if (storage.isPresent())
+        if (storage.isPresent()) {
             span.addStorage(readOperation(jaegerSpan), storage.get());
+        }
         return span;
     }
 
@@ -32,8 +52,19 @@ class JaegerSpanFactory {
         return SpanOperation.CONSUME;
     }
 
-    private Span createNewSpan(JSONArray jaegerTags) {
-        return new Span(readSpanName(jaegerTags));
+    private Span createNewSpan(JSONObject jaegerSpan) {
+        JSONArray jaegerTags = jaegerSpan.getJSONArray("tags");
+        String processId = readProcessIdForSpan(jaegerSpan);
+        Class<? extends Span> classForSpan = processes.get(processId);
+        try {
+            return classForSpan.getConstructor(String.class).newInstance(readSpanName(jaegerTags));
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String readProcessIdForSpan(JSONObject jaegerSpan) {
+        return jaegerSpan.getString("processID");
     }
 
     private String readSpanName(JSONArray jaegerTags) {

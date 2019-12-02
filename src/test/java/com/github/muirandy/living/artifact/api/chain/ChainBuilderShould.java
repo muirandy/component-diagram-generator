@@ -1,6 +1,5 @@
-package com.github.muirandy.living.artifact.gateway.jaeger;
+package com.github.muirandy.living.artifact.api.chain;
 
-import com.github.muirandy.living.artifact.api.chain.*;
 import com.github.muirandy.living.artifact.diagram.domain.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,7 +45,7 @@ class ChainBuilderShould {
 
     @Test
     void buildLinkForSingleSpan() {
-        addSpansToTrace(new Span(SPAN_NAME));
+        addSpansToTrace(new BasicSpan(SPAN_NAME));
 
         Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
 
@@ -54,8 +53,17 @@ class ChainBuilderShould {
     }
 
     @Test
+    void buildKsqlLinkForKsqlSpan() {
+        addSpansToTrace(new KsqlSpan(SPAN_NAME));
+
+        Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
+
+        assertThat(chain.getLinks()).containsExactly(new KsqlLink(SPAN_NAME));
+    }
+
+    @Test
     void buildLinksForMultipleSpans() {
-        addSpansToTrace(new Span("Span 1"), new Span("Span 2"));
+        addSpansToTrace(new BasicSpan("Span 1"), new BasicSpan("Span 2"));
 
         Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
 
@@ -65,7 +73,7 @@ class ChainBuilderShould {
     @Test
     void buildLinkForDataSinkWithinSpan() {
         Storage topic = new Topic(TOPIC_NAME);
-        Span span = new Span(SPAN_NAME);
+        Span span = new BasicSpan(SPAN_NAME);
         span.addStorage(SpanOperation.PRODUCE, topic);
         addSpansToTrace(span);
 
@@ -81,10 +89,10 @@ class ChainBuilderShould {
     void buildSharedLinkForDataSinkAcrossTwoSpans() {
         Storage topic = new Topic(TOPIC_NAME);
 
-        Span span = new Span(SPAN_NAME);
+        Span span = new BasicSpan(SPAN_NAME);
         span.addStorage(SpanOperation.PRODUCE, topic);
 
-        Span span2 = new Span(SPAN2_NAME);
+        Span span2 = new BasicSpan(SPAN2_NAME);
         span2.addStorage(SpanOperation.CONSUME, topic);
 
         addSpansToTrace(span, span2);

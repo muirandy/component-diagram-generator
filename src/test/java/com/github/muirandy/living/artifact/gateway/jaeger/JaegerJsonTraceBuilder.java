@@ -1,17 +1,14 @@
 package com.github.muirandy.living.artifact.gateway.jaeger;
 
-import com.github.muirandy.living.artifact.diagram.domain.Chain;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 class JaegerJsonTraceBuilder {
     private String traceId = UUID.randomUUID().toString();
     private List<JSONObject> spans = new ArrayList<>();
-    private List<JSONObject> processes = new ArrayList<>();
+    private Map<String, Object> processes = new HashMap<>();
 
     static JaegerJsonTraceBuilder create() {
         return new JaegerJsonTraceBuilder();
@@ -27,8 +24,10 @@ class JaegerJsonTraceBuilder {
         return this;
     }
 
-    JaegerJsonTraceBuilder withProcess(String processJson) {
-        processes.add(new JSONObject(processJson));
+    JaegerJsonTraceBuilder withProcess(String processId, String processName) {
+        Map<String,String> process = new HashMap<>();
+        process.put("serviceName", processName);
+        processes.put(processId, process);
         return this;
     }
 
@@ -36,7 +35,7 @@ class JaegerJsonTraceBuilder {
         JSONObject trace = new JSONObject();
         trace.put("traceID", traceId);
         trace.put("spans", new JSONArray(spans));
-        trace.put("processes", new JSONArray(processes));
+        trace.put("processes", new JSONObject(processes));
 
         return trace.toString();
     }
