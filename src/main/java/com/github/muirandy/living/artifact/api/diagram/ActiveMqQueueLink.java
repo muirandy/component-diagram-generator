@@ -1,7 +1,7 @@
-package com.github.muirandy.living.artifact.diagram.domain;
+package com.github.muirandy.living.artifact.api.diagram;
 
-public class QueueLink extends Link {
-    public QueueLink(String name) {
+public class ActiveMqQueueLink extends QueueLink {
+    public ActiveMqQueueLink(String name) {
         super(name);
     }
 

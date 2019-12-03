@@ -1,6 +1,6 @@
 package com.github.muirandy.living.artifact.gateway.jaeger;
 
-import com.github.muirandy.living.artifact.api.chain.*;
+import com.github.muirandy.living.artifact.api.trace.*;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 

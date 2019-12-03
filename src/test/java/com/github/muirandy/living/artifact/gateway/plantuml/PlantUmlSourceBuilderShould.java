@@ -1,10 +1,10 @@
 package com.github.muirandy.living.artifact.gateway.plantuml;
 
-import com.github.muirandy.living.artifact.diagram.domain.*;
+import com.github.muirandy.living.artifact.api.diagram.*;
 import org.junit.jupiter.api.Test;
 
-import static com.github.muirandy.living.artifact.diagram.domain.LinkRelationship.CONSUMER;
-import static com.github.muirandy.living.artifact.diagram.domain.LinkRelationship.PRODUCER;
+import static com.github.muirandy.living.artifact.api.diagram.LinkRelationship.CONSUMER;
+import static com.github.muirandy.living.artifact.api.diagram.LinkRelationship.PRODUCER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PlantUmlSourceBuilderShould {

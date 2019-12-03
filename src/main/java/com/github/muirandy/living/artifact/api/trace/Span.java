@@ -1,4 +1,4 @@
-package com.github.muirandy.living.artifact.api.chain;
+package com.github.muirandy.living.artifact.api.trace;
 
 public abstract class Span {
     public String name;

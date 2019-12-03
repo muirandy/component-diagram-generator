@@ -1,4 +1,4 @@
-package com.github.muirandy.living.artifact.diagram.domain;
+package com.github.muirandy.living.artifact.api.diagram;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

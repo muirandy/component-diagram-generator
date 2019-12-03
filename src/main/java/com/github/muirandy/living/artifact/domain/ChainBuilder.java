@@ -1,10 +1,14 @@
-package com.github.muirandy.living.artifact.api.chain;
+package com.github.muirandy.living.artifact.domain;
 
-import com.github.muirandy.living.artifact.diagram.domain.*;
+import com.github.muirandy.living.artifact.api.diagram.*;
+import com.github.muirandy.living.artifact.api.trace.KsqlSpan;
+import com.github.muirandy.living.artifact.api.trace.OpenTracingClient;
+import com.github.muirandy.living.artifact.api.trace.Span;
+import com.github.muirandy.living.artifact.api.trace.Trace;
 
 import java.util.stream.Stream;
 
-import static com.github.muirandy.living.artifact.api.chain.SpanOperation.PRODUCE;
+import static com.github.muirandy.living.artifact.api.trace.SpanOperation.PRODUCE;
 
 public class ChainBuilder {
     private OpenTracingClient openTracingClient;
@@ -13,8 +17,8 @@ public class ChainBuilder {
         this.openTracingClient = openTracingClient;
     }
 
-    public Chain build(String jaegerTraceId) {
-        Trace trace = openTracingClient.obtainTrace(jaegerTraceId);
+    public Chain build(String traceId) {
+        Trace trace = openTracingClient.obtainTrace(traceId);
 
         if (!trace.isEmpty())
             return buildChain(trace);

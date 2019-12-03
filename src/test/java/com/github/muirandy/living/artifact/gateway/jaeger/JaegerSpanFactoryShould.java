@@ -1,9 +1,9 @@
 package com.github.muirandy.living.artifact.gateway.jaeger;
 
-import com.github.muirandy.living.artifact.api.chain.BasicSpan;
-import com.github.muirandy.living.artifact.api.chain.KsqlSpan;
-import com.github.muirandy.living.artifact.api.chain.Span;
-import com.github.muirandy.living.artifact.api.chain.SpanOperation;
+import com.github.muirandy.living.artifact.api.trace.BasicSpan;
+import com.github.muirandy.living.artifact.api.trace.KsqlSpan;
+import com.github.muirandy.living.artifact.api.trace.Span;
+import com.github.muirandy.living.artifact.api.trace.SpanOperation;
 import kong.unirest.json.JSONObject;
 import org.junit.jupiter.api.Test;
 

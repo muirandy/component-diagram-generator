@@ -1,9 +1,8 @@
-package com.github.muirandy.living.artifact.main;
+package com.github.muirandy.living.artifact.domain;
 
-import com.github.muirandy.living.artifact.api.chain.ChainBuilder;
-import com.github.muirandy.living.artifact.diagram.domain.Artifact;
-import com.github.muirandy.living.artifact.diagram.domain.ArtifactGenerator;
-import com.github.muirandy.living.artifact.diagram.domain.Chain;
+import com.github.muirandy.living.artifact.api.diagram.Artifact;
+import com.github.muirandy.living.artifact.api.diagram.ArtifactGenerator;
+import com.github.muirandy.living.artifact.api.diagram.Chain;
 
 public class App {
     private ChainBuilder chainBuilder;

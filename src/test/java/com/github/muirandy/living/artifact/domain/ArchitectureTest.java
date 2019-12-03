@@ -1,4 +1,4 @@
-package com.github.muirandy.living.artifact.main;
+package com.github.muirandy.living.artifact.domain;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
@@ -17,19 +17,22 @@ public class ArchitectureTest {
     static final ArchRule layer_dependencies_are_respected = layeredArchitecture()
 
             .layer("RestClient").definedBy("kong.unirest..")
-            .layer("PlantUmlGateway").definedBy("com.github.muirandy.living.artifact.gateway.plantuml")
-            .layer("PlantUml").definedBy("net.sourceforge.plantuml..")
             .layer("JaegerTracingGateway").definedBy("com.github.muirandy.living.artifact.gateway.jaeger")
-            .layer("TracingApi").definedBy("com.github.muirandy.living.artifact.api.chain")
-            .layer("Domain").definedBy("com.github.muirandy.living.artifact.diagram.domain")
-            .layer("Main").definedBy("com.github.muirandy.living.artifact.main")
+            .layer("TracingApi").definedBy("com.github.muirandy.living.artifact.api.trace")
 
-            .whereLayer("JaegerTracingGateway").mayOnlyBeAccessedByLayers("Main")
-            .whereLayer("TracingApi").mayOnlyBeAccessedByLayers("JaegerTracingGateway", "Main")
-            .whereLayer("RestClient").mayOnlyBeAccessedByLayers("JaegerTracingGateway", "Main", "RestClient")
-            .whereLayer("PlantUmlGateway").mayOnlyBeAccessedByLayers("Main")
-            .whereLayer("PlantUml").mayOnlyBeAccessedByLayers("PlantUmlGateway", "Main", "PlantUml")
-            .whereLayer("Domain").mayOnlyBeAccessedByLayers("TracingApi", "PlantUmlGateway", "JaegerTracingGateway", "Main");
+            .layer("PlantUml").definedBy("net.sourceforge.plantuml..")
+            .layer("PlantUmlGateway").definedBy("com.github.muirandy.living.artifact.gateway.plantuml")
+            .layer("PlantUmlApi").definedBy("com.github.muirandy.living.artifact.api.diagram")
+
+            .layer("Domain").definedBy("com.github.muirandy.living.artifact.domain")
+
+            .whereLayer("RestClient").mayOnlyBeAccessedByLayers("JaegerTracingGateway", "RestClient")
+            .whereLayer("JaegerTracingGateway").mayNotBeAccessedByAnyLayer()
+            .whereLayer("TracingApi").mayOnlyBeAccessedByLayers("JaegerTracingGateway", "Domain")
+            .whereLayer("PlantUml").mayOnlyBeAccessedByLayers("PlantUmlGateway", "PlantUml")
+            .whereLayer("PlantUmlGateway").mayNotBeAccessedByAnyLayer()
+            .whereLayer("PlantUmlApi").mayOnlyBeAccessedByLayers("PlantUmlGateway", "Domain")
+            .whereLayer("Domain").mayNotBeAccessedByAnyLayer();
 
 
     @Test

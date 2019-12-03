@@ -1,4 +1,4 @@
-package com.github.muirandy.living.artifact.diagram.domain;
+package com.github.muirandy.living.artifact.api.diagram;
 
 public class RectangleLink extends Link {
     public RectangleLink(String name) {

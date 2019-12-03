@@ -1,4 +1,4 @@
-package com.github.muirandy.living.artifact.diagram.domain;
+package com.github.muirandy.living.artifact.api.diagram;
 
 public interface SourceStringVisitor {
     String visit(QueueLink link);

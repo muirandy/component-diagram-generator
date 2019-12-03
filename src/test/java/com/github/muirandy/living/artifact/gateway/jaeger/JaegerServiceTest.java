@@ -1,7 +1,8 @@
 package com.github.muirandy.living.artifact.gateway.jaeger;
 
-import com.github.muirandy.living.artifact.api.chain.*;
-import com.github.muirandy.living.artifact.diagram.domain.*;
+import com.github.muirandy.living.artifact.api.trace.*;
+import com.github.muirandy.living.artifact.api.diagram.*;
+import com.github.muirandy.living.artifact.domain.ChainBuilder;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,8 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static com.github.muirandy.living.artifact.diagram.domain.LinkRelationship.CONSUMER;
-import static com.github.muirandy.living.artifact.diagram.domain.LinkRelationship.PRODUCER;
+import static com.github.muirandy.living.artifact.api.diagram.LinkRelationship.CONSUMER;
+import static com.github.muirandy.living.artifact.api.diagram.LinkRelationship.PRODUCER;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.assertj.core.api.Assertions.assertThat;

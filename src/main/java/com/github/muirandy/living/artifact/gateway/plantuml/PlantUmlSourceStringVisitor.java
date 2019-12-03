@@ -1,6 +1,6 @@
 package com.github.muirandy.living.artifact.gateway.plantuml;
 
-import com.github.muirandy.living.artifact.diagram.domain.*;
+import com.github.muirandy.living.artifact.api.diagram.*;
 
 public class PlantUmlSourceStringVisitor implements SourceStringVisitor {
     @Override

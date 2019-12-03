@@ -1,8 +1,8 @@
 package com.github.muirandy.living.artifact.gateway.jaeger;
 
-import com.github.muirandy.living.artifact.api.chain.OpenTracingClient;
-import com.github.muirandy.living.artifact.api.chain.Span;
-import com.github.muirandy.living.artifact.api.chain.Trace;
+import com.github.muirandy.living.artifact.api.trace.OpenTracingClient;
+import com.github.muirandy.living.artifact.api.trace.Span;
+import com.github.muirandy.living.artifact.api.trace.Trace;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;

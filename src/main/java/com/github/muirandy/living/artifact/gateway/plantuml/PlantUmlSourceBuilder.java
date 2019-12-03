@@ -1,11 +1,13 @@
 package com.github.muirandy.living.artifact.gateway.plantuml;
 
-import com.github.muirandy.living.artifact.diagram.domain.*;
+import com.github.muirandy.living.artifact.api.diagram.Chain;
+import com.github.muirandy.living.artifact.api.diagram.Connection;
+import com.github.muirandy.living.artifact.api.diagram.Link;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.github.muirandy.living.artifact.diagram.domain.LinkRelationship.PRODUCER;
+import static com.github.muirandy.living.artifact.api.diagram.LinkRelationship.PRODUCER;
 
 public class PlantUmlSourceBuilder {
     private static final String START_TAG = "@startuml\n";

@@ -1,6 +1,6 @@
 package com.github.muirandy.living.artifact.gateway.plantuml;
 
-import com.github.muirandy.living.artifact.diagram.domain.*;
+import com.github.muirandy.living.artifact.api.diagram.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xmlunit.assertj.XmlAssert;
@@ -11,8 +11,8 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
-import static com.github.muirandy.living.artifact.diagram.domain.LinkRelationship.CONSUMER;
-import static com.github.muirandy.living.artifact.diagram.domain.LinkRelationship.PRODUCER;
+import static com.github.muirandy.living.artifact.api.diagram.LinkRelationship.CONSUMER;
+import static com.github.muirandy.living.artifact.api.diagram.LinkRelationship.PRODUCER;
 
 class PlantUmlServiceTest {
 

@@ -1,4 +1,4 @@
-package com.github.muirandy.living.artifact.api.chain;
+package com.github.muirandy.living.artifact.api.trace;
 
 import java.util.ArrayList;
 import java.util.List;
