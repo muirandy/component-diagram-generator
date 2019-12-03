@@ -45,7 +45,7 @@
         {
           "traceID": "5ddd1a8035ba4118231c0d31b1df1b0c",
           "spanID": "2",
-          "operationName": "on_send",
+          "operationName": "on_consume",
           "references": [],
           "startTime": 1574771328776415,
           "duration": 8,

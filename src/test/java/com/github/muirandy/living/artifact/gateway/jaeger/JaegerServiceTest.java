@@ -98,11 +98,11 @@ class JaegerServiceTest {
         whenWeRunTheService();
 
         Link link1 = new RectangleLink("Element-1");
-        Link link2 = new QueueLink("incoming.activemq");
+        Link queueLink = new QueueLink("incoming.activemq");
         Link link3 = new RectangleLink("Element-2");
-        link1.connect(new Connection(PRODUCER, link2));
-        link3.connect(new Connection(CONSUMER, link2));
-        thenWeGetAChainWithLinksBack(link1, link2, link3);
+        link1.connect(new Connection(PRODUCER, queueLink));
+        link3.connect(new Connection(CONSUMER, queueLink));
+        thenWeGetAChainWithLinksBack(link1, queueLink, link3);
     }
 
     @Test

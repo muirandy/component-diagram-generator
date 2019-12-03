@@ -39,17 +39,16 @@ class JaegerSpanFactory {
     Span makeSpan(JSONObject jaegerSpan) {
         JSONArray jaegerTags = jaegerSpan.getJSONArray("tags");
         Span span = createNewSpan(jaegerSpan);
-        Optional<Storage> storage = readStorage(jaegerTags);
-        if (storage.isPresent()) {
-            span.addStorage(readOperation(jaegerSpan), storage.get());
+        if (storageIsPresent(jaegerTags)) {
+            Storage storage = readStorage(jaegerTags);
+            span.addStorage(readOperation(jaegerSpan), storage);
         }
         return span;
     }
 
-    private SpanOperation readOperation(JSONObject jaegerSpan) {
-        if (ON_SEND.equals(jaegerSpan.getString("operationName")))
-            return SpanOperation.PRODUCE;
-        return SpanOperation.CONSUME;
+    private boolean storageIsPresent(JSONArray jaegerTags) {
+        Optional<String> topic = readTag(jaegerTags, "kafka.topic");
+        return topic.isPresent();
     }
 
     private Span createNewSpan(JSONObject jaegerSpan) {
@@ -81,11 +80,13 @@ class JaegerSpanFactory {
         return trimPrefixKafkaName(name);
     }
 
-    private String trimPrefixKafkaName(String name) {
-        String trimmedName = name;
-        if (name.startsWith(KAFKA_KSQL_PREAMBLE))
-            trimmedName = name.substring(KAFKA_KSQL_PREAMBLE.length());
-        return trimmedName;
+    private Optional<String> readTag(JSONArray jaegerTags, String tagName) {
+        for (int i = 0; i < jaegerTags.length(); i++) {
+            JSONObject tag = jaegerTags.getJSONObject(i);
+            if (tagName.equals(tag.getString("key")))
+                return Optional.of(tag.getString("value"));
+        }
+        return Optional.empty();
     }
 
     private String trimPostfix(String name) {
@@ -101,19 +102,22 @@ class JaegerSpanFactory {
         return trimmedName;
     }
 
-    private Optional<Storage> readStorage(JSONArray jaegerTags) {
-        Optional<String> topic = readTag(jaegerTags, "kafka.topic");
-        if (topic.isPresent())
-            return Optional.of(new Storage(topic.get()));
-        return Optional.empty();
+    private String trimPrefixKafkaName(String name) {
+        String trimmedName = name;
+        if (name.startsWith(KAFKA_KSQL_PREAMBLE))
+            trimmedName = name.substring(KAFKA_KSQL_PREAMBLE.length());
+        return trimmedName;
     }
 
-    private Optional<String> readTag(JSONArray jaegerTags, String tagName) {
-        for (int i = 0; i < jaegerTags.length(); i++) {
-            JSONObject tag = jaegerTags.getJSONObject(i);
-            if (tagName.equals(tag.getString("key")))
-                return Optional.of(tag.getString("value"));
-        }
-        return Optional.empty();
+    private Storage readStorage(JSONArray jaegerTags) {
+        Optional<String> topic = readTag(jaegerTags, "kafka.topic");
+        return new Storage(topic.get());
     }
+
+    private SpanOperation readOperation(JSONObject jaegerSpan) {
+        if (ON_SEND.equals(jaegerSpan.getString("operationName")))
+            return SpanOperation.PRODUCE;
+        return SpanOperation.CONSUME;
+    }
+
 }
