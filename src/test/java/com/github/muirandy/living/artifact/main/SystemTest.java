@@ -1,8 +1,10 @@
-package com.github.muirandy.living.artifact.domain;
+package com.github.muirandy.living.artifact.main;
 
 import com.github.muirandy.living.artifact.api.trace.OpenTracingClient;
 import com.github.muirandy.living.artifact.api.diagram.Artifact;
 import com.github.muirandy.living.artifact.api.diagram.ArtifactGenerator;
+import com.github.muirandy.living.artifact.domain.App;
+import com.github.muirandy.living.artifact.domain.ChainBuilder;
 import com.github.muirandy.living.artifact.gateway.jaeger.JaegerClient;
 import com.github.muirandy.living.artifact.gateway.plantuml.ComponentDiagramGenerator;
 import com.github.muirandy.living.artifact.gateway.plantuml.PlantUmlArtifactGenerator;

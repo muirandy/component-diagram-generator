@@ -19,13 +19,6 @@ public class ComponentDiagramGenerator {
             e.printStackTrace();
         }
 
-        /*
-        SourceStringReader reader = new SourceStringReader(source);
-final ByteArrayOutputStream os = new ByteArrayOutputStream();
-// Write the first image to "os"
-String desc = reader.generateImage(os, new FileFormatOption(FileFormat.SVG));
-os.close();
-         */
         return byteArrayOutputStream;
     }
 

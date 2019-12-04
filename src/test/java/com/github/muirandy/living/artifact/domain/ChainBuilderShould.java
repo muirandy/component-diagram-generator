@@ -2,7 +2,6 @@ package com.github.muirandy.living.artifact.domain;
 
 import com.github.muirandy.living.artifact.api.diagram.*;
 import com.github.muirandy.living.artifact.api.trace.*;
-import com.github.muirandy.living.artifact.domain.ChainBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
