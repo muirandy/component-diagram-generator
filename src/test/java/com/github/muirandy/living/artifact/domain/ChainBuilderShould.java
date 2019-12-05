@@ -75,7 +75,7 @@ class ChainBuilderShould {
 
     @Test
     void buildLinkForDataSinkWithinSpan() {
-        Storage topic = new Topic(TOPIC_NAME);
+        Storage topic = new KafkaTopicStorage(TOPIC_NAME);
         Span span = new BasicSpan(SPAN_NAME);
         span.addStorage(SpanOperation.PRODUCE, topic);
         addSpansToTrace(span);
@@ -90,7 +90,7 @@ class ChainBuilderShould {
 
     @Test
     void buildSharedLinkForDataSinkAcrossTwoSpans() {
-        Storage topic = new Topic(TOPIC_NAME);
+        Storage topic = new KafkaTopicStorage(TOPIC_NAME);
 
         Span span = new BasicSpan(SPAN_NAME);
         span.addStorage(SpanOperation.PRODUCE, topic);

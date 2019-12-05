@@ -111,7 +111,7 @@ class JaegerSpanFactory {
 
     private Storage readStorage(JSONArray jaegerTags) {
         Optional<String> topic = readTag(jaegerTags, "kafka.topic");
-        return new Storage(topic.get());
+        return new KafkaTopicStorage(topic.get());
     }
 
     private SpanOperation readOperation(JSONObject jaegerSpan) {

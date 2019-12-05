@@ -80,7 +80,7 @@ class JaegerServiceTest {
         whenWeRunTheService();
 
         Span singleSpan = singleSpan(SPAN_NAME);
-        Storage storage = new Storage("incoming.activemq");
+        Storage storage = new KafkaTopicStorage("incoming.from.activemq");
         singleSpan.addStorage(SpanOperation.PRODUCE, storage);
         thenWeGetATraceWithSpansBack(singleSpan);
     }
@@ -100,7 +100,7 @@ class JaegerServiceTest {
         whenWeRunTheService();
 
         Span ksqlSpan = ksqlSpan("CSAS_STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID_5");
-        Storage storage = new Storage("STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID");
+        Storage storage = new KafkaTopicStorage("STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID");
         ksqlSpan.addStorage(SpanOperation.PRODUCE, storage);
         thenWeGetATraceWithSpansBack(ksqlSpan);
     }

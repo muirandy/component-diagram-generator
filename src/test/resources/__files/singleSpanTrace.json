@@ -19,7 +19,7 @@
             {
               "key": "kafka.topic",
               "type": "string",
-              "value": "incoming.activemq"
+              "value": "incoming.from.activemq"
             },
             {
               "key": "ma",
