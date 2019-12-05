@@ -14,12 +14,14 @@ class JaegerSpanFactory {
     private static final String KAFKA_KSQL_PREAMBLE = "_confluent-ksql-default_query_";
     private JSONObject singleTrace;
     private Map<String, Class<? extends Span>> processes;
+    private Map<String, String> processNames;
     private Map<String, Class<? extends Span>> serviceNames;
 
     JaegerSpanFactory(JSONObject singleTrace) {
         this.singleTrace = singleTrace;
         initialiseServiceNameMap();
         initialiseProcessMap();
+        initialiseProcessNameMap();
     }
 
     private void initialiseServiceNameMap() {
@@ -36,6 +38,15 @@ class JaegerSpanFactory {
         }
     }
 
+    private void initialiseProcessNameMap() {
+        processNames = new HashMap<>();
+        JSONObject processes = singleTrace.getJSONObject("processes");
+        for (String processId : processes.keySet()) {
+            String processName = processes.getJSONObject(processId).getString("serviceName");
+            this.processNames.put(processId, processName);
+        }
+    }
+
     Span makeSpan(JSONObject jaegerSpan) {
         JSONArray jaegerTags = jaegerSpan.getJSONArray("tags");
         Span span = createNewSpan(jaegerSpan);
@@ -46,35 +57,51 @@ class JaegerSpanFactory {
         return span;
     }
 
-    private boolean storageIsPresent(JSONArray jaegerTags) {
-        Optional<String> topic = readTag(jaegerTags, "kafka.topic");
-        return topic.isPresent();
-    }
-
     private Span createNewSpan(JSONObject jaegerSpan) {
         JSONArray jaegerTags = jaegerSpan.getJSONArray("tags");
         String processId = readProcessIdForSpan(jaegerSpan);
         Class<? extends Span> classForSpan = processes.get(processId);
         try {
-            return classForSpan.getConstructor(String.class).newInstance(readSpanName(jaegerTags));
+            return classForSpan.getConstructor(String.class).newInstance(readSpanName(jaegerSpan));
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private boolean storageIsPresent(JSONArray jaegerTags) {
+        Optional<String> topic = readTag(jaegerTags, "kafka.topic");
+        return topic.isPresent();
+    }
+
+    private Storage readStorage(JSONArray jaegerTags) {
+        Optional<String> topic = readTag(jaegerTags, "kafka.topic");
+        return new KafkaTopicStorage(topic.get());
+    }
+
+    private SpanOperation readOperation(JSONObject jaegerSpan) {
+        if (ON_SEND.equals(jaegerSpan.getString("operationName")))
+            return SpanOperation.PRODUCE;
+        return SpanOperation.CONSUME;
     }
 
     private String readProcessIdForSpan(JSONObject jaegerSpan) {
         return jaegerSpan.getString("processID");
     }
 
-    private String readSpanName(JSONArray jaegerTags) {
+    private String readSpanName(JSONObject jaegerSpan) {
         String name = "Unknown!!";
+        JSONArray jaegerTags = jaegerSpan.getJSONArray("tags");
         Optional<String> groupId = readTag(jaegerTags, "kafka.group.id");
+        Optional<String> clientId = readTag(jaegerTags, "kafka.client.id");
         if (groupId.isPresent())
             name = groupId.get();
         else {
-            Optional<String> clientId = readTag(jaegerTags, "kafka.client.id");
             if (clientId.isPresent())
                 name = trimPostfix(clientId.get());
+            else {
+                String processId = readProcessIdForSpan(jaegerSpan);
+                name = processNames.get(processId);
+            }
         }
 
         return trimPrefixKafkaName(name);
@@ -107,17 +134,6 @@ class JaegerSpanFactory {
         if (name.startsWith(KAFKA_KSQL_PREAMBLE))
             trimmedName = name.substring(KAFKA_KSQL_PREAMBLE.length());
         return trimmedName;
-    }
-
-    private Storage readStorage(JSONArray jaegerTags) {
-        Optional<String> topic = readTag(jaegerTags, "kafka.topic");
-        return new KafkaTopicStorage(topic.get());
-    }
-
-    private SpanOperation readOperation(JSONObject jaegerSpan) {
-        if (ON_SEND.equals(jaegerSpan.getString("operationName")))
-            return SpanOperation.PRODUCE;
-        return SpanOperation.CONSUME;
     }
 
 }

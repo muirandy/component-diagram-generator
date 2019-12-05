@@ -1,15 +1,15 @@
 {
   "data": [
     {
-      "traceID": "0123456789abcdef",
+      "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
       "spans": [
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "231c0d31b1df1b0c",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "12eb1d65ecb78a0c",
           "operationName": "on_send",
           "references": [],
-          "startTime": 1574771328776415,
-          "duration": 8,
+          "startTime": 1575549593527335,
+          "duration": 20,
           "tags": [
             {
               "key": "kafka.client.id",
@@ -29,7 +29,7 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771328776415,
+              "timestamp": 1575549593527335,
               "fields": [
                 {
                   "key": "event",
@@ -43,68 +43,23 @@
           "warnings": null
         },
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "519809f8dc278215",
-          "operationName": "on_send",
-          "references": [
-            {
-              "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "d67e2cd7bc1c7954"
-            }
-          ],
-          "startTime": 1574771328785476,
-          "duration": 2,
-          "tags": [
-            {
-              "key": "kafka.client.id",
-              "type": "string",
-              "value": "_confluent-ksql-default_query_CSAS_INCOMING_OP_MSGS_7-ad639a0b-af7f-4fc8-82dc-8074f5c6b0ce-StreamThread-1-producer"
-            },
-            {
-              "key": "kafka.topic",
-              "type": "string",
-              "value": "INCOMING_OP_MSGS"
-            },
-            {
-              "key": "ma",
-              "type": "bool",
-              "value": false
-            }
-          ],
-          "logs": [
-            {
-              "timestamp": 1574771328785476,
-              "fields": [
-                {
-                  "key": "event",
-                  "type": "string",
-                  "value": "ms"
-                }
-              ]
-            }
-          ],
-          "processID": "p2",
-          "warnings": null
-        },
-        {
-          "traceID": "0123456789abcdef",
-          "spanID": "d67e2cd7bc1c7954",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "8c9f7090f3f046ac",
           "operationName": "on_consume",
           "references": [
             {
               "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "231c0d31b1df1b0c"
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "12eb1d65ecb78a0c"
             }
           ],
-          "startTime": 1574771328776418,
-          "duration": 2,
+          "startTime": 1575549593527341,
+          "duration": 7,
           "tags": [
             {
               "key": "kafka.client.id",
               "type": "string",
-              "value": "_confluent-ksql-default_query_CSAS_INCOMING_OP_MSGS_7-ad639a0b-af7f-4fc8-82dc-8074f5c6b0ce-StreamThread-1-consumer"
+              "value": "_confluent-ksql-default_query_CSAS_INCOMING_OP_MSGS_7-34b0696e-f3f1-433a-9895-bc951e838746-StreamThread-1-consumer"
             },
             {
               "key": "kafka.group.id",
@@ -124,7 +79,7 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771328776418,
+              "timestamp": 1575549593527341,
               "fields": [
                 {
                   "key": "event",
@@ -138,33 +93,28 @@
           "warnings": null
         },
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "b9e58add4bf02c42",
-          "operationName": "on_consume",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "e0a290ed3f54ad22",
+          "operationName": "on_send",
           "references": [
             {
               "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "84ae7f0bf5bac516"
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "8c9f7090f3f046ac"
             }
           ],
-          "startTime": 1574771329681420,
-          "duration": 1,
+          "startTime": 1575549593563393,
+          "duration": 9,
           "tags": [
             {
               "key": "kafka.client.id",
               "type": "string",
-              "value": "_confluent-ksql-default_query_CSAS_STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID_5-73185a9f-1ed6-4033-8507-1795e3368c4c-StreamThread-1-consumer"
-            },
-            {
-              "key": "kafka.group.id",
-              "type": "string",
-              "value": "_confluent-ksql-default_query_CSAS_STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID_5"
+              "value": "_confluent-ksql-default_query_CSAS_INCOMING_OP_MSGS_7-34b0696e-f3f1-433a-9895-bc951e838746-StreamThread-1-producer"
             },
             {
               "key": "kafka.topic",
               "type": "string",
-              "value": "STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_DN"
+              "value": "INCOMING_OP_MSGS"
             },
             {
               "key": "ma",
@@ -174,12 +124,12 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771329681420,
+              "timestamp": 1575549593563393,
               "fields": [
                 {
                   "key": "event",
                   "type": "string",
-                  "value": "mr"
+                  "value": "ms"
                 }
               ]
             }
@@ -188,28 +138,23 @@
           "warnings": null
         },
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "e9196227910aa49f",
-          "operationName": "on_consume",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "3af321e12afdc1f8",
+          "operationName": "on_send",
           "references": [
             {
               "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "e8247981e5118bdd"
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "bb70f07b771154f4"
             }
           ],
-          "startTime": 1574771329151508,
-          "duration": 2,
+          "startTime": 1575549593664465,
+          "duration": 7,
           "tags": [
             {
               "key": "kafka.client.id",
               "type": "string",
-              "value": "connector-consumer-audit-es-sink-0"
-            },
-            {
-              "key": "kafka.group.id",
-              "type": "string",
-              "value": "connect-audit-es-sink"
+              "value": "_confluent-ksql-default_query_CSAS_RAW_VOIP_INSTRUCTIONS_0-8d133d4a-e42e-4e77-a20e-4ed614edb147-StreamThread-2-producer"
             },
             {
               "key": "kafka.topic",
@@ -224,187 +169,37 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771329151508,
+              "timestamp": 1575549593664465,
               "fields": [
                 {
                   "key": "event",
                   "type": "string",
-                  "value": "mr"
+                  "value": "ms"
                 }
               ]
             }
           ],
-          "processID": "p1",
+          "processID": "p2",
           "warnings": null
         },
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "b3db8558875ed044",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "fa85b6db341ee5ea",
           "operationName": "on_consume",
           "references": [
             {
               "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "519809f8dc278215"
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "3af321e12afdc1f8"
             }
           ],
-          "startTime": 1574771329171125,
-          "duration": 5,
+          "startTime": 1575549593839412,
+          "duration": 8,
           "tags": [
             {
               "key": "kafka.client.id",
               "type": "string",
-              "value": "connector-consumer-audit-es-sink-0"
-            },
-            {
-              "key": "kafka.group.id",
-              "type": "string",
-              "value": "connect-audit-es-sink"
-            },
-            {
-              "key": "kafka.topic",
-              "type": "string",
-              "value": "modify.op.msgs"
-            },
-            {
-              "key": "ma",
-              "type": "bool",
-              "value": false
-            }
-          ],
-          "logs": [
-            {
-              "timestamp": 1574771329171125,
-              "fields": [
-                {
-                  "key": "event",
-                  "type": "string",
-                  "value": "mr"
-                }
-              ]
-            }
-          ],
-          "processID": "p1",
-          "warnings": null
-        },
-        {
-          "traceID": "0123456789abcdef",
-          "spanID": "d876fa1a84258d75",
-          "operationName": "on_consume",
-          "references": [
-            {
-              "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "b34d8ed34d3fc6b"
-            }
-          ],
-          "startTime": 1574771329174486,
-          "duration": 2,
-          "tags": [
-            {
-              "key": "kafka.topic",
-              "type": "string",
-              "value": "AUDIT"
-            },
-            {
-              "key": "kafka.client.id",
-              "type": "string",
-              "value": "connector-consumer-audit-es-sink-0"
-            },
-            {
-              "key": "kafka.group.id",
-              "type": "string",
-              "value": "connect-audit-es-sink"
-            },
-            {
-              "key": "ma",
-              "type": "bool",
-              "value": false
-            }
-          ],
-          "logs": [
-            {
-              "timestamp": 1574771329174486,
-              "fields": [
-                {
-                  "key": "event",
-                  "type": "string",
-                  "value": "mr"
-                }
-              ]
-            }
-          ],
-          "processID": "p1",
-          "warnings": null
-        },
-        {
-          "traceID": "0123456789abcdef",
-          "spanID": "881916cd90130e65",
-          "operationName": "on_consume",
-          "references": [
-            {
-              "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "47ff773310d6d93"
-            }
-          ],
-          "startTime": 1574771329373483,
-          "duration": 1,
-          "tags": [
-            {
-              "key": "kafka.topic",
-              "type": "string",
-              "value": "AUDIT"
-            },
-            {
-              "key": "kafka.client.id",
-              "type": "string",
-              "value": "connector-consumer-audit-es-sink-0"
-            },
-            {
-              "key": "kafka.group.id",
-              "type": "string",
-              "value": "connect-audit-es-sink"
-            },
-            {
-              "key": "ma",
-              "type": "bool",
-              "value": false
-            }
-          ],
-          "logs": [
-            {
-              "timestamp": 1574771329373483,
-              "fields": [
-                {
-                  "key": "event",
-                  "type": "string",
-                  "value": "mr"
-                }
-              ]
-            }
-          ],
-          "processID": "p1",
-          "warnings": null
-        },
-        {
-          "traceID": "0123456789abcdef",
-          "spanID": "c72e20694b4a4b9d",
-          "operationName": "on_consume",
-          "references": [
-            {
-              "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "e8247981e5118bdd"
-            }
-          ],
-          "startTime": 1574771329368441,
-          "duration": 2,
-          "tags": [
-            {
-              "key": "kafka.client.id",
-              "type": "string",
-              "value": "_confluent-ksql-default_query_CSAS_REKEYED_RAW_VOIP_INSTRUCTIONS_1-178addac-b4c0-48fa-b591-8d59cca7b6cc-StreamThread-1-consumer"
+              "value": "_confluent-ksql-default_query_CSAS_REKEYED_RAW_VOIP_INSTRUCTIONS_1-2b701068-2fde-4f57-8a16-a118b4ef5527-StreamThread-4-consumer"
             },
             {
               "key": "kafka.group.id",
@@ -424,7 +219,7 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771329368441,
+              "timestamp": 1575549593839412,
               "fields": [
                 {
                   "key": "event",
@@ -438,23 +233,23 @@
           "warnings": null
         },
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "6a970ac21b732a49",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "bb70f07b771154f4",
           "operationName": "on_consume",
           "references": [
             {
               "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "519809f8dc278215"
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "d67f9b840cc4d644"
             }
           ],
-          "startTime": 1574771329112434,
-          "duration": 1,
+          "startTime": 1575549593649415,
+          "duration": 8,
           "tags": [
             {
               "key": "kafka.client.id",
               "type": "string",
-              "value": "_confluent-ksql-default_query_CSAS_RAW_VOIP_INSTRUCTIONS_0-d11c8416-0571-4569-b893-252d1cf6a4d9-StreamThread-3-consumer"
+              "value": "_confluent-ksql-default_query_CSAS_RAW_VOIP_INSTRUCTIONS_0-8d133d4a-e42e-4e77-a20e-4ed614edb147-StreamThread-2-consumer"
             },
             {
               "key": "kafka.group.id",
@@ -474,7 +269,7 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771329112434,
+              "timestamp": 1575549593649415,
               "fields": [
                 {
                   "key": "event",
@@ -488,120 +283,30 @@
           "warnings": null
         },
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "e8247981e5118bdd",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "6f26e021a7c9eec0",
           "operationName": "on_send",
           "references": [
             {
               "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "6a970ac21b732a49"
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "df534c8c184adc86"
             }
           ],
-          "startTime": 1574771329151508,
-          "duration": 2,
+          "startTime": 1575549593715463,
+          "duration": 8,
           "tags": [
             {
               "key": "kafka.client.id",
               "type": "string",
-              "value": "_confluent-ksql-default_query_CSAS_RAW_VOIP_INSTRUCTIONS_0-d11c8416-0571-4569-b893-252d1cf6a4d9-StreamThread-3-producer"
+              "value": "_confluent-ksql-default_query_CSAS_AUDIT_8-1db8abfb-56c7-43f4-b7a2-feb848db0d81-StreamThread-3-producer"
             },
-            {
-              "key": "kafka.topic",
-              "type": "string",
-              "value": "RAW_VOIP_INSTRUCTIONS"
-            },
-            {
-              "key": "ma",
-              "type": "bool",
-              "value": false
-            }
-          ],
-          "logs": [
-            {
-              "timestamp": 1574771329151508,
-              "fields": [
-                {
-                  "key": "event",
-                  "type": "string",
-                  "value": "ms"
-                }
-              ]
-            }
-          ],
-          "processID": "p2",
-          "warnings": null
-        },
-        {
-          "traceID": "0123456789abcdef",
-          "spanID": "7c93c46520806a66",
-          "operationName": "on_send",
-          "references": [
-            {
-              "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "c72e20694b4a4b9d"
-            }
-          ],
-          "startTime": 1574771329372681,
-          "duration": 1,
-          "tags": [
-            {
-              "key": "kafka.client.id",
-              "type": "string",
-              "value": "_confluent-ksql-default_query_CSAS_REKEYED_RAW_VOIP_INSTRUCTIONS_1-178addac-b4c0-48fa-b591-8d59cca7b6cc-StreamThread-1-producer"
-            },
-            {
-              "key": "kafka.topic",
-              "type": "string",
-              "value": "REKEYED_RAW_VOIP_INSTRUCTIONS"
-            },
-            {
-              "key": "ma",
-              "type": "bool",
-              "value": false
-            }
-          ],
-          "logs": [
-            {
-              "timestamp": 1574771329372681,
-              "fields": [
-                {
-                  "key": "event",
-                  "type": "string",
-                  "value": "ms"
-                }
-              ]
-            }
-          ],
-          "processID": "p2",
-          "warnings": null
-        },
-        {
-          "traceID": "0123456789abcdef",
-          "spanID": "b34d8ed34d3fc6b",
-          "operationName": "on_send",
-          "references": [
-            {
-              "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "75e20e80ec62fab1"
-            }
-          ],
-          "startTime": 1574771329174486,
-          "duration": 2,
-          "tags": [
             {
               "key": "kafka.topic",
               "type": "string",
               "value": "AUDIT"
             },
             {
-              "key": "kafka.client.id",
-              "type": "string",
-              "value": "_confluent-ksql-default_query_CSAS_AUDIT_8-31162899-1403-49bf-bc2a-6d4349254f1f-StreamThread-3-producer"
-            },
-            {
               "key": "ma",
               "type": "bool",
               "value": false
@@ -609,7 +314,7 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771329174486,
+              "timestamp": 1575549593715463,
               "fields": [
                 {
                   "key": "event",
@@ -623,23 +328,23 @@
           "warnings": null
         },
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "75e20e80ec62fab1",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "df534c8c184adc86",
           "operationName": "on_consume",
           "references": [
             {
               "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "519809f8dc278215"
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "d67f9b840cc4d644"
             }
           ],
-          "startTime": 1574771329122418,
-          "duration": 1,
+          "startTime": 1575549593649416,
+          "duration": 6,
           "tags": [
             {
               "key": "kafka.client.id",
               "type": "string",
-              "value": "_confluent-ksql-default_query_CSAS_AUDIT_8-31162899-1403-49bf-bc2a-6d4349254f1f-StreamThread-3-consumer"
+              "value": "_confluent-ksql-default_query_CSAS_AUDIT_8-1db8abfb-56c7-43f4-b7a2-feb848db0d81-StreamThread-3-consumer"
             },
             {
               "key": "kafka.group.id",
@@ -659,7 +364,7 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771329122418,
+              "timestamp": 1575549593649416,
               "fields": [
                 {
                   "key": "event",
@@ -673,23 +378,68 @@
           "warnings": null
         },
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "84ae7f0bf5bac516",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "7928a99d9f3334dc",
           "operationName": "on_send",
           "references": [
             {
               "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "485dbe5deb13cb48"
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "fa85b6db341ee5ea"
             }
           ],
-          "startTime": 1574771329552484,
-          "duration": 2,
+          "startTime": 1575549593844457,
+          "duration": 8,
           "tags": [
             {
               "key": "kafka.client.id",
               "type": "string",
-              "value": "_confluent-ksql-default_query_CSAS_STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_DN_3-87c3a52c-adf2-4c4c-af61-a9d4745cb0c4-StreamThread-3-producer"
+              "value": "_confluent-ksql-default_query_CSAS_REKEYED_RAW_VOIP_INSTRUCTIONS_1-2b701068-2fde-4f57-8a16-a118b4ef5527-StreamThread-4-producer"
+            },
+            {
+              "key": "kafka.topic",
+              "type": "string",
+              "value": "REKEYED_RAW_VOIP_INSTRUCTIONS"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1575549593844457,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "ms"
+                }
+              ]
+            }
+          ],
+          "processID": "p2",
+          "warnings": null
+        },
+        {
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "ce5c8303b78b0320",
+          "operationName": "on_send",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "7d485feb1f899e24"
+            }
+          ],
+          "startTime": 1575549594003439,
+          "duration": 8,
+          "tags": [
+            {
+              "key": "kafka.client.id",
+              "type": "string",
+              "value": "_confluent-ksql-default_query_CSAS_STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_DN_3-e7ccbb5b-6804-427e-8a17-ce20b2fcfa86-StreamThread-2-producer"
             },
             {
               "key": "kafka.topic",
@@ -704,7 +454,7 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771329552484,
+              "timestamp": 1575549594003439,
               "fields": [
                 {
                   "key": "event",
@@ -718,23 +468,353 @@
           "warnings": null
         },
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "485dbe5deb13cb48",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "e1df8f346df736ae",
           "operationName": "on_consume",
           "references": [
             {
               "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "7c93c46520806a66"
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "3af321e12afdc1f8"
             }
           ],
-          "startTime": 1574771329540434,
-          "duration": 2,
+          "startTime": 1575549594232031,
+          "duration": 14,
+          "tags": [
+            {
+              "key": "kafka.topic",
+              "type": "string",
+              "value": "RAW_VOIP_INSTRUCTIONS"
+            },
+            {
+              "key": "kafka.client.id",
+              "type": "string",
+              "value": "connector-consumer-audit-es-sink-0"
+            },
+            {
+              "key": "kafka.group.id",
+              "type": "string",
+              "value": "connect-audit-es-sink"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1575549594232031,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "mr"
+                }
+              ]
+            }
+          ],
+          "processID": "p3",
+          "warnings": null
+        },
+        {
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "f7db1144fae1507d",
+          "operationName": "on_consume",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "2cd4111420c4ea32"
+            }
+          ],
+          "startTime": 1575549594476028,
+          "duration": 10,
+          "tags": [
+            {
+              "key": "kafka.group.id",
+              "type": "string",
+              "value": "connect-audit-es-sink"
+            },
+            {
+              "key": "kafka.topic",
+              "type": "string",
+              "value": "AUDIT"
+            },
+            {
+              "key": "kafka.client.id",
+              "type": "string",
+              "value": "connector-consumer-audit-es-sink-0"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1575549594476028,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "mr"
+                }
+              ]
+            }
+          ],
+          "processID": "p3",
+          "warnings": null
+        },
+        {
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "7d0301dcd574e892",
+          "operationName": "on_consume",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "6f26e021a7c9eec0"
+            }
+          ],
+          "startTime": 1575549593715464,
+          "duration": 7,
           "tags": [
             {
               "key": "kafka.client.id",
               "type": "string",
-              "value": "_confluent-ksql-default_query_CSAS_STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_DN_3-87c3a52c-adf2-4c4c-af61-a9d4745cb0c4-StreamThread-3-consumer"
+              "value": "connector-consumer-audit-es-sink-0"
+            },
+            {
+              "key": "kafka.group.id",
+              "type": "string",
+              "value": "connect-audit-es-sink"
+            },
+            {
+              "key": "kafka.topic",
+              "type": "string",
+              "value": "AUDIT"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1575549593715464,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "mr"
+                }
+              ]
+            }
+          ],
+          "processID": "p3",
+          "warnings": null
+        },
+        {
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "2a8d9c8490d4def7",
+          "operationName": "on_consume",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "d60eb43f4e418357"
+            }
+          ],
+          "startTime": 1575549594246458,
+          "duration": 7,
+          "tags": [
+            {
+              "key": "kafka.client.id",
+              "type": "string",
+              "value": "connector-consumer-audit-es-sink-0"
+            },
+            {
+              "key": "kafka.group.id",
+              "type": "string",
+              "value": "connect-audit-es-sink"
+            },
+            {
+              "key": "kafka.topic",
+              "type": "string",
+              "value": "SINK_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1575549594246458,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "mr"
+                }
+              ]
+            }
+          ],
+          "processID": "p3",
+          "warnings": null
+        },
+        {
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "cdbc25b9de6da17a",
+          "operationName": "on_consume",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "d67f9b840cc4d644"
+            }
+          ],
+          "startTime": 1575549593649414,
+          "duration": 11,
+          "tags": [
+            {
+              "key": "kafka.client.id",
+              "type": "string",
+              "value": "connector-consumer-audit-es-sink-0"
+            },
+            {
+              "key": "kafka.group.id",
+              "type": "string",
+              "value": "connect-audit-es-sink"
+            },
+            {
+              "key": "kafka.topic",
+              "type": "string",
+              "value": "modify.op.msgs"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1575549593649414,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "mr"
+                }
+              ]
+            }
+          ],
+          "processID": "p3",
+          "warnings": null
+        },
+        {
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "10300812187f62e0",
+          "operationName": "poll",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "e0a290ed3f54ad22"
+            }
+          ],
+          "startTime": 1575549593563397,
+          "duration": 1,
+          "tags": [
+            {
+              "key": "kafka.topic",
+              "type": "string",
+              "value": "INCOMING_OP_MSGS"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1575549593563397,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "mr"
+                }
+              ]
+            }
+          ],
+          "processID": "p4",
+          "warnings": null
+        },
+        {
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "d67f9b840cc4d644",
+          "operationName": "send",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "10300812187f62e0"
+            }
+          ],
+          "startTime": 1575549593585965,
+          "duration": 126908,
+          "tags": [
+            {
+              "key": "kafka.topic",
+              "type": "string",
+              "value": "modify.op.msgs"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1575549593585965,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "ms"
+                }
+              ]
+            }
+          ],
+          "processID": "p4",
+          "warnings": null
+        },
+        {
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "7d485feb1f899e24",
+          "operationName": "on_consume",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "7928a99d9f3334dc"
+            }
+          ],
+          "startTime": 1575549593997412,
+          "duration": 8,
+          "tags": [
+            {
+              "key": "kafka.client.id",
+              "type": "string",
+              "value": "_confluent-ksql-default_query_CSAS_STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_DN_3-e7ccbb5b-6804-427e-8a17-ce20b2fcfa86-StreamThread-2-consumer"
             },
             {
               "key": "kafka.group.id",
@@ -754,7 +834,7 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771329540434,
+              "timestamp": 1575549593997412,
               "fields": [
                 {
                   "key": "event",
@@ -768,23 +848,23 @@
           "warnings": null
         },
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "47ff773310d6d93",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "2cd4111420c4ea32",
           "operationName": "on_send",
           "references": [
             {
               "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "27179eef72e6ec92"
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "50e32f4f5bd2bc16"
             }
           ],
-          "startTime": 1574771329373483,
-          "duration": 1,
+          "startTime": 1575549593893465,
+          "duration": 8,
           "tags": [
             {
               "key": "kafka.client.id",
               "type": "string",
-              "value": "_confluent-ksql-default_query_InsertQuery_9-f220a050-796d-4a6f-8e57-40ebe6a445cc-StreamThread-3-producer"
+              "value": "_confluent-ksql-default_query_InsertQuery_9-b9310d62-cdcc-474a-9be5-ec16e8eb52df-StreamThread-2-producer"
             },
             {
               "key": "kafka.topic",
@@ -799,7 +879,7 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771329373483,
+              "timestamp": 1575549593893465,
               "fields": [
                 {
                   "key": "event",
@@ -813,23 +893,23 @@
           "warnings": null
         },
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "27179eef72e6ec92",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "50e32f4f5bd2bc16",
           "operationName": "on_consume",
           "references": [
             {
               "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "e8247981e5118bdd"
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "3af321e12afdc1f8"
             }
           ],
-          "startTime": 1574771329339419,
-          "duration": 1,
+          "startTime": 1575549593865410,
+          "duration": 7,
           "tags": [
             {
               "key": "kafka.client.id",
               "type": "string",
-              "value": "_confluent-ksql-default_query_InsertQuery_9-f220a050-796d-4a6f-8e57-40ebe6a445cc-StreamThread-3-consumer"
+              "value": "_confluent-ksql-default_query_InsertQuery_9-b9310d62-cdcc-474a-9be5-ec16e8eb52df-StreamThread-2-consumer"
             },
             {
               "key": "kafka.group.id",
@@ -849,7 +929,7 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771329339419,
+              "timestamp": 1575549593865410,
               "fields": [
                 {
                   "key": "event",
@@ -863,118 +943,23 @@
           "warnings": null
         },
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "7b6e78ec607088fc",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "fbbf894d2d36660b",
           "operationName": "on_send",
           "references": [
             {
               "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "b16dd7eb84830318"
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "121ce8e51c1c83bf"
             }
           ],
-          "startTime": 1574771329815452,
-          "duration": 1,
+          "startTime": 1575549594416447,
+          "duration": 7,
           "tags": [
             {
               "key": "kafka.client.id",
               "type": "string",
-              "value": "_confluent-ksql-default_query_CSAS_SINK_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID_6-40382c9c-5dd5-4c18-b748-efe4e5e3e965-StreamThread-1-producer"
-            },
-            {
-              "key": "kafka.topic",
-              "type": "string",
-              "value": "SINK_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID"
-            },
-            {
-              "key": "ma",
-              "type": "bool",
-              "value": false
-            }
-          ],
-          "logs": [
-            {
-              "timestamp": 1574771329815452,
-              "fields": [
-                {
-                  "key": "event",
-                  "type": "string",
-                  "value": "ms"
-                }
-              ]
-            }
-          ],
-          "processID": "p2",
-          "warnings": null
-        },
-        {
-          "traceID": "0123456789abcdef",
-          "spanID": "b16dd7eb84830318",
-          "operationName": "on_consume",
-          "references": [
-            {
-              "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "6e4ecc180a3378c5"
-            }
-          ],
-          "startTime": 1574771329814421,
-          "duration": 1,
-          "tags": [
-            {
-              "key": "kafka.client.id",
-              "type": "string",
-              "value": "_confluent-ksql-default_query_CSAS_SINK_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID_6-40382c9c-5dd5-4c18-b748-efe4e5e3e965-StreamThread-1-consumer"
-            },
-            {
-              "key": "kafka.group.id",
-              "type": "string",
-              "value": "_confluent-ksql-default_query_CSAS_SINK_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID_6"
-            },
-            {
-              "key": "kafka.topic",
-              "type": "string",
-              "value": "STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID"
-            },
-            {
-              "key": "ma",
-              "type": "bool",
-              "value": false
-            }
-          ],
-          "logs": [
-            {
-              "timestamp": 1574771329814421,
-              "fields": [
-                {
-                  "key": "event",
-                  "type": "string",
-                  "value": "mr"
-                }
-              ]
-            }
-          ],
-          "processID": "p2",
-          "warnings": null
-        },
-        {
-          "traceID": "0123456789abcdef",
-          "spanID": "fb6a2d4117239f21",
-          "operationName": "on_send",
-          "references": [
-            {
-              "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "9d4ddd445e1f7e02"
-            }
-          ],
-          "startTime": 1574771329941491,
-          "duration": 1,
-          "tags": [
-            {
-              "key": "kafka.client.id",
-              "type": "string",
-              "value": "_confluent-ksql-default_query_InsertQuery_10-1a2759fb-ce0f-4608-99fe-4f8b2ed25d21-StreamThread-3-producer"
+              "value": "_confluent-ksql-default_query_InsertQuery_10-6a0c763d-8113-4937-8b47-3f1c84481179-StreamThread-2-producer"
             },
             {
               "key": "kafka.topic",
@@ -989,7 +974,7 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771329941491,
+              "timestamp": 1575549594416447,
               "fields": [
                 {
                   "key": "event",
@@ -1003,23 +988,118 @@
           "warnings": null
         },
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "9d4ddd445e1f7e02",
-          "operationName": "on_consume",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "5e091a72946f06ae",
+          "operationName": "on_send",
           "references": [
             {
               "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "7b6e78ec607088fc"
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "89d1301e096edb82"
             }
           ],
-          "startTime": 1574771329939419,
-          "duration": 1,
+          "startTime": 1575549594121448,
+          "duration": 9,
           "tags": [
             {
               "key": "kafka.client.id",
               "type": "string",
-              "value": "_confluent-ksql-default_query_InsertQuery_10-1a2759fb-ce0f-4608-99fe-4f8b2ed25d21-StreamThread-3-consumer"
+              "value": "_confluent-ksql-default_query_CSAS_STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID_5-0ed2bc98-cfd9-41c8-b9f8-674788f73cdb-StreamThread-2-producer"
+            },
+            {
+              "key": "kafka.topic",
+              "type": "string",
+              "value": "STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1575549594121448,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "ms"
+                }
+              ]
+            }
+          ],
+          "processID": "p2",
+          "warnings": null
+        },
+        {
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "89d1301e096edb82",
+          "operationName": "on_consume",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "ce5c8303b78b0320"
+            }
+          ],
+          "startTime": 1575549594118417,
+          "duration": 8,
+          "tags": [
+            {
+              "key": "kafka.client.id",
+              "type": "string",
+              "value": "_confluent-ksql-default_query_CSAS_STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID_5-0ed2bc98-cfd9-41c8-b9f8-674788f73cdb-StreamThread-2-consumer"
+            },
+            {
+              "key": "kafka.group.id",
+              "type": "string",
+              "value": "_confluent-ksql-default_query_CSAS_STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID_5"
+            },
+            {
+              "key": "kafka.topic",
+              "type": "string",
+              "value": "STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_DN"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1575549594118417,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "mr"
+                }
+              ]
+            }
+          ],
+          "processID": "p2",
+          "warnings": null
+        },
+        {
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "121ce8e51c1c83bf",
+          "operationName": "on_consume",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "d60eb43f4e418357"
+            }
+          ],
+          "startTime": 1575549594413410,
+          "duration": 8,
+          "tags": [
+            {
+              "key": "kafka.client.id",
+              "type": "string",
+              "value": "_confluent-ksql-default_query_InsertQuery_10-6a0c763d-8113-4937-8b47-3f1c84481179-StreamThread-2-consumer"
             },
             {
               "key": "kafka.group.id",
@@ -1039,7 +1119,7 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771329939419,
+              "timestamp": 1575549594413410,
               "fields": [
                 {
                   "key": "event",
@@ -1053,23 +1133,28 @@
           "warnings": null
         },
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "6e4ecc180a3378c5",
-          "operationName": "on_send",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "78d06ccc0c78bb12",
+          "operationName": "on_consume",
           "references": [
             {
               "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "b9e58add4bf02c42"
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "5e091a72946f06ae"
             }
           ],
-          "startTime": 1574771329693499,
-          "duration": 2,
+          "startTime": 1575549594240414,
+          "duration": 8,
           "tags": [
             {
               "key": "kafka.client.id",
               "type": "string",
-              "value": "_confluent-ksql-default_query_CSAS_STREAM_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID_5-73185a9f-1ed6-4033-8507-1795e3368c4c-StreamThread-1-producer"
+              "value": "_confluent-ksql-default_query_CSAS_SINK_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID_6-93743d69-4d40-4b55-9396-b68f406c66d9-StreamThread-2-consumer"
+            },
+            {
+              "key": "kafka.group.id",
+              "type": "string",
+              "value": "_confluent-ksql-default_query_CSAS_SINK_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID_6"
             },
             {
               "key": "kafka.topic",
@@ -1084,57 +1169,7 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771329693499,
-              "fields": [
-                {
-                  "key": "event",
-                  "type": "string",
-                  "value": "ms"
-                }
-              ]
-            }
-          ],
-          "processID": "p2",
-          "warnings": null
-        },
-        {
-          "traceID": "0123456789abcdef",
-          "spanID": "12d8ebcc37e3771f",
-          "operationName": "on_consume",
-          "references": [
-            {
-              "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "7b6e78ec607088fc"
-            }
-          ],
-          "startTime": 1574771329815452,
-          "duration": 1,
-          "tags": [
-            {
-              "key": "kafka.topic",
-              "type": "string",
-              "value": "switch.modification.instructions"
-            },
-            {
-              "key": "kafka.client.id",
-              "type": "string",
-              "value": "connector-consumer-AMQSinkConnector-0"
-            },
-            {
-              "key": "kafka.group.id",
-              "type": "string",
-              "value": "connect-AMQSinkConnector"
-            },
-            {
-              "key": "ma",
-              "type": "bool",
-              "value": false
-            }
-          ],
-          "logs": [
-            {
-              "timestamp": 1574771329815452,
+              "timestamp": 1575549594240414,
               "fields": [
                 {
                   "key": "event",
@@ -1144,32 +1179,27 @@
               ]
             }
           ],
-          "processID": "p1",
+          "processID": "p2",
           "warnings": null
         },
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "ce9cf2bbe6ed7ff0",
-          "operationName": "on_consume",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "d60eb43f4e418357",
+          "operationName": "on_send",
           "references": [
             {
               "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "7b6e78ec607088fc"
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "78d06ccc0c78bb12"
             }
           ],
-          "startTime": 1574771329815452,
-          "duration": 1,
+          "startTime": 1575549594246457,
+          "duration": 8,
           "tags": [
             {
               "key": "kafka.client.id",
               "type": "string",
-              "value": "connector-consumer-audit-es-sink-0"
-            },
-            {
-              "key": "kafka.group.id",
-              "type": "string",
-              "value": "connect-audit-es-sink"
+              "value": "_confluent-ksql-default_query_CSAS_SINK_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID_6-93743d69-4d40-4b55-9396-b68f406c66d9-StreamThread-2-producer"
             },
             {
               "key": "kafka.topic",
@@ -1184,7 +1214,87 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771329815452,
+              "timestamp": 1575549594246457,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "ms"
+                }
+              ]
+            }
+          ],
+          "processID": "p2",
+          "warnings": null
+        },
+        {
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "95536e80eecc2b60",
+          "operationName": "send",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "493f6709be97798d"
+            }
+          ],
+          "startTime": 1575549594540839,
+          "duration": 158032,
+          "tags": [
+            {
+              "key": "kafka.topic",
+              "type": "string",
+              "value": "switch.modification.instructions"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1575549594540839,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "ms"
+                }
+              ]
+            }
+          ],
+          "processID": "p5",
+          "warnings": null
+        },
+        {
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "493f6709be97798d",
+          "operationName": "poll",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "100d4dd52b91012f"
+            }
+          ],
+          "startTime": 1575549594309241,
+          "duration": 1,
+          "tags": [
+            {
+              "key": "kafka.topic",
+              "type": "string",
+              "value": "XML_SINK_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1575549594309241,
               "fields": [
                 {
                   "key": "event",
@@ -1194,22 +1304,152 @@
               ]
             }
           ],
-          "processID": "p1",
+          "processID": "p5",
           "warnings": null
         },
         {
-          "traceID": "0123456789abcdef",
-          "spanID": "e23db991643f4b7b",
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "100d4dd52b91012f",
+          "operationName": "send",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "c81473251ca0084e"
+            }
+          ],
+          "startTime": 1575549594248464,
+          "duration": 121556,
+          "tags": [
+            {
+              "key": "kafka.topic",
+              "type": "string",
+              "value": "XML_SINK_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1575549594248464,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "ms"
+                }
+              ]
+            }
+          ],
+          "processID": "p6",
+          "warnings": null
+        },
+        {
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "c81473251ca0084e",
+          "operationName": "poll",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "d60eb43f4e418357"
+            }
+          ],
+          "startTime": 1575549594246461,
+          "duration": 1,
+          "tags": [
+            {
+              "key": "kafka.topic",
+              "type": "string",
+              "value": "SINK_MODIFY_VOIP_INSTRUCTIONS_WITH_SWITCH_ID"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1575549594246461,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "mr"
+                }
+              ]
+            }
+          ],
+          "processID": "p6",
+          "warnings": null
+        },
+        {
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "af9451cd3e2e50f8",
           "operationName": "on_consume",
           "references": [
             {
               "refType": "CHILD_OF",
-              "traceID": "0123456789abcdef",
-              "spanID": "fb6a2d4117239f21"
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "95536e80eecc2b60"
             }
           ],
-          "startTime": 1574771329941491,
-          "duration": 1,
+          "startTime": 1575549594619852,
+          "duration": 7,
+          "tags": [
+            {
+              "key": "kafka.client.id",
+              "type": "string",
+              "value": "connector-consumer-AMQSinkConnector-0"
+            },
+            {
+              "key": "kafka.group.id",
+              "type": "string",
+              "value": "connect-AMQSinkConnector"
+            },
+            {
+              "key": "kafka.topic",
+              "type": "string",
+              "value": "switch.modification.instructions"
+            },
+            {
+              "key": "ma",
+              "type": "bool",
+              "value": false
+            }
+          ],
+          "logs": [
+            {
+              "timestamp": 1575549594619852,
+              "fields": [
+                {
+                  "key": "event",
+                  "type": "string",
+                  "value": "mr"
+                }
+              ]
+            }
+          ],
+          "processID": "p3",
+          "warnings": null
+        },
+        {
+          "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+          "spanID": "c2480a9065e71b41",
+          "operationName": "on_consume",
+          "references": [
+            {
+              "refType": "CHILD_OF",
+              "traceID": "5de8fa999e1fd34b12eb1d65ecb78a0c",
+              "spanID": "fbbf894d2d36660b"
+            }
+          ],
+          "startTime": 1575549594416447,
+          "duration": 7,
           "tags": [
             {
               "key": "kafka.client.id",
@@ -1234,7 +1474,7 @@
           ],
           "logs": [
             {
-              "timestamp": 1574771329941491,
+              "timestamp": 1575549594416447,
               "fields": [
                 {
                   "key": "event",
@@ -1244,18 +1484,18 @@
               ]
             }
           ],
-          "processID": "p1",
+          "processID": "p3",
           "warnings": null
         }
       ],
       "processes": {
         "p1": {
-          "serviceName": "connect",
+          "serviceName": "kafka-connect-producer",
           "tags": [
             {
               "key": "ip",
               "type": "string",
-              "value": "172.18.0.16"
+              "value": "172.21.0.12"
             }
           ]
         },
@@ -1265,7 +1505,47 @@
             {
               "key": "ip",
               "type": "string",
-              "value": "172.18.0.17"
+              "value": "172.21.0.15"
+            }
+          ]
+        },
+        "p3": {
+          "serviceName": "kafka-connect-consumer",
+          "tags": [
+            {
+              "key": "ip",
+              "type": "string",
+              "value": "172.21.0.12"
+            }
+          ]
+        },
+        "p4": {
+          "serviceName": "activemqxmltojson",
+          "tags": [
+            {
+              "key": "ip",
+              "type": "string",
+              "value": "172.21.0.13"
+            }
+          ]
+        },
+        "p5": {
+          "serviceName": "knitwarexmltransformer",
+          "tags": [
+            {
+              "key": "ip",
+              "type": "string",
+              "value": "172.21.0.8"
+            }
+          ]
+        },
+        "p6": {
+          "serviceName": "modifyvoipjsontoxml",
+          "tags": [
+            {
+              "key": "ip",
+              "type": "string",
+              "value": "172.21.0.14"
             }
           ]
         }

@@ -108,6 +108,19 @@ class JaegerSpanFactoryShould {
     }
 
     @Test
+    void nameSpanAfterProcessName() {
+        traceJson = JaegerJsonTraceBuilder.create()
+                .withSpan(JaegerJsonSpanBuilder.create().build())
+                .withProcess("p1", GENERIC_PROCESS)
+                .build();
+
+        BasicSpan span = (BasicSpan) createSpanFactory().makeSpan(makeJaegerSpanJson());
+
+        assertThat(span.name).isEqualTo(GENERIC_PROCESS);
+        assertThat(span.hasStorage()).isFalse();
+    }
+
+    @Test
     void includeStorageProducedTo() {
         traceJson = JaegerJsonTraceBuilder.create()
                 .withSpan(JaegerJsonSpanBuilder.create()
