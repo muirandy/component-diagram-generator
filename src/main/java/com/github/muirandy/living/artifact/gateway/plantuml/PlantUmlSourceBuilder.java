@@ -16,6 +16,7 @@ public class PlantUmlSourceBuilder {
 
     private static final String NO_CONNECTIONS_TAG = "";
     private static final String NO_IMPORTS_TAG = "";
+    private static final String NO_DEFINES_TAG = "";
 
     public String build(Chain chain) {
         if (chain.isEmpty())
@@ -29,10 +30,22 @@ public class PlantUmlSourceBuilder {
 
     private String buildDiagram(Chain chain) {
         return START_TAG
+                + defines(chain)
                 + imports(chain)
                 + createElementTags(chain)
                 + createConnectionTags(chain)
                 + END_TAG;
+    }
+
+    private String defines(Chain chain) {
+        Set<String> elementTypeNames = chain.getLinks().stream()
+                .map(l -> l.getClass().getSimpleName())
+                .collect(Collectors.toSet());
+
+        if (elementTypeNames.contains("KsqlLink"))
+            return "!define customSprites https://raw.githubusercontent.com/muirandy/plant-uml-experiments/master/sprites\n";
+
+        return NO_DEFINES_TAG;
     }
 
     private String imports(Chain chain) {
@@ -40,10 +53,14 @@ public class PlantUmlSourceBuilder {
                 .map(l -> l.getClass().getSimpleName())
                 .collect(Collectors.toSet());
 
-        if (elementTypeNames.contains("ActiveMqQueueLink"))
-            return "!include <cloudinsight/activemq>\n";
+        String tags = NO_IMPORTS_TAG;
 
-        return NO_IMPORTS_TAG;
+        if (elementTypeNames.contains("ActiveMqQueueLink"))
+            tags += "!include <cloudinsight/activemq>\n";
+        if (elementTypeNames.contains("KsqlLink"))
+            tags += "!include customSprites/ksql.puml\n";
+
+        return tags;
     }
 
     private String createElementTags(Chain chain) {

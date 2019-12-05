@@ -30,6 +30,10 @@ class PlantUmlSourceBuilderShould {
     private static final String ACTIVE_MQ_SPRITE_IMPORT = "!include <cloudinsight/activemq>\n";
     private static final String ACTIVE_MQ_QUEUE_TAG = "queue \"<$activemq>\" as " + FIRST_ELEMENT_NAME + " #Crimson\n";
 
+    private static final String CUSTOM_SPRITES_DEFINE = "!define customSprites https://raw.githubusercontent.com/muirandy/plant-uml-experiments/master/sprites\n";
+    private static final String KSQL_SPRITE_IMPORT = "!include customSprites/ksql.puml\n";
+    private static final String KSQL_TAG = "rectangle \"<$ksql{scale=0.2}>\" as " + FIRST_ELEMENT_NAME + " #White\n";
+
     private Chain chain;
     private final PlantUmlSourceBuilder sourceBuilder = new PlantUmlSourceBuilder();
 
@@ -67,7 +71,7 @@ class PlantUmlSourceBuilderShould {
     }
 
     @Test
-    void buildMultipleLinks() {
+    void buildMultipleBasicLinks() {
         createChain(new RectangleLink(LINK_NAME), new RectangleLink(SECOND_ELEMENT_NAME));
 
         String plantUmlSourceCode = sourceBuilder.build(chain);
@@ -162,7 +166,25 @@ class PlantUmlSourceBuilderShould {
 
         assertThat(plantUmlSourceCode).containsSequence(
                 START_TAG,
-                RECTANGLE_TAG,
+                CUSTOM_SPRITES_DEFINE,
+                KSQL_SPRITE_IMPORT,
+                KSQL_TAG,
+                END_TAG);
+    }
+
+    @Test
+    void buildMultipleSpriteLinks() {
+        createChain(new KsqlLink(LINK_NAME), new ActiveMqQueueLink(LINK_NAME));
+
+        String plantUmlSourceCode = sourceBuilder.build(chain);
+
+        assertThat(plantUmlSourceCode).containsSequence(
+                START_TAG,
+                CUSTOM_SPRITES_DEFINE,
+                ACTIVE_MQ_SPRITE_IMPORT,
+                KSQL_SPRITE_IMPORT,
+                KSQL_TAG,
+                ACTIVE_MQ_QUEUE_TAG,
                 END_TAG);
     }
 
