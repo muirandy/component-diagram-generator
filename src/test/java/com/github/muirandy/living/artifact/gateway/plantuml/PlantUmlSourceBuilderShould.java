@@ -24,6 +24,10 @@ class PlantUmlSourceBuilderShould {
     private static final String QUEUE_ELEMENT_NAME = "Queue";
     private static final String QUEUE_TAG = "queue " + QUEUE_ELEMENT_NAME + "\n";
 
+    private static final String KAFKA_TOPIC_ELEMENT_NAME = "KafkaTopic";
+    private static final String KAFKA_TOPIC_SPRITE_IMPORT = "!include <cloudinsight/kafka>\n";
+    private static final String KAFKA_TOPIC_TAG = "queue \"<$kafka>\" as " + KAFKA_TOPIC_ELEMENT_NAME + "[[{" + KAFKA_TOPIC_ELEMENT_NAME + "} field]] #White\n";
+
     private static final String CONNECTION_FROM_RECTANGLE_TO_QUEUE_TAG = FIRST_ELEMENT_NAME + "->" + QUEUE_ELEMENT_NAME + "\n";
     private static final String CONNECTION_FROM_SECOND_RECTANGLE_TO_QUEUE_TAG = QUEUE_ELEMENT_NAME + "<-" + SECOND_ELEMENT_NAME + "\n";
 
@@ -33,6 +37,7 @@ class PlantUmlSourceBuilderShould {
     private static final String CUSTOM_SPRITES_DEFINE = "!define customSprites https://raw.githubusercontent.com/muirandy/plant-uml-experiments/master/sprites\n";
     private static final String KSQL_SPRITE_IMPORT = "!include customSprites/ksql.puml\n";
     private static final String KSQL_TAG = "rectangle \"<$ksql{scale=0.2}>\" as " + FIRST_ELEMENT_NAME + " #White\n";
+
 
     private Chain chain;
     private final PlantUmlSourceBuilder sourceBuilder = new PlantUmlSourceBuilder();
@@ -185,6 +190,19 @@ class PlantUmlSourceBuilderShould {
                 ACTIVE_MQ_SPRITE_IMPORT,
                 KSQL_TAG,
                 ACTIVE_MQ_QUEUE_TAG,
+                END_TAG);
+    }
+
+    @Test
+    void buildKafkaTopic() {
+        createChain(new KafkaTopicLink(KAFKA_TOPIC_ELEMENT_NAME));
+
+        String plantUmlSourceCode = sourceBuilder.build(chain);
+
+        assertThat(plantUmlSourceCode).containsSequence(
+                START_TAG,
+                KAFKA_TOPIC_SPRITE_IMPORT,
+                KAFKA_TOPIC_TAG,
                 END_TAG);
     }
 

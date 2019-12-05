@@ -43,9 +43,13 @@ public class ChainBuilder {
         if (span.storage == null)
             return Stream.of(base);
 
-        Link storage = new QueueLink(span.storage.name);
+        Link storage = createStorageLink(span);
         base.connect(createConnection(span, storage));
         return Stream.of(base, storage);
+    }
+
+    private Link createStorageLink(Span span) {
+        return new KafkaTopicLink(span.storage.name);
     }
 
     private Connection createConnection(Span span, Link storage) {

@@ -25,4 +25,9 @@ public class PlantUmlSourceImportVisitor implements SourceStringVisitor {
     public String visit(KsqlLink ksqlLink) {
         return "!include customSprites/ksql.puml\n";
     }
+
+    @Override
+    public String visit(KafkaTopicLink kafkaTopicLink) {
+        return "!include <cloudinsight/kafka>\n";
+    }
 }

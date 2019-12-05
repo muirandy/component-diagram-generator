@@ -83,9 +83,9 @@ class ChainBuilderShould {
         Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
 
         RectangleLink rectangleLink = new RectangleLink(SPAN_NAME);
-        QueueLink queueLink = new QueueLink(TOPIC_NAME);
-        rectangleLink.connect(new Connection(PRODUCER, queueLink));
-        assertThat(chain.getLinks()).containsExactly(rectangleLink, queueLink);
+        KafkaTopicLink kafkaTopicLink = new KafkaTopicLink(TOPIC_NAME);
+        rectangleLink.connect(new Connection(PRODUCER, kafkaTopicLink));
+        assertThat(chain.getLinks()).containsExactly(rectangleLink, kafkaTopicLink);
     }
 
     @Test
@@ -103,11 +103,11 @@ class ChainBuilderShould {
         Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
 
         RectangleLink producerLink = new RectangleLink(SPAN_NAME);
-        QueueLink queueLink = new QueueLink(TOPIC_NAME);
+        KafkaTopicLink kafkaTopicLink = new KafkaTopicLink(TOPIC_NAME);
         RectangleLink consumerLink = new RectangleLink(SPAN2_NAME);
-        producerLink.connect(new Connection(PRODUCER, queueLink));
-        consumerLink.connect(new Connection(CONSUMER, queueLink));
-        assertThat(chain.getLinks()).containsExactly(producerLink, queueLink, consumerLink);
+        producerLink.connect(new Connection(PRODUCER, kafkaTopicLink));
+        consumerLink.connect(new Connection(CONSUMER, kafkaTopicLink));
+        assertThat(chain.getLinks()).containsExactly(producerLink, kafkaTopicLink, consumerLink);
     }
 
     private void addSpansToTrace(Span... spans) {

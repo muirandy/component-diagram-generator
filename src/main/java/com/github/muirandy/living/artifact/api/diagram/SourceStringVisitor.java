@@ -5,4 +5,5 @@ public interface SourceStringVisitor {
     String visit(ActiveMqQueueLink link);
     String visit(RectangleLink link);
     String visit(KsqlLink ksqlLink);
+    String visit(KafkaTopicLink kafkaTopicLink);
 }

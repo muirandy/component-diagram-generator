@@ -20,11 +20,13 @@ class PlantUmlServiceTest {
     private Chain chain;
     private Artifact artifact;
     private ComponentDiagramGenerator componentDiagramGenerator = new ComponentDiagramGenerator();
-    private ArtifactGenerator plantUmlArtifactGenerator = new PlantUmlArtifactGenerator(plantUmlSourceBuilder, componentDiagramGenerator);
+    private ArtifactGenerator plantUmlArtifactGenerator = new PlantUmlArtifactGenerator(plantUmlSourceBuilder,
+            componentDiagramGenerator);
     private HashMap<String, String> prefix2Uri;
     private String svg;
 
     private int elementIndex = 1;
+    private int anchorElementIndex = 1;
     private int pathElementIndex = 1;
     private int textElementIndex = 1;
     private int imageElementIndex = 1;
@@ -33,6 +35,7 @@ class PlantUmlServiceTest {
     void buildSvgNamespaceContext() {
         prefix2Uri = new HashMap<>();
         prefix2Uri.put("svg", "http://www.w3.org/2000/svg");
+        prefix2Uri.put("xlink", "http://www.w3.org/1999/xlink");
     }
 
     @Test
@@ -106,6 +109,14 @@ class PlantUmlServiceTest {
         thenDiagramContains(link);
     }
 
+    @Test
+    void drawsKafkaTopics() {
+        Link link = new KafkaTopicLink("MyKafkaTopic");
+        givenAnChainWith(link);
+        whenWeRunTheApp();
+        thenDiagramContains(link);
+    }
+
     private void givenAnEmptyChain() {
         chain = new Chain();
     }
@@ -121,9 +132,9 @@ class PlantUmlServiceTest {
         String svg = getResultingSvg();
 
         XmlAssert.assertThat(svg).and(expected)
-                 .ignoreWhitespace()
-                 .ignoreComments()
-                 .areIdentical();
+                .ignoreWhitespace()
+                .ignoreComments()
+                .areIdentical();
     }
 
     private String getResultingSvg() {
@@ -158,6 +169,11 @@ class PlantUmlServiceTest {
                 XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:image[" + imageElementIndex++ + "]").exist();
             else
                 XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:text[" + textElementIndex++ + "]").isEqualTo(link.name);
+        } else if (link instanceof KafkaTopicLink) {
+            XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:a[" + anchorElementIndex + "]/@xlink:title").isEqualTo(link.name);
+            XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:a[" + anchorElementIndex + "]/svg:path[1]").exist();
+            XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:a[" + anchorElementIndex + "]/svg:path[2]").exist();
+            XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:a[" + anchorElementIndex++ + "]/svg:image[1]").exist();
         } else {
             XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:rect[" + elementIndex++ + "]").isEmpty();
             XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:text[" + textElementIndex++ + "]").isEqualTo(link.name);
@@ -168,9 +184,11 @@ class PlantUmlServiceTest {
         for (Connection connection : link.connections) {
             XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:path/@id").exist();
             if (PRODUCER.equals(connection.relationship))
-                XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:path/@id").isEqualTo(link.name + "->" + connection.target.name);
+                XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:path/@id"
+                ).isEqualTo(link.name + "->" + connection.target.name);
             else
-                XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:path/@id").isEqualTo(connection.target.name + "<-" + link.name);
+                XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:path/@id"
+                ).isEqualTo(connection.target.name + "<-" + link.name);
         }
     }
 }
