@@ -181,8 +181,8 @@ class PlantUmlSourceBuilderShould {
         assertThat(plantUmlSourceCode).containsSequence(
                 START_TAG,
                 CUSTOM_SPRITES_DEFINE,
-                ACTIVE_MQ_SPRITE_IMPORT,
                 KSQL_SPRITE_IMPORT,
+                ACTIVE_MQ_SPRITE_IMPORT,
                 KSQL_TAG,
                 ACTIVE_MQ_QUEUE_TAG,
                 END_TAG);

@@ -2,7 +2,7 @@ package com.github.muirandy.living.artifact.gateway.plantuml;
 
 import com.github.muirandy.living.artifact.api.diagram.*;
 
-public class PlantUmlSourceStringVisitor implements SourceStringVisitor {
+public class PlantUmlSourceElementVisitor implements SourceStringVisitor {
     @Override
     public String visit(QueueLink link) {
         return "queue " + getLinkName(link) + "\n";

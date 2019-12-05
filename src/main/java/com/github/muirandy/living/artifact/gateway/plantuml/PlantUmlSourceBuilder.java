@@ -49,18 +49,14 @@ public class PlantUmlSourceBuilder {
     }
 
     private String imports(Chain chain) {
-        Set<String> elementTypeNames = chain.getLinks().stream()
-                .map(l -> l.getClass().getSimpleName())
-                .collect(Collectors.toSet());
+        return chain.getLinks().stream()
+                .map(l -> createImportTag(l))
+                .distinct()
+                .collect(Collectors.joining());
+    }
 
-        String tags = NO_IMPORTS_TAG;
-
-        if (elementTypeNames.contains("ActiveMqQueueLink"))
-            tags += "!include <cloudinsight/activemq>\n";
-        if (elementTypeNames.contains("KsqlLink"))
-            tags += "!include customSprites/ksql.puml\n";
-
-        return tags;
+    private String createImportTag(Link link) {
+        return link.toSourceString(new PlantUmlSourceImportVisitor());
     }
 
     private String createElementTags(Chain chain) {
@@ -77,7 +73,7 @@ public class PlantUmlSourceBuilder {
     }
 
     private String createLinkTag(Link link) {
-        return link.toSourceString(new PlantUmlSourceStringVisitor());
+        return link.toSourceString(new PlantUmlSourceElementVisitor());
     }
 
     private String createConnectionTags(Link link) {
