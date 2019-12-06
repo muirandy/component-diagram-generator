@@ -38,6 +38,9 @@ class PlantUmlSourceBuilderShould {
     private static final String KSQL_SPRITE_IMPORT = "!include customSprites/ksql.puml\n";
     private static final String KSQL_TAG = "rectangle \"<$ksql{scale=0.2}>\" as " + FIRST_ELEMENT_NAME + " #White\n";
 
+    private static final String CONNECT_SPRITE_IMPORT = "!include customSprites/connect.puml\n";
+    private static final String CONNECT_ELEMENT_NAME = "CONNECT";
+    private static final String CONNECT_TAG = "rectangle \"<$connect{scale=0.15}>\" as " + CONNECT_ELEMENT_NAME + "[[{" + CONNECT_ELEMENT_NAME + "} field]] #White\n";
 
     private Chain chain;
     private final PlantUmlSourceBuilder sourceBuilder = new PlantUmlSourceBuilder();
@@ -203,6 +206,20 @@ class PlantUmlSourceBuilderShould {
                 START_TAG,
                 KAFKA_TOPIC_SPRITE_IMPORT,
                 KAFKA_TOPIC_TAG,
+                END_TAG);
+    }
+
+    @Test
+    void buildConnect() {
+        createChain(new ConnectLink(CONNECT_ELEMENT_NAME));
+
+        String plantUmlSourceCode = sourceBuilder.build(chain);
+
+        assertThat(plantUmlSourceCode).containsSequence(
+                START_TAG,
+                CUSTOM_SPRITES_DEFINE,
+                CONNECT_SPRITE_IMPORT,
+                CONNECT_TAG,
                 END_TAG);
     }
 

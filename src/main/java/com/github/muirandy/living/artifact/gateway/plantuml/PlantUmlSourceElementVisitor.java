@@ -28,6 +28,11 @@ public class PlantUmlSourceElementVisitor implements SourceStringVisitor {
         return "queue \"<$kafka>\" as " + getLinkName(link) + "[[{" + getLinkName(link) + "} field]] #White\n";
     }
 
+    @Override
+    public String visit(ConnectLink link) {
+        return "rectangle \"<$connect{scale=0.15}>\" as " + getLinkName(link) + "[[{" + getLinkName(link) + "} field]] #White\n";
+    }
+
     private String getKsqlLinkName(KsqlLink link) {
         String trimmed = removeProducerPostfix(removeConsumerPostfix(link.name));
         return replaceHypenWithNonBreakingHyphen(trimmed);

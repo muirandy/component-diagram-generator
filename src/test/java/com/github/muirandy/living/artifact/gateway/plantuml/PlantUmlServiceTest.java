@@ -117,6 +117,14 @@ class PlantUmlServiceTest {
         thenDiagramContains(link);
     }
 
+    @Test
+    void drawsConnector() {
+        Link link = new ConnectLink("MyConnect");
+        givenAnChainWith(link);
+        whenWeRunTheApp();
+        thenDiagramContains(link);
+    }
+
     private void givenAnEmptyChain() {
         chain = new Chain();
     }
@@ -173,6 +181,10 @@ class PlantUmlServiceTest {
             XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:a[" + anchorElementIndex + "]/@xlink:title").isEqualTo(link.name);
             XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:a[" + anchorElementIndex + "]/svg:path[1]").exist();
             XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:a[" + anchorElementIndex + "]/svg:path[2]").exist();
+            XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:a[" + anchorElementIndex++ + "]/svg:image[1]").exist();
+        } else if (link instanceof ConnectLink) {
+            XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:a[" + anchorElementIndex + "]/@xlink:title").isEqualTo(link.name);
+            XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:a[" + anchorElementIndex + "]/svg:rect[1]").exist();
             XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:a[" + anchorElementIndex++ + "]/svg:image[1]").exist();
         } else {
             XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:rect[" + elementIndex++ + "]").isEmpty();

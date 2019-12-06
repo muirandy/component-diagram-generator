@@ -65,6 +65,15 @@ class ChainBuilderShould {
     }
 
     @Test
+    void buildConnectLinkForConnectSpan() {
+        addSpansToTrace(new ConnectSpan(SPAN_NAME));
+
+        Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
+
+        assertThat(chain.getLinks()).containsExactly(new ConnectLink(SPAN_NAME));
+    }
+
+    @Test
     void buildLinksForMultipleSpans() {
         addSpansToTrace(new BasicSpan("Span 1"), new BasicSpan("Span 2"));
 

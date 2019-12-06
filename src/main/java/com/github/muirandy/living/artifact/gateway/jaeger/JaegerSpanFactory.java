@@ -27,6 +27,8 @@ class JaegerSpanFactory {
     private void initialiseServiceNameMap() {
         serviceNames = new HashMap<>();
         serviceNames.put("ksql-server", KsqlSpan.class);
+        serviceNames.put("kafka-connect-consumer", ConnectSpan.class);
+        serviceNames.put("kafka-connect-producer", ConnectSpan.class);
     }
 
     private void initialiseProcessMap() {
@@ -58,7 +60,6 @@ class JaegerSpanFactory {
     }
 
     private Span createNewSpan(JSONObject jaegerSpan) {
-        JSONArray jaegerTags = jaegerSpan.getJSONArray("tags");
         String processId = readProcessIdForSpan(jaegerSpan);
         Class<? extends Span> classForSpan = processes.get(processId);
         try {

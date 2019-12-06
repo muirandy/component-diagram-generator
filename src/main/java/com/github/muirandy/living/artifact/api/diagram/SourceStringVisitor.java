@@ -6,4 +6,5 @@ public interface SourceStringVisitor {
     String visit(RectangleLink link);
     String visit(KsqlLink ksqlLink);
     String visit(KafkaTopicLink kafkaTopicLink);
+    String visit(ConnectLink connectLink);
 }

@@ -1,10 +1,7 @@
 package com.github.muirandy.living.artifact.domain;
 
 import com.github.muirandy.living.artifact.api.diagram.*;
-import com.github.muirandy.living.artifact.api.trace.KsqlSpan;
-import com.github.muirandy.living.artifact.api.trace.OpenTracingClient;
-import com.github.muirandy.living.artifact.api.trace.Span;
-import com.github.muirandy.living.artifact.api.trace.Trace;
+import com.github.muirandy.living.artifact.api.trace.*;
 
 import java.util.stream.Stream;
 
@@ -38,8 +35,11 @@ public class ChainBuilder {
         Link base;
         if (span instanceof KsqlSpan)
             base = new KsqlLink(span.name);
+        else if (span instanceof ConnectSpan)
+            base = new ConnectLink(span.name);
         else
             base = new RectangleLink(span.name);
+
         if (span.storage == null)
             return Stream.of(base);
 

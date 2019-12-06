@@ -1,9 +1,6 @@
 package com.github.muirandy.living.artifact.gateway.jaeger;
 
-import com.github.muirandy.living.artifact.api.trace.BasicSpan;
-import com.github.muirandy.living.artifact.api.trace.KsqlSpan;
-import com.github.muirandy.living.artifact.api.trace.Span;
-import com.github.muirandy.living.artifact.api.trace.SpanOperation;
+import com.github.muirandy.living.artifact.api.trace.*;
 import kong.unirest.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class JaegerSpanFactoryShould {
     private static final String EXPECTED_NAME = "CSAS_Expected_Name_7";
+    private static final String EXPECTED_CONNECTOR_NAME = "AMQSinkConnector";
     private static final String NOT_WANTED = "Not wanted";
     private static final String TOPIC_NAME = "Kafka Topic Name";
     private static final String KAFKA_TOPIC_TAG_NAME = "kafka.topic";
@@ -188,6 +186,50 @@ class JaegerSpanFactoryShould {
         Span span = createSpanFactory().makeSpan(makeJaegerSpanJson());
 
         assertThat(span instanceof KsqlSpan).isTrue();
+    }
+
+    @Test
+    void createConnectSpanForKafkaConnectConsumer() {
+        traceJson = JaegerJsonTraceBuilder.create()
+                .withSpan(JaegerJsonSpanBuilder.create()
+                        .withOperationName(ON_CONSUME)
+                        .withTag(JaegerJsonTagBuilder.create()
+                                .withKey(KAFKA_CLIENT_ID_TAG_NAME)
+                                .withValue(EXPECTED_CONNECTOR_NAME)
+                                .build())
+                        .withTag(JaegerJsonTagBuilder.create()
+                                .withKey(KAFKA_TOPIC_TAG_NAME)
+                                .withValue(TOPIC_NAME)
+                                .build())
+                        .build())
+                .withProcess("p1", "kafka-connect-consumer")
+                .build();
+
+        Span span = createSpanFactory().makeSpan(makeJaegerSpanJson());
+
+        assertThat(span instanceof ConnectSpan).isTrue();
+    }
+
+    @Test
+    void createConnectSpanForKafkaConnectProducer() {
+        traceJson = JaegerJsonTraceBuilder.create()
+                .withSpan(JaegerJsonSpanBuilder.create()
+                        .withOperationName(ON_CONSUME)
+                        .withTag(JaegerJsonTagBuilder.create()
+                                .withKey(KAFKA_CLIENT_ID_TAG_NAME)
+                                .withValue(EXPECTED_CONNECTOR_NAME)
+                                .build())
+                        .withTag(JaegerJsonTagBuilder.create()
+                                .withKey(KAFKA_TOPIC_TAG_NAME)
+                                .withValue(TOPIC_NAME)
+                                .build())
+                        .build())
+                .withProcess("p1", "kafka-connect-producer")
+                .build();
+
+        Span span = createSpanFactory().makeSpan(makeJaegerSpanJson());
+
+        assertThat(span instanceof ConnectSpan).isTrue();
     }
 
     private JSONObject makeJaegerSpanJson() {

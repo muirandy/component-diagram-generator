@@ -30,4 +30,9 @@ public class PlantUmlSourceImportVisitor implements SourceStringVisitor {
     public String visit(KafkaTopicLink kafkaTopicLink) {
         return "!include <cloudinsight/kafka>\n";
     }
+
+    @Override
+    public String visit(ConnectLink connectLink) {
+        return "!include customSprites/connect.puml\n";
+    }
 }

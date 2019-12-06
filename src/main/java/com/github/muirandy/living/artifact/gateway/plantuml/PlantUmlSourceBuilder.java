@@ -42,10 +42,14 @@ public class PlantUmlSourceBuilder {
                 .map(l -> l.getClass().getSimpleName())
                 .collect(Collectors.toSet());
 
-        if (elementTypeNames.contains("KsqlLink"))
+        if (isCustomSpritePresent(elementTypeNames))
             return "!define customSprites https://raw.githubusercontent.com/muirandy/plant-uml-experiments/master/sprites\n";
 
         return NO_DEFINES_TAG;
+    }
+
+    private boolean isCustomSpritePresent(Set<String> elementTypeNames) {
+        return elementTypeNames.contains("KsqlLink") || elementTypeNames.contains("ConnectLink");
     }
 
     private String imports(Chain chain) {
