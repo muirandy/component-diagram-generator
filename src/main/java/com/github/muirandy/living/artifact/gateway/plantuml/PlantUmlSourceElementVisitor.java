@@ -20,7 +20,7 @@ public class PlantUmlSourceElementVisitor implements SourceStringVisitor {
 
     @Override
     public String visit(KsqlLink link) {
-        return "rectangle \"<$ksql{scale=0.2}>\" as " + getKsqlLinkName(link) + " #White\n";
+        return "rectangle \"<$ksql{scale=0.2}>\" as (" + getKsqlLinkName(link) + ") #White\n";
     }
 
     @Override

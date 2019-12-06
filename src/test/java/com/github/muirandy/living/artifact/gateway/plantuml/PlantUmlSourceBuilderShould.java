@@ -36,7 +36,7 @@ class PlantUmlSourceBuilderShould {
 
     private static final String CUSTOM_SPRITES_DEFINE = "!define customSprites https://raw.githubusercontent.com/muirandy/plant-uml-experiments/master/sprites\n";
     private static final String KSQL_SPRITE_IMPORT = "!include customSprites/ksql.puml\n";
-    private static final String KSQL_TAG = "rectangle \"<$ksql{scale=0.2}>\" as " + FIRST_ELEMENT_NAME + " #White\n";
+    private static final String KSQL_TAG = "rectangle \"<$ksql{scale=0.2}>\" as (" + FIRST_ELEMENT_NAME + ") #White\n";
 
     private static final String CONNECT_SPRITE_IMPORT = "!include customSprites/connect.puml\n";
     private static final String CONNECT_ELEMENT_NAME = "CONNECT";
