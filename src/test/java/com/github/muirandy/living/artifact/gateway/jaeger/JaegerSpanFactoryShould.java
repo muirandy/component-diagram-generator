@@ -15,7 +15,9 @@ class JaegerSpanFactoryShould {
     private static final String KAFKA_CLIENT_ID_TAG_NAME = "kafka.client.id";
     private static final String KAFKA_GROUP_ID_TAG_NAME = "kafka.group.id";
     private static final String ON_SEND = "on_send";
+    private static final String SEND = "send";
     private static final String ON_CONSUME = "on_consume";
+    private static final String POll = "poll";
     private static final String EXPECTED_NAME_WITH_KSQL_GROUP_ID_FLUFF =
             "_confluent-ksql-default_query_" + EXPECTED_NAME;
     private static final String EXPECTED_NAME_WITH_KSQL_CLIENT_ID_FLUFF = EXPECTED_NAME_WITH_KSQL_GROUP_ID_FLUFF +
@@ -119,7 +121,7 @@ class JaegerSpanFactoryShould {
     }
 
     @Test
-    void includeStorageProducedTo() {
+    void includeStorageProducedToWithOnSendOperation() {
         traceJson = JaegerJsonTraceBuilder.create()
                 .withSpan(JaegerJsonSpanBuilder.create()
                         .withOperationName(ON_SEND)
@@ -143,7 +145,28 @@ class JaegerSpanFactoryShould {
     }
 
     @Test
-    void includeStorageConsumedFrom() {
+    void includeStorageProducedToWithSendOperation() {
+        traceJson = JaegerJsonTraceBuilder.create()
+                .withSpan(JaegerJsonSpanBuilder.create()
+                        .withOperationName(SEND)
+                        .withTag(JaegerJsonTagBuilder.create()
+                                .withKey(KAFKA_TOPIC_TAG_NAME)
+                                .withValue(TOPIC_NAME)
+                                .build())
+                        .build())
+                .withProcess("p1", GENERIC_PROCESS)
+                .build();
+
+        Span span = createSpanFactory().makeSpan(makeJaegerSpanJson());
+
+        assertThat(span.hasStorage()).isTrue();
+        assertThat(span.storage.name).isEqualTo(TOPIC_NAME);
+        assertThat(span.spanOperation).isEqualTo(SpanOperation.PRODUCE);
+    }
+
+
+    @Test
+    void includeStorageConsumedFromWithOnConsumeOperation() {
         traceJson = JaegerJsonTraceBuilder.create()
                 .withSpan(JaegerJsonSpanBuilder.create()
                         .withOperationName(ON_CONSUME)
@@ -151,6 +174,26 @@ class JaegerSpanFactoryShould {
                                 .withKey(KAFKA_CLIENT_ID_TAG_NAME)
                                 .withValue(EXPECTED_NAME)
                                 .build())
+                        .withTag(JaegerJsonTagBuilder.create()
+                                .withKey(KAFKA_TOPIC_TAG_NAME)
+                                .withValue(TOPIC_NAME)
+                                .build())
+                        .build())
+                .withProcess("p1", GENERIC_PROCESS)
+                .build();
+
+        Span span = createSpanFactory().makeSpan(makeJaegerSpanJson());
+
+        assertThat(span.hasStorage()).isTrue();
+        assertThat(span.storage.name).isEqualTo(TOPIC_NAME);
+        assertThat(span.spanOperation).isEqualTo(SpanOperation.CONSUME);
+    }
+
+    @Test
+    void includeStorageConsumedFromWithPollOperation() {
+        traceJson = JaegerJsonTraceBuilder.create()
+                .withSpan(JaegerJsonSpanBuilder.create()
+                        .withOperationName(POll)
                         .withTag(JaegerJsonTagBuilder.create()
                                 .withKey(KAFKA_TOPIC_TAG_NAME)
                                 .withValue(TOPIC_NAME)

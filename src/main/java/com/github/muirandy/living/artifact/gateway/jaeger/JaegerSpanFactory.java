@@ -11,6 +11,7 @@ import java.util.Optional;
 
 class JaegerSpanFactory {
     private static final String ON_SEND = "on_send";
+    private static final String SEND = "send";
     private static final String KAFKA_KSQL_PREAMBLE = "_confluent-ksql-default_query_";
     private JSONObject singleTrace;
     private Map<String, Class<? extends Span>> processes;
@@ -80,7 +81,7 @@ class JaegerSpanFactory {
     }
 
     private SpanOperation readOperation(JSONObject jaegerSpan) {
-        if (ON_SEND.equals(jaegerSpan.getString("operationName")))
+        if (ON_SEND.equals(jaegerSpan.getString("operationName")) || SEND.equals(jaegerSpan.getString("operationName")))
             return SpanOperation.PRODUCE;
         return SpanOperation.CONSUME;
     }
