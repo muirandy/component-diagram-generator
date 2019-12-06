@@ -30,7 +30,7 @@ class AppShould {
         when(artifactGenerator.generate(chain)).thenReturn(artifact);
         when(chainBuilder.build(TRACE_ID)).thenReturn(chain);
 
-        Artifact result = app.run(TRACE_ID);
+        Artifact result = app.obtainTrace(TRACE_ID);
 
         assertThat(result).isEqualTo(artifact);
     }

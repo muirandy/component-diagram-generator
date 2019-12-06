@@ -13,7 +13,7 @@ public class App {
         this.artifactGenerator = artifactGenerator;
     }
 
-    public Artifact run(String traceId) {
+    public Artifact obtainTrace(String traceId) {
         Chain chain = chainBuilder.build(traceId);
         return artifactGenerator.generate(chain);
     }

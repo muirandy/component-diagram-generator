@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Random;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -22,6 +23,7 @@ class JaegerServiceTest {
     private static int jaegerPort;
     private static WireMockServer wireMockServer;
     private Trace trace;
+    private List<String> traces;
 
     @BeforeAll
     static void setUp() {
@@ -68,11 +70,6 @@ class JaegerServiceTest {
         thenWeGetATraceWithSpansBack(singleSpan(SPAN_NAME));
     }
 
-    private void thenWeGetATraceWithSpansBack(Span... spans) {
-        assertThat(trace.isEmpty()).isFalse();
-        assertThat(trace.spans).containsExactly(spans);
-    }
-
     @Test
     void singleSpanWithStorage() {
         givenTraceAvailable("singleSpanTrace.json");
@@ -105,6 +102,15 @@ class JaegerServiceTest {
         thenWeGetATraceWithSpansBack(ksqlSpan);
     }
 
+    @Test
+    void obtainTraceIds() {
+        givenTracesForServiceAreAvailable("kafkaConnectProducerServiceTraces.json");
+
+        whenWeObtainTraces();
+
+        thenWeGetTracesBack("5dea357c73356e28f3e96e667ec61f2d");
+    }
+
     private Span ksqlSpan(String spanName) {
         return new KsqlSpan(spanName);
     }
@@ -129,8 +135,30 @@ class JaegerServiceTest {
         );
     }
 
+    private void givenTracesForServiceAreAvailable(String filename) {
+        wireMockServer.stubFor(get(urlEqualTo("/api/traces?service=kafka-connect-producer"))
+                .willReturn(aResponse().withHeader("Content-Type", "application/json")
+                        .withStatus(200)
+                        .withBodyFile(filename))
+        );
+    }
+
     private void whenWeRunTheService() {
-        OpenTracingClient jaegerClient = new JaegerClient(jaegerServer, jaegerPort);
+        OpenTracingClient jaegerClient = new JaegerClient(jaegerServer);
         trace = jaegerClient.obtainTrace(JAEGER_TRACE_ID);
+    }
+
+    private void whenWeObtainTraces() {
+        OpenTracingClient jaegerClient = new JaegerClient(jaegerServer);
+        traces = jaegerClient.obtainTraceIds();
+    }
+
+    private void thenWeGetATraceWithSpansBack(Span... spans) {
+        assertThat(trace.isEmpty()).isFalse();
+        assertThat(trace.spans).containsExactly(spans);
+    }
+
+    private void thenWeGetTracesBack(String... traceIds) {
+        assertThat(traces).containsExactly(traceIds);
     }
 }

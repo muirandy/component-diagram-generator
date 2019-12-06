@@ -51,13 +51,13 @@ class SystemTest {
         givenTraceAvailable("systemTrace.json");
         App app = new App(createJaegerChainBuilder(), createArtifactGenerator());
 
-        artifact = app.run(JAEGER_TRACE_ID);
+        artifact = app.obtainTrace(JAEGER_TRACE_ID);
 
         thenWeGetSystemPlantUmlDiagramBack();
     }
 
     private ChainBuilder createJaegerChainBuilder() {
-        OpenTracingClient jaegerClient = new JaegerClient(jaegerServer, jaegerPort);
+        OpenTracingClient jaegerClient = new JaegerClient(jaegerServer);
         return new ChainBuilder(jaegerClient);
     }
 
