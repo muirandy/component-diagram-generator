@@ -13,12 +13,12 @@ class PlantUmlSourceBuilderShould {
     private static final String END_TAG = "@enduml\n";
 
     private static final String FIRST_ELEMENT_NAME = "SingleItem";
-    private static final String RECTANGLE_TAG = "rectangle " + FIRST_ELEMENT_NAME + "\n";
-    private static final String RECTANGLE_SPECIAL_CHAR_TAG = "rectangle " + "Single" + "_" + "Item" + "\n";
+    private static final String RECTANGLE_TAG = "rectangle " + FIRST_ELEMENT_NAME + " #White\n";
+    private static final String RECTANGLE_SPECIAL_CHAR_TAG = "rectangle Single_Item #White\n";
 
     private static final String SECOND_ELEMENT_NAME = "SecondLink";
-    private static final String SECOND_RECTANGLE_TAG = "rectangle " + SECOND_ELEMENT_NAME + "\n";
-    private static final String SECOND_RECTANGLE_SPECIAL_CHAR_TAG = "rectangle " + "Second" + "_" + "Item" + "\n";
+    private static final String SECOND_RECTANGLE_TAG = "rectangle " + SECOND_ELEMENT_NAME + " #White\n";
+    private static final String SECOND_RECTANGLE_SPECIAL_CHAR_TAG = "rectangle Second_Item #White\n";
 
     private static final String LINK_NAME = FIRST_ELEMENT_NAME;
     private static final String QUEUE_ELEMENT_NAME = "Queue";
@@ -137,7 +137,7 @@ class PlantUmlSourceBuilderShould {
 
         assertThat(plantUmlSourceCode).containsSequence(
                 START_TAG,
-                "rectangle " + "link" + "\n",
+                "rectangle link #White\n",
                 END_TAG);
     }
 

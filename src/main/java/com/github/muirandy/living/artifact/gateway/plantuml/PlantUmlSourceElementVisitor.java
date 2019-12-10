@@ -15,7 +15,7 @@ public class PlantUmlSourceElementVisitor implements SourceStringVisitor {
 
     @Override
     public String visit(RectangleLink link) {
-        return "rectangle " + getLinkName(link) + "\n";
+        return "rectangle " + getLinkName(link) + " #White\n";
     }
 
     @Override
