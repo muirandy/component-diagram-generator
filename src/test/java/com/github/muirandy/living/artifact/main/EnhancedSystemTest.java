@@ -76,8 +76,7 @@ public class EnhancedSystemTest {
 
     protected Properties getKafkaProperties() {
         Properties props = new Properties();
-
-        String bootstrapServers = "http://broker:9092";
+        String bootstrapServers = getExternalBootstrapServers();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put("acks", "all");
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -195,7 +194,7 @@ public class EnhancedSystemTest {
     }
 
     private String getExternalBootstrapServers() {
-        return "localhost:9092";
+        return KAFKA_CONTAINER.getBootstrapServers();
     }
 
     private ProducerRecord createProducerRecord(String topicName, String key, String value) {
