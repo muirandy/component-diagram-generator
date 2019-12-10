@@ -119,6 +119,15 @@ class ChainBuilderShould {
         assertThat(chain.getLinks()).containsExactly(producerLink, kafkaTopicLink, consumerLink);
     }
 
+    @Test
+    void addTraceIdToChain() {
+        addSpansToTrace(new BasicSpan(SPAN_NAME));
+
+        Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
+
+        assertThat(chain.getTraceId()).isEqualTo(JAEGER_TRACE_ID);
+    }
+
     private void addSpansToTrace(Span... spans) {
         for (Span span : spans)
             trace.addSpan(span);

@@ -5,6 +5,7 @@ import com.github.muirandy.living.artifact.api.diagram.KafkaTopicLink;
 import com.github.muirandy.living.artifact.api.diagram.Link;
 import com.github.muirandy.living.artifact.api.enhancer.ChainDecorator;
 import com.github.muirandy.living.artifact.gateway.kafka.KafkaChainDecorator;
+import com.github.muirandy.living.artifact.gateway.kafka.KafkaTopicConsumer;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.CreateTopicsOptions;
 import org.apache.kafka.clients.admin.CreateTopicsResult;
@@ -47,6 +48,7 @@ public class EnhancedSystemTest {
     private static final String MESSAGE = "Expected Value";
     private static final Integer NO_PARTITION = null;
     private static final String TRACING_HEADER = "OpenTracing Header";
+    private static final String TRACE_ID = "Trace Id";
     private List<Header> headers = new ArrayList<>();
     private Chain decoratedChain;
 
@@ -117,19 +119,19 @@ public class EnhancedSystemTest {
     }
 
     private void whenWeRetrieveMessagesForTraceId() {
-        ChainDecorator chainDecorator = new KafkaChainDecorator(getKafkaConsumerProperties());
+        ChainDecorator chainDecorator = new KafkaChainDecorator(new KafkaTopicConsumer());
         decoratedChain = chainDecorator.decorate(createPlainChain());
     }
 
     private Chain createPlainChain() {
-        Chain chain = new Chain();
+        Chain chain = new Chain(TRACE_ID);
         Link topicLink = new KafkaTopicLink(TOPIC_NAME);
         chain.add(topicLink);
         return chain;
     }
 
     private void thenTheExpectedMessageIsRetrieved() {
-        Chain expectedChain = new Chain();
+        Chain expectedChain = new Chain(TRACE_ID);
         KafkaTopicLink topicLink = new KafkaTopicLink(TOPIC_NAME);
         topicLink.key = KEY;
         topicLink.payload = MESSAGE;

@@ -126,7 +126,7 @@ class PlantUmlServiceTest {
     }
 
     private void givenAnEmptyChain() {
-        chain = new Chain();
+        chain = new Chain("TraceId");
     }
 
     private void whenWeRunTheApp() {
@@ -150,7 +150,7 @@ class PlantUmlServiceTest {
     }
 
     private void givenAnChainWith(Link... links) {
-        chain = new Chain();
+        chain = new Chain("TraceId");
         for (Link link : links)
             chain.add(link);
     }
