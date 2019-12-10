@@ -5,6 +5,9 @@ public class KafkaTopicLink extends Link {
         super(name);
     }
 
+    public String key;
+    public String payload;
+
     @Override
     public String toSourceString(SourceStringVisitor sourceStringVisitor) {
         return sourceStringVisitor.visit(this);
