@@ -18,11 +18,11 @@ public class ChainBuilder {
         Trace trace = openTracingClient.obtainTrace(traceId);
 
         if (!trace.isEmpty())
-            return buildChain(trace, traceId);
+            return buildChain(trace);
         return new Chain();
     }
 
-    private Chain buildChain(Trace trace, String traceId) {
+    private Chain buildChain(Trace trace) {
         Chain chain = new Chain();
         trace.spans.stream()
                 .flatMap(s -> createLinks(s))
