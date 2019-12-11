@@ -48,7 +48,7 @@ class PlantUmlSourceBuilderShould {
 
     @Test
     void buildDocumentForEmptyChain() {
-        chain = new Chain("TraceId");
+        chain = new Chain();
 
         String plantUmlSourceCode = sourceBuilder.build(chain);
 
@@ -225,7 +225,7 @@ class PlantUmlSourceBuilderShould {
     }
 
     private void createChain(Link... links) {
-        chain = new Chain("TraceId");
+        chain = new Chain();
         for (Link link : links)
             chain.add(link);
     }

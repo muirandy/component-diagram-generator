@@ -10,11 +10,6 @@ public class KafkaChainDecorator implements ChainDecorator {
 
     @Override
     public Chain decorate(Chain chain) {
-        createHeaders(chain.getTraceId());
-        return null;
-    }
-
-    KafkaHeaders createHeaders(String traceId) {
         return null;
     }
 }

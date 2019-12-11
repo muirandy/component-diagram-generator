@@ -19,11 +19,11 @@ public class ChainBuilder {
 
         if (!trace.isEmpty())
             return buildChain(trace, traceId);
-        return new Chain(traceId);
+        return new Chain();
     }
 
     private Chain buildChain(Trace trace, String traceId) {
-        Chain chain = new Chain(traceId);
+        Chain chain = new Chain();
         trace.spans.stream()
                 .flatMap(s -> createLinks(s))
                 .distinct()

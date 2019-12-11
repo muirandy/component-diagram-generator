@@ -124,14 +124,14 @@ public class EnhancedSystemTest {
     }
 
     private Chain createPlainChain() {
-        Chain chain = new Chain(TRACE_ID);
+        Chain chain = new Chain();
         Link topicLink = new KafkaTopicLink(TOPIC_NAME);
         chain.add(topicLink);
         return chain;
     }
 
     private void thenTheExpectedMessageIsRetrieved() {
-        Chain expectedChain = new Chain(TRACE_ID);
+        Chain expectedChain = new Chain();
         KafkaTopicLink topicLink = new KafkaTopicLink(TOPIC_NAME);
         topicLink.key = KEY;
         topicLink.payload = MESSAGE;

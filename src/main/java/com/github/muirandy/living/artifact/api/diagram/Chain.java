@@ -8,11 +8,6 @@ import java.util.List;
 
 public class Chain {
     private List<Link> links = new ArrayList<>();
-    private String traceId;
-
-    public Chain(String traceId) {
-        this.traceId = traceId;
-    }
 
     public void add(Link link) {
         links.add(link);
@@ -33,9 +28,5 @@ public class Chain {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
-    }
-
-    public String getTraceId() {
-        return traceId;
     }
 }
