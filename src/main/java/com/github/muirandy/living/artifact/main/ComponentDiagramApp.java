@@ -37,7 +37,7 @@ public class ComponentDiagramApp {
                 createArtifactGenerator());
 
         String traceId = getNewTraceId();
-        Artifact artifact = app.obtainTrace(traceId);
+        Artifact artifact = app.obtainArtifact(traceId);
         return artifact.document;
     }
 

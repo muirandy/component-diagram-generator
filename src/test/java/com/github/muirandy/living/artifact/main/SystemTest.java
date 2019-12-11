@@ -53,7 +53,7 @@ class SystemTest {
                 createJaegerChainBuilder(),
                 createArtifactGenerator());
 
-        artifact = app.obtainTrace(JAEGER_TRACE_ID);
+        artifact = app.obtainArtifact(JAEGER_TRACE_ID);
 
         thenWeGetSystemPlantUmlDiagramBack();
     }

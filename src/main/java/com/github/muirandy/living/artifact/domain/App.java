@@ -19,7 +19,7 @@ public class App {
         this.artifactGenerator = artifactGenerator;
     }
 
-    public Artifact obtainTrace(String traceId) {
+    public Artifact obtainArtifact(String traceId) {
         Trace trace = openTracingClient.obtainTrace(traceId);
         Chain chain = chainBuilder.build(trace);
 
