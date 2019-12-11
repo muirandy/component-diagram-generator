@@ -32,11 +32,17 @@ public class ComponentDiagramApp {
     }
 
     public ByteArrayOutputStream drawComponentDiagram() {
-        App app = new App(createJaegerChainBuilder(), createArtifactGenerator());
+        App app = new App(createOpenTracingClient(),
+                createJaegerChainBuilder(),
+                createArtifactGenerator());
 
         String traceId = getNewTraceId();
         Artifact artifact = app.obtainTrace(traceId);
         return artifact.document;
+    }
+
+    private OpenTracingClient createOpenTracingClient() {
+        return createJaegerClient();
     }
 
     private String getNewTraceId() {
@@ -53,8 +59,7 @@ public class ComponentDiagramApp {
     }
 
     private ChainBuilder createJaegerChainBuilder() {
-        OpenTracingClient jaegerClient = createJaegerClient();
-        return new ChainBuilder(jaegerClient);
+        return new ChainBuilder();
     }
 
     private JaegerClient createJaegerClient() {

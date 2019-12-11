@@ -34,14 +34,13 @@ class ChainBuilderShould {
 
     @BeforeEach
     void setUp() {
-        chainBuilder = new ChainBuilder(jaegerClient);
+        chainBuilder = new ChainBuilder();
         trace = new Trace();
-        when(jaegerClient.obtainTrace(JAEGER_TRACE_ID)).thenReturn(trace);
     }
 
     @Test
     void returnEmptyChainForEmptyTrace() {
-        Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
+        Chain chain = chainBuilder.build(trace);
 
         assertThat(chain.isEmpty()).isTrue();
     }
@@ -50,7 +49,7 @@ class ChainBuilderShould {
     void buildLinkForSingleSpan() {
         addSpansToTrace(new BasicSpan(SPAN_NAME));
 
-        Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
+        Chain chain = chainBuilder.build(trace);
 
         assertThat(chain.getLinks()).containsExactly(new RectangleLink(SPAN_NAME));
     }
@@ -59,7 +58,7 @@ class ChainBuilderShould {
     void buildKsqlLinkForKsqlSpan() {
         addSpansToTrace(new KsqlSpan(SPAN_NAME));
 
-        Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
+        Chain chain = chainBuilder.build(trace);
 
         assertThat(chain.getLinks()).containsExactly(new KsqlLink(SPAN_NAME));
     }
@@ -68,7 +67,7 @@ class ChainBuilderShould {
     void buildConnectLinkForConnectSpan() {
         addSpansToTrace(new ConnectSpan(SPAN_NAME));
 
-        Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
+        Chain chain = chainBuilder.build(trace);
 
         assertThat(chain.getLinks()).containsExactly(new ConnectLink(SPAN_NAME));
     }
@@ -77,7 +76,7 @@ class ChainBuilderShould {
     void buildLinksForMultipleSpans() {
         addSpansToTrace(new BasicSpan("Span 1"), new BasicSpan("Span 2"));
 
-        Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
+        Chain chain = chainBuilder.build(trace);
 
         assertThat(chain.getLinks()).containsExactly(new RectangleLink("Span 1"), new RectangleLink("Span 2"));
     }
@@ -89,7 +88,7 @@ class ChainBuilderShould {
         span.addStorage(SpanOperation.PRODUCE, topic);
         addSpansToTrace(span);
 
-        Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
+        Chain chain = chainBuilder.build(trace);
 
         RectangleLink rectangleLink = new RectangleLink(SPAN_NAME);
         KafkaTopicLink kafkaTopicLink = new KafkaTopicLink(TOPIC_NAME);
@@ -109,7 +108,7 @@ class ChainBuilderShould {
 
         addSpansToTrace(span, span2);
 
-        Chain chain = chainBuilder.build(JAEGER_TRACE_ID);
+        Chain chain = chainBuilder.build(trace);
 
         RectangleLink producerLink = new RectangleLink(SPAN_NAME);
         KafkaTopicLink kafkaTopicLink = new KafkaTopicLink(TOPIC_NAME);

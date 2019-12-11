@@ -8,15 +8,8 @@ import java.util.stream.Stream;
 import static com.github.muirandy.living.artifact.api.trace.SpanOperation.PRODUCE;
 
 public class ChainBuilder {
-    private OpenTracingClient openTracingClient;
 
-    public ChainBuilder(OpenTracingClient openTracingClient) {
-        this.openTracingClient = openTracingClient;
-    }
-
-    public Chain build(String traceId) {
-        Trace trace = openTracingClient.obtainTrace(traceId);
-
+    public Chain build(Trace trace) {
         if (!trace.isEmpty())
             return buildChain(trace);
         return new Chain();

@@ -49,16 +49,21 @@ class SystemTest {
     @Test
     void systemBuildsDiagramFromTrace() {
         givenTraceAvailable("systemTrace.json");
-        App app = new App(createJaegerChainBuilder(), createArtifactGenerator());
+        App app = new App(createOpenTracingClient(),
+                createJaegerChainBuilder(),
+                createArtifactGenerator());
 
         artifact = app.obtainTrace(JAEGER_TRACE_ID);
 
         thenWeGetSystemPlantUmlDiagramBack();
     }
 
+    private OpenTracingClient createOpenTracingClient() {
+        return new JaegerClient(jaegerServer);
+    }
+
     private ChainBuilder createJaegerChainBuilder() {
-        OpenTracingClient jaegerClient = new JaegerClient(jaegerServer);
-        return new ChainBuilder(jaegerClient);
+        return new ChainBuilder();
     }
 
     private ArtifactGenerator createArtifactGenerator() {

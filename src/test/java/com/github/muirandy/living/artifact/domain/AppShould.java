@@ -3,6 +3,8 @@ package com.github.muirandy.living.artifact.domain;
 import com.github.muirandy.living.artifact.api.diagram.Artifact;
 import com.github.muirandy.living.artifact.api.diagram.ArtifactGenerator;
 import com.github.muirandy.living.artifact.api.diagram.Chain;
+import com.github.muirandy.living.artifact.api.trace.OpenTracingClient;
+import com.github.muirandy.living.artifact.api.trace.Trace;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -23,12 +25,17 @@ class AppShould {
     private ArtifactGenerator artifactGenerator;
     @Mock
     private ChainBuilder chainBuilder;
+    @Mock
+    private OpenTracingClient openTracingClient;
+    @Mock
+    private Trace trace;
 
     @Test
     void callArtifactGenerator() {
-        App app = new App(chainBuilder, artifactGenerator);
+        App app = new App(openTracingClient, chainBuilder, artifactGenerator);
+        when(openTracingClient.obtainTrace(TRACE_ID)).thenReturn(trace);
+        when(chainBuilder.build(trace)).thenReturn(chain);
         when(artifactGenerator.generate(chain)).thenReturn(artifact);
-        when(chainBuilder.build(TRACE_ID)).thenReturn(chain);
 
         Artifact result = app.obtainTrace(TRACE_ID);
 
