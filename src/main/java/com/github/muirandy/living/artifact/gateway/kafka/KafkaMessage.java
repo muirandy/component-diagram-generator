@@ -1,7 +1,11 @@
 package com.github.muirandy.living.artifact.gateway.kafka;
 
 public class KafkaMessage {
-    public KafkaMessage(String kafkaMessageKey, String kafkaMessageValue) {
+    final String kafkaMessageKey;
+    final String kafkaMessageValue;
 
+    public KafkaMessage(String kafkaMessageKey, String kafkaMessageValue) {
+        this.kafkaMessageKey = kafkaMessageKey;
+        this.kafkaMessageValue = kafkaMessageValue;
     }
 }

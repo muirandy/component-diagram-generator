@@ -5,7 +5,6 @@ public class KafkaHeaders {
     public String value;
 
     public KafkaHeaders(String headersKey, String headersValue) {
-
         key = headersKey;
         value = headersValue;
     }
