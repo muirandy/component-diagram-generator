@@ -29,11 +29,11 @@ class ArchitectureTest {
 
             .whereLayer("RestClient").mayOnlyBeAccessedByLayers("JaegerTracingGateway", "RestClient")
             .whereLayer("JaegerTracingGateway").mayOnlyBeAccessedByLayers("Main")
-            .whereLayer("TracingApi").mayOnlyBeAccessedByLayers("JaegerTracingGateway", "Domain")
-            .whereLayer("TracingApi").mayOnlyBeAccessedByLayers("KafkaEnhancer", "Domain")
+            .whereLayer("TracingApi").mayOnlyBeAccessedByLayers("JaegerTracingGateway", "Domain", "Main")
+            .whereLayer("EnhancerApi").mayOnlyBeAccessedByLayers("KafkaEnhancer", "Domain", "Main")
             .whereLayer("PlantUml").mayOnlyBeAccessedByLayers("PlantUmlGateway", "PlantUml")
             .whereLayer("PlantUmlGateway").mayOnlyBeAccessedByLayers("Main")
-            .whereLayer("PlantUmlApi").mayOnlyBeAccessedByLayers("PlantUmlGateway", "Domain", "Main")
+            .whereLayer("PlantUmlApi").mayOnlyBeAccessedByLayers("PlantUmlGateway", "EnhancerApi", "KafkaEnhancer", "Domain", "Main")
             .whereLayer("Domain").mayOnlyBeAccessedByLayers("Main")
             .whereLayer("Main").mayNotBeAccessedByAnyLayer();
 
