@@ -16,6 +16,8 @@ import static com.github.muirandy.living.artifact.api.diagram.LinkRelationship.P
 
 class PlantUmlServiceTest {
 
+    private static final String KAFKA_MESSAGE_KEY = "key";
+    private static final String KAFKA_MESSAGE_VALUE = "payload";
     PlantUmlSourceBuilder plantUmlSourceBuilder = new PlantUmlSourceBuilder();
     private Chain chain;
     private Artifact artifact;
@@ -111,7 +113,9 @@ class PlantUmlServiceTest {
 
     @Test
     void drawsKafkaTopics() {
-        Link link = new KafkaTopicLink("MyKafkaTopic");
+        KafkaTopicLink link = new KafkaTopicLink("MyKafkaTopic");
+        link.key = KAFKA_MESSAGE_KEY;
+        link.payload = KAFKA_MESSAGE_VALUE;
         givenAnChainWith(link);
         whenWeRunTheApp();
         thenDiagramContains(link);
@@ -178,7 +182,7 @@ class PlantUmlServiceTest {
             else
                 XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:text[" + textElementIndex++ + "]").isEqualTo(link.name);
         } else if (link instanceof KafkaTopicLink) {
-            XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:a[" + anchorElementIndex + "]/@xlink:title").isEqualTo(link.name);
+            XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).valueByXPath("//svg:svg/svg:g/svg:a[" + anchorElementIndex + "]/@xlink:title").isEqualTo(KAFKA_MESSAGE_KEY + " : " + KAFKA_MESSAGE_VALUE);
             XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:a[" + anchorElementIndex + "]/svg:path[1]").exist();
             XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:a[" + anchorElementIndex + "]/svg:path[2]").exist();
             XmlAssert.assertThat(svg).withNamespaceContext(prefix2Uri).nodesByXPath("//svg:svg/svg:g/svg:a[" + anchorElementIndex++ + "]/svg:image[1]").exist();
