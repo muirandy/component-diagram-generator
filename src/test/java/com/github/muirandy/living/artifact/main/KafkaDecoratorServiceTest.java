@@ -5,6 +5,7 @@ import com.github.muirandy.living.artifact.api.diagram.KafkaTopicLink;
 import com.github.muirandy.living.artifact.api.diagram.Link;
 import com.github.muirandy.living.artifact.api.enhancer.ChainDecorator;
 import com.github.muirandy.living.artifact.gateway.kafka.KafkaChainDecorator;
+import com.github.muirandy.living.artifact.gateway.kafka.KafkaHeader;
 import com.github.muirandy.living.artifact.gateway.kafka.KafkaTopicConsumer;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.CreateTopicsOptions;
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers
-public class EnhancedSystemTest {
+public class KafkaDecoratorServiceTest {
     private static final String TOPIC_NAME = "topic-1";
     private static final String KAFKA_DESERIALIZER = "org.apache.kafka.common.serialization.StringDeserializer";
     private static final String KAFKA_SERIALIZER = "org.apache.kafka.common.serialization.StringSerializer";
@@ -47,8 +48,9 @@ public class EnhancedSystemTest {
     private static final String KEY = "Expected Key";
     private static final String MESSAGE = "Expected Value";
     private static final Integer NO_PARTITION = null;
-    private static final String TRACING_HEADER = "OpenTracing Header";
-    private static final String TRACE_ID = "Trace Id";
+    private static final String TRACING_HEADER = "X-B3-TraceId";
+    private static final String TRACE_ID = "555666777888999";
+
     private List<Header> headers = new ArrayList<>();
     private Chain decoratedChain;
 
@@ -88,7 +90,7 @@ public class EnhancedSystemTest {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, KAFKA_DESERIALIZER);
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "100");
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, EnhancedSystemTest.class.getName());
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, KafkaDecoratorServiceTest.class.getName());
         return props;
     }
 
@@ -119,7 +121,8 @@ public class EnhancedSystemTest {
     }
 
     private void whenWeRetrieveMessagesForTraceId() {
-        ChainDecorator chainDecorator = new KafkaChainDecorator(new KafkaTopicConsumer());
+        KafkaHeader KAFKA_B3_TRACE = new KafkaHeader(TRACING_HEADER, TRACE_ID);
+        ChainDecorator chainDecorator = new KafkaChainDecorator(new KafkaTopicConsumer(getKafkaConsumerProperties(), KAFKA_B3_TRACE));
         decoratedChain = chainDecorator.decorate(createPlainChain());
     }
 
@@ -139,7 +142,6 @@ public class EnhancedSystemTest {
 
         assertThat(decoratedChain).isNotNull();
         assertThat(decoratedChain).isEqualTo(expectedChain);
-
     }
 
     protected Properties getKafkaConsumerProperties() {
@@ -150,11 +152,13 @@ public class EnhancedSystemTest {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, KAFKA_DESERIALIZER);
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "100");
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, EnhancedSystemTest.class.getName());
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, KafkaDecoratorServiceTest.class.getName());
         return props;
     }
 
     private void writeExpectedMessageToKafkaTopic() {
+        headers = new ArrayList<>();
+        headers.add(createExpectedHeader());
         sendMessageToKafkaTopic(TOPIC_NAME, KEY, MESSAGE);
     }
 
@@ -172,6 +176,10 @@ public class EnhancedSystemTest {
         return new RecordHeader(TRACING_HEADER, randomTrace);
     }
 
+    private Header createExpectedHeader() {
+        byte[] expectedTrace = TRACE_ID.getBytes();
+        return new RecordHeader(TRACING_HEADER, expectedTrace);
+    }
     private void sendMessageToKafkaTopic(String topic, String key, String value) {
         try {
             getStringStringKafkaProducer().send(createProducerRecord(topic, key, value)).get();
