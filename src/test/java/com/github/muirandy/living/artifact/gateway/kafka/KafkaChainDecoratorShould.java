@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -34,8 +35,8 @@ class KafkaChainDecoratorShould {
     @BeforeEach
     void setUp() {
         decorator = new KafkaChainDecorator(kafkaTopicConsumer);
-        when(kafkaTopicConsumer.getMessage(TOPIC_NAME)).thenReturn(new KafkaMessage(KAFKA_MESSAGE_KEY, KAFKA_MESSAGE_VALUE));
-        when(kafkaTopicConsumer.getMessage(TOPIC2_NAME)).thenReturn(new KafkaMessage(KAFKA_MESSAGE_KEY_2, KAFKA_MESSAGE_VALUE_2));
+        when(kafkaTopicConsumer.getMessage(TOPIC_NAME)).thenReturn(Optional.of(new KafkaMessage(KAFKA_MESSAGE_KEY, KAFKA_MESSAGE_VALUE)));
+        when(kafkaTopicConsumer.getMessage(TOPIC2_NAME)).thenReturn(Optional.of(new KafkaMessage(KAFKA_MESSAGE_KEY_2, KAFKA_MESSAGE_VALUE_2)));
     }
 
     @Test

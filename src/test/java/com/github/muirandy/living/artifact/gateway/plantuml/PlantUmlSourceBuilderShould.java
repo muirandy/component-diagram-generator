@@ -26,7 +26,9 @@ class PlantUmlSourceBuilderShould {
 
     private static final String KAFKA_TOPIC_ELEMENT_NAME = "KafkaTopic";
     private static final String KAFKA_TOPIC_SPRITE_IMPORT = "!include <cloudinsight/kafka>\n";
-    private static final String KAFKA_TOPIC_TAG = "queue \"<$kafka>\" as " + KAFKA_TOPIC_ELEMENT_NAME + "[[{" + KAFKA_TOPIC_ELEMENT_NAME + "} field]] #White\n";
+    private static final String KAFKA_MESSAGE_KEY = "42";
+    private static final String KAFKA_MESSAGE_VALUE = "{\nsome:content\n}";
+    private static final String KAFKA_TOPIC_TAG = "queue \"<$kafka{scale=0.5}>" + KAFKA_TOPIC_ELEMENT_NAME + "\" as " + KAFKA_TOPIC_ELEMENT_NAME + "[[{" + KAFKA_MESSAGE_KEY + " : " + "{\\\nsome:content\\\n}" + "} field]] #White\n";
 
     private static final String CONNECTION_FROM_RECTANGLE_TO_QUEUE_TAG = FIRST_ELEMENT_NAME + "->" + QUEUE_ELEMENT_NAME + "\n";
     private static final String CONNECTION_FROM_SECOND_RECTANGLE_TO_QUEUE_TAG = QUEUE_ELEMENT_NAME + "<-" + SECOND_ELEMENT_NAME + "\n";
@@ -199,7 +201,10 @@ class PlantUmlSourceBuilderShould {
 
     @Test
     void buildKafkaTopic() {
-        createChain(new KafkaTopicLink(KAFKA_TOPIC_ELEMENT_NAME));
+        KafkaTopicLink kafkaTopicLink = new KafkaTopicLink(KAFKA_TOPIC_ELEMENT_NAME);
+        kafkaTopicLink.key = KAFKA_MESSAGE_KEY;
+        kafkaTopicLink.payload = KAFKA_MESSAGE_VALUE;
+        createChain(kafkaTopicLink);
 
         String plantUmlSourceCode = sourceBuilder.build(chain);
 

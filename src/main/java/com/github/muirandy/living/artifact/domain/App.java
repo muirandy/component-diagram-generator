@@ -11,6 +11,7 @@ public class App {
 
     private OpenTracingClient openTracingClient;
     private ChainBuilder chainBuilder;
+    private ChainDecorator chainDecorator;
     private ArtifactGenerator artifactGenerator;
 
     public App(OpenTracingClient openTracingClient, ChainBuilder chainBuilder, ArtifactGenerator artifactGenerator) {
@@ -19,10 +20,24 @@ public class App {
         this.artifactGenerator = artifactGenerator;
     }
 
+    public App(OpenTracingClient openTracingClient, ChainBuilder chainBuilder, ChainDecorator chainDecorator, ArtifactGenerator artifactGenerator) {
+        this.openTracingClient = openTracingClient;
+        this.chainBuilder = chainBuilder;
+        this.chainDecorator = chainDecorator;
+        this.artifactGenerator = artifactGenerator;
+    }
+
     public Artifact obtainArtifact(String traceId) {
         Trace trace = openTracingClient.obtainTrace(traceId);
         Chain chain = chainBuilder.build(trace);
+        chain = enhanceChain(chain);
 
         return artifactGenerator.generate(chain);
+    }
+
+    private Chain enhanceChain(Chain chain) {
+        if (chainDecorator != null)
+            return chainDecorator.decorate(chain);
+        return chain;
     }
 }

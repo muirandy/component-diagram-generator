@@ -26,7 +26,12 @@ public class PlantUmlSourceElementVisitor implements SourceStringVisitor {
 
     @Override
     public String visit(KafkaTopicLink link) {
-        return "queue \"<$kafka>\" as " + getLinkName(link) + "[[{" + getLinkName(link) + "} field]] #White\n";
+        return "queue \"<$kafka{scale=0.5}>" + getLinkName(link) + "\" as " + getLinkName(link) + "[[{" + getMessageContent(link) + "} field]] #White\n";
+    }
+
+    private String getMessageContent(KafkaTopicLink link) {
+        String content = link.key + " : " + link.payload;
+        return content.replace("\n", "\\\n");
     }
 
     @Override

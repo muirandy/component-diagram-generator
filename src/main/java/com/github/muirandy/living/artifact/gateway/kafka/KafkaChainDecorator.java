@@ -6,6 +6,7 @@ import com.github.muirandy.living.artifact.api.diagram.Link;
 import com.github.muirandy.living.artifact.api.enhancer.ChainDecorator;
 
 import java.util.List;
+import java.util.Optional;
 
 public class KafkaChainDecorator implements ChainDecorator {
     private KafkaTopicConsumer kafkaTopicConsumer;
@@ -24,8 +25,10 @@ public class KafkaChainDecorator implements ChainDecorator {
     }
 
     private void populateLink(KafkaTopicLink link) {
-        KafkaMessage message = kafkaTopicConsumer.getMessage(link.name);
-        link.key = message.kafkaMessageKey;
-        link.payload = message.kafkaMessageValue;
+        Optional<KafkaMessage> message = kafkaTopicConsumer.getMessage(link.name);
+        if (message.isPresent()) {
+            link.key = message.get().kafkaMessageKey;
+            link.payload = message.get().kafkaMessageValue;
+        }
     }
 }
